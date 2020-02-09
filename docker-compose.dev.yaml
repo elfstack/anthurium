@@ -1,0 +1,22 @@
+version: '3.6'
+
+services:
+    anthurium:
+        tty: true
+        image: bitnami/laravel:6.4.0
+        environment:
+            - DB_HOST=mysql
+            - DB_USERNAME=root
+            - DB_DATABASE=anthurium
+            - DB_PASSWORD=secret
+        ports:
+            - 3000:3000
+        volumes:
+            - ./:/app
+    mysql:
+        image: 'mysql:5.7.21'
+        environment:
+            - MYSQL_ROOT_PASSWORD=secret
+            - MYSQL_DATABASE=anthurium
+        ports:
+            - 3306:33060
