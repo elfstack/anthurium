@@ -21,7 +21,19 @@
                     </div>
 
                     <div class="card-body">
-                        @include('admin.user.components.form-elements')
+                        <div class="row">
+                            <div class="col-md-4 text-center">
+                                <div class="avatar-upload">
+                                    @include('brackets/admin-ui::admin.includes.avatar-uploader', [
+                                        'mediaCollection' => app(\App\User::class)->getMediaCollection('avatar'),
+                                        'media' => $user->getThumbs200ForCollection('avatar')
+                                    ])
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                @include('admin.user.components.form-elements')
+                            </div>
+                        </div>
                     </div>
                     
                     

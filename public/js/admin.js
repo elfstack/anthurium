@@ -112816,7 +112816,8 @@ Vue.component('user-form', {
         email: '',
         email_verified_at: '',
         password: ''
-      }
+      },
+      mediaCollections: ['avatar']
     };
   }
 });
