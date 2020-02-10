@@ -84,12 +84,45 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard'), 'admin'])->gro
     Route::prefix('admin')->namespace('Admin')->name('admin/')->group(static function() {
         Route::prefix('activities')->name('activities/')->group(static function() {
             Route::get('/',                                             'ActivitiesController@index')->name('index');
+            Route::get('/{activity}/participants',                                             'ActivitiesController@participants')->name('show/participants');
             Route::get('/create',                                       'ActivitiesController@create')->name('create');
             Route::post('/',                                            'ActivitiesController@store')->name('store');
+            Route::get('/{activity}',                              'ActivitiesController@show')->name('show');
             Route::get('/{activity}/edit',                              'ActivitiesController@edit')->name('edit');
             Route::post('/bulk-destroy',                                'ActivitiesController@bulkDestroy')->name('bulk-destroy');
             Route::post('/{activity}',                                  'ActivitiesController@update')->name('update');
             Route::delete('/{activity}',                                'ActivitiesController@destroy')->name('destroy');
+        });
+    });
+});
+
+/* Auto-generated admin routes */
+Route::middleware(['auth:' . config('admin-auth.defaults.guard'), 'admin'])->group(static function () {
+    Route::prefix('admin')->namespace('Admin')->name('admin/')->group(static function() {
+        Route::prefix('attendances')->name('attendances/')->group(static function() {
+            Route::get('/',                                             'AttendanceController@index')->name('index');
+            Route::get('/create',                                       'AttendanceController@create')->name('create');
+            Route::post('/',                                            'AttendanceController@store')->name('store');
+            Route::get('/{attendance}/edit',                            'AttendanceController@edit')->name('edit');
+            Route::post('/bulk-destroy',                                'AttendanceController@bulkDestroy')->name('bulk-destroy');
+            Route::post('/{attendance}',                                'AttendanceController@update')->name('update');
+            Route::delete('/{attendance}',                              'AttendanceController@destroy')->name('destroy');
+        });
+    });
+});
+
+
+/* Auto-generated admin routes */
+Route::middleware(['auth:' . config('admin-auth.defaults.guard'), 'admin'])->group(static function () {
+    Route::prefix('admin')->namespace('Admin')->name('admin/')->group(static function() {
+        Route::prefix('participants')->name('participants/')->group(static function() {
+            Route::get('/',                                             'ParticipantsController@index')->name('index');
+            Route::get('/create',                                       'ParticipantsController@create')->name('create');
+            Route::post('/',                                            'ParticipantsController@store')->name('store');
+            Route::get('/{participant}/edit',                           'ParticipantsController@edit')->name('edit');
+            Route::post('/bulk-destroy',                                'ParticipantsController@bulkDestroy')->name('bulk-destroy');
+            Route::post('/{participant}',                               'ParticipantsController@update')->name('update');
+            Route::delete('/{participant}',                             'ParticipantsController@destroy')->name('destroy');
         });
     });
 });

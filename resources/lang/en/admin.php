@@ -111,5 +111,62 @@ return [
         ],
     ],
 
+    'attendance' => [
+        'title' => 'Attendance',
+
+        'actions' => [
+            'index' => 'Attendance',
+            'create' => 'New Attendance',
+            'edit' => 'Edit :name',
+        ],
+
+        'columns' => [
+            'id' => 'ID',
+            'arrived_at' => 'Arrived at',
+            'left_at' => 'Left at',
+            'activity_id' => 'Activity',
+            'user_id' => 'User',
+            
+        ],
+    ],
+
+    'participant' => [
+        'title' => 'Participants',
+
+        'actions' => [
+            'index' => 'Participants',
+            'create' => 'New Participant',
+            'edit' => 'Edit :name',
+        ],
+
+        'columns' => [
+            'id' => 'ID',
+            'enrolled_at' => 'Enrolled at',
+            'activities_id' => 'Activities',
+            'user_id' => 'User',
+            'attendance_id' => 'Attendance',
+            
+        ],
+    ],
+
+    'participant' => [
+        'title' => 'Participants',
+
+        'actions' => [
+            'index' => 'Participants',
+            'create' => 'New Participant',
+            'edit' => 'Edit :name',
+        ],
+
+        'columns' => [
+            'id' => 'ID',
+            'enrolled_at' => 'Enrolled at',
+            'activity_id' => 'Activity',
+            'user_id' => 'User',
+            'attendance_id' => 'Attendance',
+            
+        ],
+    ],
+
     // Do not delete me :) I'm used for auto-generation
 ];

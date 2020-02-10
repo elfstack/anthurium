@@ -3,13 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Activity\BulkDestroyActivity;
-use App\Http\Requests\Admin\Activity\DestroyActivity;
-use App\Http\Requests\Admin\Activity\IndexActivity;
+use App\Http\Requests\Admin\Participant\BulkDestroyParticipant;
+use App\Http\Requests\Admin\Participant\DestroyParticipant;
 use App\Http\Requests\Admin\Participant\IndexParticipant;
-use App\Http\Requests\Admin\Activity\StoreActivity;
-use App\Http\Requests\Admin\Activity\UpdateActivity;
-use App\Models\Activity;
+use App\Http\Requests\Admin\Participant\StoreParticipant;
+use App\Http\Requests\Admin\Participant\UpdateParticipant;
 use App\Models\Participant;
 use Brackets\AdminListing\Facades\AdminListing;
 use Exception;
@@ -22,27 +20,27 @@ use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
-class ActivitiesController extends Controller
+class ParticipantsController extends Controller
 {
 
     /**
      * Display a listing of the resource.
      *
-     * @param IndexActivity $request
+     * @param IndexParticipant $request
      * @return array|Factory|View
      */
-    public function index(IndexActivity $request)
+    public function index(IndexParticipant $request)
     {
         // create and AdminListing instance for a specific model and
-        $data = AdminListing::create(Activity::class)->processRequestAndGet(
+        $data = AdminListing::create(Participant::class)->processRequestAndGet(
             // pass the request with params
             $request,
 
             // set columns to query
-            ['id', 'name', 'starts_at', 'ends_at', 'quota'],
+            ['id', 'enrolled_at', 'activity_id', 'user_id', 'attendance_id'],
 
             // set columns to searchIn
-            ['id', 'name', 'content']
+            ['id']
         );
 
         if ($request->ajax()) {
@@ -54,34 +52,7 @@ class ActivitiesController extends Controller
             return ['data' => $data];
         }
 
-        return view('admin.activity.index', ['data' => $data]);
-    }
-
-    public function participants(Activity $activity, IndexParticipant $request)
-    {
-        // create and AdminListing instance for a specific model and
-        $data = AdminListing::create(Participant::class)->processRequestAndGet(
-            // pass the request with params
-            $request,
-
-            // set columns to query
-            ['id', 'enrolled_at', 'user_id', 'attendance_id'],
-
-            // set columns to searchIn
-            ['id'],
-
-            function ($query) use ($activity) {
-                $query->where('activity_id', $activity->id);
-            }
-        );
-
-        if ($request->has('bulk')) {
-            return [
-                'bulkItems' => $data->pluck('id')
-            ];
-        }
-
-        return ['data' => $data];
+        return view('admin.participant.index', ['data' => $data]);
     }
 
     /**
@@ -92,102 +63,99 @@ class ActivitiesController extends Controller
      */
     public function create()
     {
-        $this->authorize('admin.activity.create');
+        $this->authorize('admin.participant.create');
 
-        return view('admin.activity.create');
+        return view('admin.participant.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreActivity $request
+     * @param StoreParticipant $request
      * @return array|RedirectResponse|Redirector
      */
-    public function store(StoreActivity $request)
+    public function store(StoreParticipant $request)
     {
         // Sanitize input
         $sanitized = $request->getSanitized();
 
-        // Store the Activity
-        $activity = Activity::create($sanitized);
+        // Store the Participant
+        $participant = Participant::create($sanitized);
 
         if ($request->ajax()) {
-            return ['redirect' => url('admin/activities'), 'message' => trans('brackets/admin-ui::admin.operation.succeeded')];
+            return ['redirect' => url('admin/participants'), 'message' => trans('brackets/admin-ui::admin.operation.succeeded')];
         }
 
-        return redirect('admin/activities');
+        return redirect('admin/participants');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param Activity $activity
+     * @param Participant $participant
      * @throws AuthorizationException
      * @return void
      */
-    public function show(Activity $activity)
+    public function show(Participant $participant)
     {
-        $this->authorize('admin.activity.show', $activity);
+        $this->authorize('admin.participant.show', $participant);
 
         // TODO your code goes here
-        return view('admin.activity.show', [
-            'activity' => $activity
-        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Activity $activity
+     * @param Participant $participant
      * @throws AuthorizationException
      * @return Factory|View
      */
-    public function edit(Activity $activity)
+    public function edit(Participant $participant)
     {
-        $this->authorize('admin.activity.edit', $activity);
+        $this->authorize('admin.participant.edit', $participant);
 
 
-        return view('admin.activity.edit', [
-            'activity' => $activity,
+        return view('admin.participant.edit', [
+            'participant' => $participant,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param UpdateActivity $request
-     * @param Activity $activity
+     * @param UpdateParticipant $request
+     * @param Participant $participant
      * @return array|RedirectResponse|Redirector
      */
-    public function update(UpdateActivity $request, Activity $activity)
+    public function update(UpdateParticipant $request, Participant $participant)
     {
         // Sanitize input
         $sanitized = $request->getSanitized();
 
-        // Update changed values Activity
-        $activity->update($sanitized);
+        // Update changed values Participant
+        $participant->update($sanitized);
 
         if ($request->ajax()) {
             return [
-                'redirect' => url('admin/activities'),
+                'redirect' => url('admin/participants'),
                 'message' => trans('brackets/admin-ui::admin.operation.succeeded'),
             ];
         }
 
-        return redirect('admin/activities');
+        return redirect('admin/participants');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param DestroyActivity $request
-     * @param Activity $activity
+     * @param DestroyParticipant $request
+     * @param Participant $participant
      * @throws Exception
      * @return ResponseFactory|RedirectResponse|Response
      */
-    public function destroy(DestroyActivity $request, Activity $activity)
+    public function destroy(DestroyParticipant $request, Participant $participant)
     {
-        $activity->delete();
+        $participant->delete();
 
         if ($request->ajax()) {
             return response(['message' => trans('brackets/admin-ui::admin.operation.succeeded')]);
@@ -199,17 +167,17 @@ class ActivitiesController extends Controller
     /**
      * Remove the specified resources from storage.
      *
-     * @param BulkDestroyActivity $request
+     * @param BulkDestroyParticipant $request
      * @throws Exception
      * @return Response|bool
      */
-    public function bulkDestroy(BulkDestroyActivity $request) : Response
+    public function bulkDestroy(BulkDestroyParticipant $request) : Response
     {
         DB::transaction(static function () use ($request) {
             collect($request->data['ids'])
                 ->chunk(1000)
                 ->each(static function ($bulkChunk) {
-                    Activity::whereIn('id', $bulkChunk)->delete();
+                    Participant::whereIn('id', $bulkChunk)->delete();
 
                     // TODO your code goes here
                 });

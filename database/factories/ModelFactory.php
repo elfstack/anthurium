@@ -69,3 +69,36 @@ $factory->define(App\Models\VolunteerInfo::class, static function (Faker\Generat
         
     ];
 });
+/** @var  \Illuminate\Database\Eloquent\Factory $factory */
+$factory->define(App\Models\Attendance::class, static function (Faker\Generator $faker) {
+    return [
+        'arrived_at' => $faker->dateTime,
+        'left_at' => $faker->dateTime,
+        'activity_id' => $faker->sentence,
+        'user_id' => $faker->sentence,
+        
+        
+    ];
+});
+/** @var  \Illuminate\Database\Eloquent\Factory $factory */
+$factory->define(App\Models\Participant::class, static function (Faker\Generator $faker) {
+    return [
+        'enrolled_at' => $faker->dateTime,
+        'activities_id' => $faker->sentence,
+        'user_id' => $faker->sentence,
+        'attendance_id' => $faker->sentence,
+        
+        
+    ];
+});
+/** @var  \Illuminate\Database\Eloquent\Factory $factory */
+$factory->define(App\Models\Participant::class, static function (Faker\Generator $faker) {
+    return [
+        'enrolled_at' => $faker->dateTime,
+        'activity_id' => $faker->sentence,
+        'user_id' => $faker->sentence,
+        'attendance_id' => $faker->sentence,
+        
+        
+    ];
+});

@@ -26,7 +26,6 @@ class UpdateVolunteerInfo extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => ['sometimes', 'string'],
             'id_number' => ['sometimes', 'string'],
             'alias' => ['sometimes', 'string'],
             'gender' => ['sometimes', 'string'],

@@ -26,7 +26,6 @@ class StoreVolunteerInfo extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => ['required', 'string'],
             'id_number' => ['required', 'string'],
             'alias' => ['required', 'string'],
             'gender' => ['required', 'string'],

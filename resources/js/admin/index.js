@@ -4,3 +4,5 @@ import './profile-edit-password';
 import './user';
 import './volunteer-info';
 import './activity';
+import './attendance';
+import './participant';

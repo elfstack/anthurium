@@ -35,7 +35,7 @@ class CreateVolunteerInfoTable extends Migration
             $table->string('volunteer_experences', 45)->nullable()->default(null);
             $table->string('references', 45)->nullable()->default(null);
 
-            $table->index('user_id');
+            $table->primary('user_id');
 
             $table->foreign('user_id')
                 ->references('id')->on('users')

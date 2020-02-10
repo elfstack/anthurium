@@ -112482,6 +112482,66 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/admin/attendance/Form.js":
+/*!***********************************************!*\
+  !*** ./resources/js/admin/attendance/Form.js ***!
+  \***********************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _app_components_Form_AppForm__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../app-components/Form/AppForm */ "./resources/js/admin/app-components/Form/AppForm.js");
+
+Vue.component('attendance-form', {
+  mixins: [_app_components_Form_AppForm__WEBPACK_IMPORTED_MODULE_0__["default"]],
+  data: function data() {
+    return {
+      form: {
+        arrived_at: '',
+        left_at: '',
+        activity_id: '',
+        user_id: ''
+      }
+    };
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/admin/attendance/Listing.js":
+/*!**************************************************!*\
+  !*** ./resources/js/admin/attendance/Listing.js ***!
+  \**************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _app_components_Listing_AppListing__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../app-components/Listing/AppListing */ "./resources/js/admin/app-components/Listing/AppListing.js");
+
+Vue.component('attendance-listing', {
+  mixins: [_app_components_Listing_AppListing__WEBPACK_IMPORTED_MODULE_0__["default"]]
+});
+
+/***/ }),
+
+/***/ "./resources/js/admin/attendance/index.js":
+/*!************************************************!*\
+  !*** ./resources/js/admin/attendance/index.js ***!
+  \************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Listing__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Listing */ "./resources/js/admin/attendance/Listing.js");
+/* harmony import */ var _Form__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Form */ "./resources/js/admin/attendance/Form.js");
+
+
+
+/***/ }),
+
 /***/ "./resources/js/admin/bootstrap.js":
 /*!*****************************************!*\
   !*** ./resources/js/admin/bootstrap.js ***!
@@ -112548,10 +112608,87 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _user__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./user */ "./resources/js/admin/user/index.js");
 /* harmony import */ var _volunteer_info__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./volunteer-info */ "./resources/js/admin/volunteer-info/index.js");
 /* harmony import */ var _activity__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./activity */ "./resources/js/admin/activity/index.js");
+/* harmony import */ var _attendance__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./attendance */ "./resources/js/admin/attendance/index.js");
+/* harmony import */ var _participant__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./participant */ "./resources/js/admin/participant/index.js");
 
 
 
 
+
+
+
+
+
+/***/ }),
+
+/***/ "./resources/js/admin/participant/Form.js":
+/*!************************************************!*\
+  !*** ./resources/js/admin/participant/Form.js ***!
+  \************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _app_components_Form_AppForm__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../app-components/Form/AppForm */ "./resources/js/admin/app-components/Form/AppForm.js");
+
+Vue.component('participant-form', {
+  mixins: [_app_components_Form_AppForm__WEBPACK_IMPORTED_MODULE_0__["default"]],
+  data: function data() {
+    return {
+      form: {
+        enrolled_at: '',
+        activity_id: '',
+        user_id: '',
+        attendance_id: ''
+      }
+    };
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/admin/participant/Listing.js":
+/*!***************************************************!*\
+  !*** ./resources/js/admin/participant/Listing.js ***!
+  \***************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _app_components_Listing_AppListing__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../app-components/Listing/AppListing */ "./resources/js/admin/app-components/Listing/AppListing.js");
+
+Vue.component('participant-listing', {
+  mixins: [_app_components_Listing_AppListing__WEBPACK_IMPORTED_MODULE_0__["default"]],
+  props: {
+    activityId: Number
+  },
+  created: function created() {
+    var _this = this;
+
+    if (this.activity) {
+      window.axios.get(this.url).then(function (_ref) {
+        var data = _ref.data;
+        _this.data = data;
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/admin/participant/index.js":
+/*!*************************************************!*\
+  !*** ./resources/js/admin/participant/index.js ***!
+  \*************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Listing__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Listing */ "./resources/js/admin/participant/Listing.js");
+/* harmony import */ var _Form__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Form */ "./resources/js/admin/participant/Form.js");
 
 
 
@@ -112735,7 +112872,6 @@ Vue.component('volunteer-info-form', {
   data: function data() {
     return {
       form: {
-        user_id: '',
         id_number: '',
         alias: '',
         gender: '',

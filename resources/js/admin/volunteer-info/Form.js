@@ -5,7 +5,6 @@ Vue.component('volunteer-info-form', {
     data: function() {
         return {
             form: {
-                user_id:  '' ,
                 id_number:  '' ,
                 alias:  '' ,
                 gender:  '' ,
@@ -18,7 +17,7 @@ Vue.component('volunteer-info-form', {
                 emergency_contact:  '' ,
                 volunteer_experences:  '' ,
                 references:  '' ,
-                
+
             }
         }
     }

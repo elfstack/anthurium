@@ -3,8 +3,9 @@
         <ul class="nav">
             <li class="nav-title">@lang('admin.sidebar.volunteer')</li>
             <li class="nav-item"><a class="nav-link" href="{{ url('admin/users') }}"><i class="nav-icon icon-user"></i>@lang('base.volunteers')</a></li>
-           <li class="nav-item"><a class="nav-link" href="{{ url('admin/volunteer-infos') }}"><i class="nav-icon icon-drop"></i> {{ trans('admin.volunteer-info.title') }}</a></li>
            <li class="nav-item"><a class="nav-link" href="{{ url('admin/activities') }}"><i class="nav-icon icon-book-open"></i> {{ trans('admin.activity.title') }}</a></li>
+           <li class="nav-item"><a class="nav-link" href="{{ url('admin/attendances') }}"><i class="nav-icon icon-flag"></i> {{ trans('admin.attendance.title') }}</a></li>
+           <li class="nav-item"><a class="nav-link" href="{{ url('admin/participants') }}"><i class="nav-icon icon-magnet"></i> {{ trans('admin.participant.title') }}</a></li>
            {{-- Do not delete me :) I'm used for auto-generation menu items --}}
 
             <li class="nav-title">@lang('admin.manage')</li>

@@ -31,4 +31,19 @@ class Activity extends Model
     {
         return url('/admin/activities/'.$this->getKey());
     }
+
+    public function participants()
+    {
+        return $this->hasMany(Participant::class);
+    }
+
+    public function usedQuotaPercentage()
+    {
+        return $this->participants()->count() / $this->quota * 100;
+    }
+
+    public function attendedParticipantsPercentage()
+    {
+        return $this->participants()->whereNotNull('attendance_id')->count() / $this->participants()->count() * 100;
+    }
 }
