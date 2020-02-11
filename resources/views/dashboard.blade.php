@@ -12,22 +12,24 @@
             </div>
         </div>
         <div class="col-md-8">
-            <h3>Upcoming activities</h3>
+            <h3 class="mb-3">Ongoing activities</h3>
+            <h3 class="mb-3">Upcoming activities</h3>
             <div class="card">
-                <div class="card-header">Dashboard</div>
-
                 <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
+                    <h5 class="card-title">Activity Name</h5>
+                    <p class="mb-0">2020/02/21 12:30 - 2020/02/27 17:30</p>
+                </div>
+                <div class="card-footer d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <div class="progress">
+                          <div class="progress-bar" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
-                    @endif
-
-                    You are logged in!
+                    </div>
+                    <span class="ml-2">12/20</span>
                 </div>
             </div>
 
-            <h3>Past activities</h3>
+            <h3 class="mb-3">Past activities</h3>
         </div>
     </div>
 </div>
