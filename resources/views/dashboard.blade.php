@@ -2,10 +2,17 @@
 
 @section('content')
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-md-4">
+    <div class="row justify-content-center">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <img class="rounded-circle mb-1" src="{{ Auth::user()->getFirstMediaUrl('avatar', 'thumb_150') }}"/>
+                    <h3 class="card-title">{{ Auth::user()->name }}</h3>
+                </div>
+            </div>
         </div>
         <div class="col-md-8">
+            <h3>Upcoming activities</h3>
             <div class="card">
                 <div class="card-header">Dashboard</div>
 
@@ -19,6 +26,8 @@
                     You are logged in!
                 </div>
             </div>
+
+            <h3>Past activities</h3>
         </div>
     </div>
 </div>

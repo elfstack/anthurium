@@ -127,7 +127,9 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard'), 'admin'])->gro
 
 Route::get('/activity/{activity}', 'ActivitiesController@show')->name('activities/show');
 
+Route::get('/activities', 'ActivitiesController@index')->name('activities/index');
+
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 
