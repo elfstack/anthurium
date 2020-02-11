@@ -112610,6 +112610,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _activity__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./activity */ "./resources/js/admin/activity/index.js");
 /* harmony import */ var _attendance__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./attendance */ "./resources/js/admin/attendance/index.js");
 /* harmony import */ var _participant__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./participant */ "./resources/js/admin/participant/index.js");
+/* harmony import */ var _components_participant__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../components/participant */ "./resources/js/components/participant/index.js");
+
 
 
 
@@ -112648,36 +112650,6 @@ Vue.component('participant-form', {
 
 /***/ }),
 
-/***/ "./resources/js/admin/participant/Listing.js":
-/*!***************************************************!*\
-  !*** ./resources/js/admin/participant/Listing.js ***!
-  \***************************************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _app_components_Listing_AppListing__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../app-components/Listing/AppListing */ "./resources/js/admin/app-components/Listing/AppListing.js");
-
-Vue.component('participant-listing', {
-  mixins: [_app_components_Listing_AppListing__WEBPACK_IMPORTED_MODULE_0__["default"]],
-  props: {
-    activityId: Number
-  },
-  created: function created() {
-    var _this = this;
-
-    if (this.activity) {
-      window.axios.get(this.url).then(function (_ref) {
-        var data = _ref.data;
-        _this.data = data;
-      });
-    }
-  }
-});
-
-/***/ }),
-
 /***/ "./resources/js/admin/participant/index.js":
 /*!*************************************************!*\
   !*** ./resources/js/admin/participant/index.js ***!
@@ -112687,9 +112659,7 @@ Vue.component('participant-listing', {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Listing__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Listing */ "./resources/js/admin/participant/Listing.js");
-/* harmony import */ var _Form__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Form */ "./resources/js/admin/participant/Form.js");
-
+/* harmony import */ var _Form__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Form */ "./resources/js/admin/participant/Form.js");
 
 
 /***/ }),
@@ -112921,6 +112891,68 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Listing__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Listing */ "./resources/js/admin/volunteer-info/Listing.js");
 /* harmony import */ var _Form__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Form */ "./resources/js/admin/volunteer-info/Form.js");
 
+
+
+/***/ }),
+
+/***/ "./resources/js/components/app-components/Listing/AppListing.js":
+/*!**********************************************************************!*\
+  !*** ./resources/js/components/app-components/Listing/AppListing.js ***!
+  \**********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var craftable__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! craftable */ "./node_modules/craftable/dist/index.js");
+/* harmony import */ var craftable__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(craftable__WEBPACK_IMPORTED_MODULE_0__);
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  mixins: [craftable__WEBPACK_IMPORTED_MODULE_0__["BaseListing"]]
+});
+
+/***/ }),
+
+/***/ "./resources/js/components/participant/Listing.js":
+/*!********************************************************!*\
+  !*** ./resources/js/components/participant/Listing.js ***!
+  \********************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _app_components_Listing_AppListing__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../app-components/Listing/AppListing */ "./resources/js/components/app-components/Listing/AppListing.js");
+
+Vue.component('participant-listing', {
+  mixins: [_app_components_Listing_AppListing__WEBPACK_IMPORTED_MODULE_0__["default"]],
+  props: {
+    activityId: Number
+  },
+  created: function created() {
+    var _this = this;
+
+    if (this.activity) {
+      window.axios.get(this.url).then(function (_ref) {
+        var data = _ref.data;
+        _this.data = data;
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/components/participant/index.js":
+/*!******************************************************!*\
+  !*** ./resources/js/components/participant/index.js ***!
+  \******************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Listing__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Listing */ "./resources/js/components/participant/Listing.js");
 
 
 /***/ }),

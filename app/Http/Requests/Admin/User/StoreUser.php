@@ -4,6 +4,7 @@ namespace App\Http\Requests\Admin\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
 class StoreUser extends FormRequest
@@ -47,4 +48,20 @@ class StoreUser extends FormRequest
 
         return $sanitized;
     }
+
+    /**
+     * Modify input data
+     *
+     * @return array
+     */
+    public function getModifiedData(): array
+    {
+        $data = $this->only(collect($this->rules())->keys()->all());
+
+        if (!empty($data['password'])) {
+            $data['password'] = Hash::make($data['password']);
+        }
+        return $data;
+    }
+
 }

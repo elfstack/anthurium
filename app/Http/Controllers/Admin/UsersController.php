@@ -77,7 +77,7 @@ class UsersController extends Controller
     public function store(StoreUser $request)
     {
         // Sanitize input
-        $sanitized = $request->getSanitized();
+        $sanitized = $request->getModifiedData();
 
         // Store the User
         $user = User::create($sanitized);
@@ -130,7 +130,7 @@ class UsersController extends Controller
     public function update(UpdateUser $request, User $user)
     {
         // Sanitize input
-        $sanitized = $request->getSanitized();
+        $sanitized = $request->getModifiedData();
 
         // Update changed values User
         $user->update($sanitized);

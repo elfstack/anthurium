@@ -43,9 +43,6 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard'), 'admin'])->gro
         Route::post('/password',                                    'ProfileController@updatePassword')->name('update-password');
     });
 });
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
 
 
 /* Auto-generated admin routes */
@@ -126,3 +123,11 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard'), 'admin'])->gro
         });
     });
 });
+
+
+Route::get('/activity/{activity}', 'ActivitiesController@show')->name('activities/show');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+

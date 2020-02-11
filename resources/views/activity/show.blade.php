@@ -1,65 +1,13 @@
-@extends('brackets/admin-ui::admin.layout.default')
+@extends('layouts.app')
 
-@section('title', trans('admin.activity.actions.edit', ['name' => $activity->name]))
-
-@section('body')
-<div class="container-xl">
-    <h3>{{ $activity->name }}</h3>
-    <div class="row">
-        <div class="col-md-6 col-xl-3">
-            <div class="card text-primary">
-                <div class="card-body">
-                    <div>Budget</div>
-                    <div class="text-value">$1,342.00</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-xl-3">
-            <div class="card text-primary">
-                <div class="card-body">
-                    <div>Quota</div>
-                    <div class="row no-gutters align-items-center">
-                        <div class="col-auto">
-                            <div class="text-value mr-3"><span>{{ $activity->quota }}</span></div>
-                        </div>
-                        <div class="col">
-                            <div class="progress progress-sm">
-                                <div class="progress-bar" role="progressbar" style="width: {{ $activity->usedQuotaPercentage() }}%" aria-valuenow="{{ $activity->participants()->count() }}" aria-valuemin="0" aria-valuemax="{{ $activity->quota }}"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-xl-3">
-            <div class="card text-primary">
-                <div class="card-body">
-                    <div>Attendance</div>
-                    <div class="text-value">{{ $activity->attendedParticipantsPercentage() }}%</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-xl-3">
-            <div class="card text-white bg-primary">
-                <div class="card-body">
-                    <div class="text-value">9.823</div>
-                    <div>Members online</div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-    <div class="row">
-        <div class="col-lg-7 col-xl-8">
-            <div class="card mb-4">
-                <div class="card-header">
-                    <i class="fa fa-align-justify"></i>Activitiy description
-                </div>
-                <div class="card-body">
-                    {!! $activity->content !!}
-                </div>
-            </div>
-
+@section('content')
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 info">
+            <h1>{{ $activity->name }}</h1>
+            <h3>Description</h3>
+            {!! $activity->content !!}
+<!-- TODO: change url -->
     <participant-listing
         :activity-id="{{ $activity->id }}"
         :url="'{{ url('admin/activities/'.$activity->id.'/participants') }}'"
@@ -68,9 +16,8 @@
         <div class="row">
             <div class="col">
                 <div class="card mb-4">
-                    <div class="card-header">
-                        <i class="fa fa-align-justify"></i> {{ trans('admin.participant.actions.index') }}
-                        <a class="btn btn-primary btn-spinner btn-sm pull-right m-b-0" href="{{ url('admin/participants/create') }}" role="button"><i class="fa fa-plus"></i>&nbsp; {{ trans('admin.participant.actions.create') }}</a>
+                    <div class="card-header bg-white">
+                        Participants 
                     </div>
                     <div class="card-body" v-cloak>
                             <form @submit.prevent="">
@@ -97,19 +44,10 @@
                             <table class="table table-hover table-listing">
                                 <thead>
                                     <tr>
-                                        <th class="bulk-checkbox">
-                                            <input class="form-check-input" id="enabled" type="checkbox" v-model="isClickedAll" v-validate="''" data-vv-name="enabled"  name="enabled_fake_element" @click="onBulkItemsClickedAllWithPagination()">
-                                            <label class="form-check-label" for="enabled">
-                                                #
-                                            </label>
-                                        </th>
-
                                         <th is='sortable' :column="'user_id'">{{ trans('admin.participant.columns.user_id') }}</th>
                                         <th is='sortable' :column="'enrolled_at'">{{ trans('admin.participant.columns.enrolled_at') }}</th>
                                         <th is='sortable' :column="'attendance_id'">Arrived at</th>
                                         <th is='sortable' :column="'attendance_id'">Left at</th>
-
-                                        <th></th>
                                     </tr>
                                     <tr v-show="(clickedBulkItemsCount > 0) || isClickedAll">
                                         <td class="bg-bulk-info d-table-cell text-center" colspan="7">
@@ -125,27 +63,12 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="(item, index) in collection" :key="item.id" :class="bulkItems[item.id] ? 'bg-bulk' : ''">
-                                        <td class="bulk-checkbox">
-                                            <input class="form-check-input" :id="'enabled' + item.id" type="checkbox" v-model="bulkItems[item.id]" v-validate="''" :data-vv-name="'enabled' + item.id"  :name="'enabled' + item.id + '_fake_element'" @click="onBulkItemClicked(item.id)" :disabled="bulkCheckingAllLoader">
-                                            <label class="form-check-label" :for="'enabled' + item.id">
-                                            </label>
-                                        </td>
 
                                         <td>@{{ item.user_id }}</td>
                                         <td>@{{ item.enrolled_at | datetime }}</td>
                                         <td>@{{ item.enrolled_at | datetime }}</td>
                                         <td>@{{ item.enrolled_at | datetime }}</td>
-                                        
-                                        <td>
-                                            <div class="row no-gutters">
-                                                <div class="col-auto">
-                                                    <a class="btn btn-sm btn-spinner btn-info" :href="item.resource_url + '/edit'" title="{{ trans('brackets/admin-ui::admin.btn.edit') }}" role="button"><i class="fa fa-edit"></i></a>
-                                                </div>
-                                                <form class="col" @submit.prevent="deleteItem(item.resource_url)">
-                                                    <button type="submit" class="btn btn-sm btn-danger" title="{{ trans('brackets/admin-ui::admin.btn.delete') }}"><i class="fa fa-trash-o"></i></button>
-                                                </form>
-                                            </div>
-                                        </td>
+
                                     </tr>
                                 </tbody>
                             </table>
@@ -170,17 +93,37 @@
         </div>
     </participant-listing>
         </div>
-        <div class="col-lg-5 col-xl-4">
-            <div class="card text-white bg-primary">
-                <div class="card-body">
-                    <div class="text-value">9.823</div>
-                    <div>Members online</div>
+        <div class="col-12 col-md-3 meta">
+            <div class="card mb-3 text-primary">
+                <div class="card-body d-flex justify-content-center">
+                    <div class="start text-center pr-1 border-right">
+                        <strong class="d-block"><small>STARTS</small></strong>{{ $activity->starts_at->toDateTimeString() }}
+                    </div>
+                    <div class="ends text-center pl-1">
+                        <strong class="d-block"><small>ENDS</small></strong>{{ $activity->ends_at->toDateTimeString() }}
+                    </div>
                 </div>
             </div>
+
+           <div class="card text-primary mb-3">
+                <div class="card-body">
+                    <div>Quota</div>
+                    <div class="row no-gutters align-items-center">
+                        <div class="col-auto">
+                            <div class="text-value mr-3"><span>{{ $activity->quota }}</span></div>
+                        </div>
+                        <div class="col">
+                            <div class="progress progress-sm">
+                                <div class="progress-bar" role="progressbar" style="width: {{ $activity->usedQuotaPercentage() }}%" aria-valuenow="{{ $activity->participants()->count() }}" aria-valuemin="0" aria-valuemax="{{ $activity->quota }}"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary btn-block">Enroll</button>
+
         </div>
     </div>
 </div>
-
-</div>
-
 @endsection
