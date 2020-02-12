@@ -21,6 +21,7 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use OTPHP\TOTP;
 
 class ActivitiesController extends Controller
 {
@@ -82,6 +83,22 @@ class ActivitiesController extends Controller
         }
 
         return ['data' => $data];
+    }
+
+    public function checkin(Activity $activity)
+    {
+        return view('admin.activity.checkin', [
+            'activity' => $activity
+        ]);
+    }
+
+    public function checkinOtp(Activity $activity)
+    {
+        $otp = resolve(\OTPHP\TOTP::class);
+
+        return [
+            'otp' => $otp->now()
+        ];
     }
 
     /**

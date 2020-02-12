@@ -41,6 +41,17 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
+$app->instance(
+    OTPHP\TOTP::class,
+    // FIXME: secret should not be hard coded
+    OTPHP\TOTP::create(
+        'GV2UC2LBNJKVSRDRHE3TGWLEORXUWYJT',   // Let the secret be defined by the class
+        30,     // The period (30 seconds)
+        'sha1', // The digest algorithm
+        8       // The output will generate 8 digits
+    )
+);
+
 /*
 |--------------------------------------------------------------------------
 | Return The Application

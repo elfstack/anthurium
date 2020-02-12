@@ -37,6 +37,11 @@ class Activity extends Model
         return $this->hasMany(Participant::class);
     }
 
+    public function attendance()
+    {
+        return $this->hasMany(Attendance::class);
+    }
+
     public function usedQuotaPercentage()
     {
         return $this->participants()->count() / $this->quota * 100;

@@ -12,6 +12,10 @@ use Brackets\Media\HasMedia\ProcessMediaTrait;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\Models\Media;
 
+use App\Models\Activity;
+use App\Models\Participant;
+use App\Models\Attendance;
+
 class User extends Authenticatable implements HasMedia
 {
     use Notifiable;
@@ -125,6 +129,42 @@ class User extends Authenticatable implements HasMedia
     public function volunteerInfo()
     {
         return $this->hasOne(\App\Models\VolunteerInfo::class);
+    }
+
+    public function activitiesParticipated()
+    {
+        return $this->hasManyThrough(Activity::class, Participant::class);
+    }
+
+    public function isParticipant(Activity $activity)
+    {
+        return $user->activitiesParticipated()->contains($activity);
+    }
+
+    public function attendance() {
+        return $this->hasMany(Attendance::class);
+    } 
+
+    public function checkin(Activity $activity)
+    {
+        if (!$this->isParticipant($activity)) {
+            throw new Exception("User is not a participant for this activity");
+        }
+
+        // TODO: performance needs to be improved
+        $activity->attendance()->where('user_id', $this->id)->exists();
+
+        if ($activity) {
+            throw new Exception("User already checked in");
+        }
+        
+        $attendance = $activity->attendance()->create([
+            'arrived_at' => now(),
+            'user_id' => $this->id
+        ]);
+
+        return $attendance;
+       }
     }
 
 }

@@ -11,11 +11,13 @@ use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Carbon\Carbon;
 use App\Http\Requests\Activity\IndexActivity;
+use OTPHP\TOTP;
 
 class ActivitiesController extends Controller
 {
@@ -71,5 +73,25 @@ class ActivitiesController extends Controller
         return view('activity.show', [
             'activity' => $activity
         ]);
+    }
+
+    public function checkin(Activity $activity, Request $request) {
+        $input = $request->has('token');
+
+        if (!$input) {
+            abort(400, 'Token has been missing');
+        }
+
+        $token = $request->input('token');
+
+        $otp = resolve(\OTPHP\TOTP::class);
+
+        if ($otp->verify($token)) {
+            $request->user()->checkin($activity);
+
+        } else {
+            // TODO: abort should be replaced with better error message
+            abort(400, 'Token expired');
+        }
     }
 }

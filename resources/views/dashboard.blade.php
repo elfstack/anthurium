@@ -14,7 +14,7 @@
         <div class="col-md-8">
             <h3 class="mb-3">Ongoing activities</h3>
             <h3 class="mb-3">Upcoming activities</h3>
-            <div class="card">
+            <div class="card mb-3">
                 <div class="card-body">
                     <h5 class="card-title">Activity Name</h5>
                     <p class="mb-0">2020/02/21 12:30 - 2020/02/27 17:30</p>

@@ -85,7 +85,10 @@
                                         
                                         <td>
                                             <div class="row no-gutters">
-                                                <div class="col-auto">
+                                                <div class="col">
+                                                    <a class="btn btn-sm btn-spinner btn-info" :href="item.resource_url + '/checkin'" title="{{ trans('brackets/admin-ui::admin.btn.checkin') }}" role="button"><i class="fa fa-qrcode"></i></a>
+                                                </div>
+                                                <div class="col">
                                                     <a class="btn btn-sm btn-spinner btn-info" :href="item.resource_url + '/edit'" title="{{ trans('brackets/admin-ui::admin.btn.edit') }}" role="button"><i class="fa fa-edit"></i></a>
                                                 </div>
                                                 <form class="col" @submit.prevent="deleteItem(item.resource_url)">
