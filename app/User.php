@@ -16,6 +16,9 @@ use App\Models\Activity;
 use App\Models\Participant;
 use App\Models\Attendance;
 
+use App\Exceptions\UserNotParticipatedException;
+use App\Exceptions\UserAlreadyCheckedInException;
+
 class User extends Authenticatable implements HasMedia
 {
     use Notifiable;
@@ -133,35 +136,59 @@ class User extends Authenticatable implements HasMedia
 
     public function activitiesParticipated()
     {
-        return $this->hasManyThrough(Activity::class, Participant::class);
+        return $this->belongsToMany(Activity::class, 'participants', 'user_id', 'activity_id')->using(Participant::class);
     }
 
     public function isParticipant(Activity $activity)
     {
-        return $user->activitiesParticipated()->contains($activity);
+        // TODO: might have better solution
+        return $this->activitiesParticipated()->wherePivot('activity_id', $activity->id)->exists();
     }
 
     public function attendance() {
         return $this->hasMany(Attendance::class);
     } 
 
+    public function enroll(Activity $activity)
+    {
+        if ($this->isParticipant($activity)) {
+            return false;
+        }
+
+        $this->activitiesParticipated()->attach($activity->id);
+
+        return true;
+    }
+
+    public function drop(Activity $activity)
+    {
+        if ($this->isParticipant($activity) && !$this->isCheckedIn($activity)) {
+            $this->activitiesParticipated()->detach($activity->id);
+        }
+    }
+
+    private function isCheckedIn(Activity $activity) {
+        // TODO: performance needs to be improved
+        return $activity->attendance()->where('user_id', $this->id)->exists();
+    }
+
     public function checkin(Activity $activity)
     {
         if (!$this->isParticipant($activity)) {
-            throw new Exception("User is not a participant for this activity");
+            throw new UserNotParticipatedException("User is not a participant for this activity");
         }
 
-        // TODO: performance needs to be improved
-        $activity->attendance()->where('user_id', $this->id)->exists();
 
-        if ($activity) {
-            throw new Exception("User already checked in");
+        if ($this->isCheckedIn($activity)) {
+            throw new UserAlreadyCheckedInException("User already checked in");
         }
         
         $attendance = $activity->attendance()->create([
             'arrived_at' => now(),
             'user_id' => $this->id
         ]);
+
+        $this->activitiesParticipated()->wherePivot('activity_id', $activity->id)->update(['attendance_id' => $attendance->id]);
 
         return $attendance;
     }

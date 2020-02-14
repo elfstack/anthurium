@@ -4,14 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Participant extends Model
+use Illuminate\Database\Eloquent\Relations\Pivot;
+
+class Participant extends Pivot
 {
     protected $fillable = [
         'enrolled_at',
         'activity_id',
         'user_id',
         'attendance_id',
-    
     ];
     
     
@@ -19,6 +20,9 @@ class Participant extends Model
         'enrolled_at',
     
     ];
+
+    protected $table = 'participants';
+
     public $timestamps = false;
     
     protected $appends = ['resource_url'];
