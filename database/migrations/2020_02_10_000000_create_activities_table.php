@@ -23,7 +23,7 @@ class CreateActivitiesTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->bigIncrements('id');
-            $table->string('name', 45);
+            $table->string('name', 100);
             $table->dateTime('starts_at');
             $table->dateTime('ends_at')->nullable();
             $table->text('content')->nullable()->default(null);

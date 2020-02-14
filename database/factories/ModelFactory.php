@@ -16,59 +16,19 @@ $factory->define(Brackets\AdminAuth\Models\AdminUser::class, function (Faker\Gen
         'updated_at' => $faker->dateTime,
         
     ];
-});/** @var  \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(App\Models\User::class, static function (Faker\Generator $faker) {
-    return [
-        'name' => $faker->firstName,
-        'email' => $faker->email,
-        'email_verified_at' => $faker->dateTime,
-        'password' => bcrypt($faker->password),
-        'remember_token' => null,
-        'created_at' => $faker->dateTime,
-        'updated_at' => $faker->dateTime,
-        
-        
-    ];
 });
-/** @var  \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(App\Models\VolunteerInfo::class, static function (Faker\Generator $faker) {
-    return [
-        
-        
-    ];
-});
+
 /** @var  \Illuminate\Database\Eloquent\Factory $factory */
 $factory->define(App\Models\Activity::class, static function (Faker\Generator $faker) {
     return [
-        'name' => $faker->firstName,
+        'name' => $faker->catchPhrase,
         'starts_at' => $faker->dateTime,
         'ends_at' => $faker->dateTime,
         'content' => $faker->text(),
-        'quota' => $faker->randomNumber(5),
-        
-        
+        'quota' => $faker->randomNumber(2),
     ];
 });
-/** @var  \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(App\Models\VolunteerInfo::class, static function (Faker\Generator $faker) {
-    return [
-        'user_id' => $faker->sentence,
-        'id_number' => $faker->sentence,
-        'alias' => $faker->sentence,
-        'gender' => $faker->sentence,
-        'birthday' => $faker->date(),
-        'education' => $faker->sentence,
-        'organisation' => $faker->sentence,
-        'mobile_number' => $faker->sentence,
-        'address' => $faker->sentence,
-        'interests' => $faker->sentence,
-        'emergency_contact' => $faker->sentence,
-        'volunteer_experences' => $faker->sentence,
-        'references' => $faker->sentence,
-        
-        
-    ];
-});
+
 /** @var  \Illuminate\Database\Eloquent\Factory $factory */
 $factory->define(App\Models\Attendance::class, static function (Faker\Generator $faker) {
     return [

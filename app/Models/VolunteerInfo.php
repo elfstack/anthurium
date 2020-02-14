@@ -20,7 +20,6 @@ class VolunteerInfo extends Model
         'emergency_contact',
         'volunteer_experences',
         'references',
-    
     ];
 
     protected $table = "volunteer_info";

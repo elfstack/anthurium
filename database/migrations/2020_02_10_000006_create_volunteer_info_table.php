@@ -29,10 +29,10 @@ class CreateVolunteerInfoTable extends Migration
             $table->string('education', 20)->nullable()->default(null);
             $table->string('organisation', 60)->nullable()->default(null);
             $table->string('mobile_number', 20);
-            $table->string('address', 45)->nullable()->default(null);
-            $table->string('interests', 45)->nullable()->default(null);
+            $table->string('address', 128)->nullable()->default(null);
+            $table->string('interests', 60)->nullable()->default(null);
             $table->string('emergency_contact', 45)->nullable()->default(null);
-            $table->string('volunteer_experences', 45)->nullable()->default(null);
+            $table->string('volunteer_experences', 255)->nullable()->default(null);
             $table->string('references', 45)->nullable()->default(null);
 
             $table->primary('user_id');
