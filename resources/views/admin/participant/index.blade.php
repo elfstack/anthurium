@@ -49,11 +49,10 @@
                                             </label>
                                         </th>
 
-                                        <th is='sortable' :column="'id'">{{ trans('admin.participant.columns.id') }}</th>
+                                        <th is='sortable' :column="'user'">{{ trans('admin.participant.columns.user') }}</th>
+                                        <th is='sortable' :column="'activity'">{{ trans('admin.participant.columns.activity') }}</th>
                                         <th is='sortable' :column="'enrolled_at'">{{ trans('admin.participant.columns.enrolled_at') }}</th>
-                                        <th is='sortable' :column="'activity_id'">{{ trans('admin.participant.columns.activity_id') }}</th>
-                                        <th is='sortable' :column="'user_id'">{{ trans('admin.participant.columns.user_id') }}</th>
-                                        <th is='sortable' :column="'attendance_id'">{{ trans('admin.participant.columns.attendance_id') }}</th>
+                                        <th is='sortable' :column="'attendance'">{{ trans('admin.participant.columns.attendance') }}</th>
 
                                         <th></th>
                                     </tr>
@@ -77,11 +76,10 @@
                                             </label>
                                         </td>
 
-                                    <td>@{{ item.id }}</td>
+                                        <td>@{{ item.user.name }}</td>
+                                        <td>@{{ item.activity.name }}</td>
                                         <td>@{{ item.enrolled_at | datetime }}</td>
-                                        <td>@{{ item.activity_id }}</td>
-                                        <td>@{{ item.user_id }}</td>
-                                        <td>@{{ item.attendance_id }}</td>
+                                        <td></td>
                                         
                                         <td>
                                             <div class="row no-gutters">

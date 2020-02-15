@@ -37,7 +37,7 @@ export default {
         toggleEnroll () {
             window.axios.get(`/activity/${this.activity.id}/enroll`).then(({data}) => {
                 if (data.enrolled) {
-                    this.status = true
+                    this.enrollStatus = true
                 }
             })
         }

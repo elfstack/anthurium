@@ -40,10 +40,10 @@
             </div>
         </div>
         <div class="col-md-6 col-xl-3">
-            <div class="card text-white bg-primary">
+            <div class="card text-white bg-info">
                 <div class="card-body">
-                    <div class="text-value">9.823</div>
-                    <div>Members online</div>
+                    <div>Status</div>
+                    <div class="text-value">ONGOING</div>
                 </div>
             </div>
         </div>
@@ -131,10 +131,10 @@
                                             </label>
                                         </td>
 
-                                        <td>@{{ item.user_id }}</td>
+                                        <td>@{{ item.user.name }}</td>
                                         <td>@{{ item.enrolled_at | datetime }}</td>
-                                        <td>@{{ item.enrolled_at | datetime }}</td>
-                                        <td>@{{ item.enrolled_at | datetime }}</td>
+                                        <td>@{{ item.attendance ? item.attendance.arrived_at : '' }}</td>
+                                        <td>@{{ item.attendance ? item.attendance.left_at : '' }}</td>
                                         
                                         <td>
                                             <div class="row no-gutters">
@@ -171,10 +171,14 @@
     </participant-listing>
         </div>
         <div class="col-lg-5 col-xl-4">
-            <div class="card text-white bg-primary">
+            <div class="card text-primary bg-white">
                 <div class="card-body">
-                    <div class="text-value">9.823</div>
-                    <div>Members online</div>
+                    <div>Overall</div>
+                        <div class="progress progress-sm">
+                            <div class="progress-bar bg-info" role="progressbar" style="width: {{ $activity->usedQuotaPercentage() * (100 - $activity->attendedParticipantsPercentage()) / 100 }}%" aria-valuenow="{{ $activity->participants()->count() }}" aria-valuemin="0" aria-valuemax="{{ $activity->quota }}"></div>
+                            <div class="progress-bar bg-success" role="progressbar" style="width: {{ $activity->usedQuotaPercentage() * $activity->attendedParticipantsPercentage() / 100 }}%" aria-valuenow="{{ $activity->participants()->count() }}" aria-valuemin="0" aria-valuemax="{{ $activity->quota }}"></div>
+                            <div class="progress-bar bg-danger" role="progressbar" style="width: 0%" aria-valuenow="{{ $activity->participants()->count() }}" aria-valuemin="0" aria-valuemax="{{ $activity->quota }}"></div>
+                        </div>
                 </div>
             </div>
         </div>

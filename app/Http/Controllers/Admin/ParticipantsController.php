@@ -37,10 +37,18 @@ class ParticipantsController extends Controller
             $request,
 
             // set columns to query
-            ['id', 'enrolled_at', 'activity_id', 'user_id', 'attendance_id'],
+            ['id', 'enrolled_at', 'user_id', 'activity_id', 'attendance_id'],
 
             // set columns to searchIn
-            ['id']
+            ['id', 'user.name', 'activity.name'],
+
+            function ($query) {
+                $query->with([
+                    'attendance:id,arrived_at,left_at',
+                    'user:id,name',
+                    'activity:id,name'
+                ]);
+            }
         );
 
         if ($request->ajax()) {

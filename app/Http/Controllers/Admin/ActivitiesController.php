@@ -72,7 +72,12 @@ class ActivitiesController extends Controller
             ['id'],
 
             function ($query) use ($activity) {
-                $query->where('activity_id', $activity->id);
+                $query->where('activity_id', $activity->id)
+                      ->with([
+                            'attendance:id,arrived_at,left_at',
+                            'user:id,name',
+                            'activity:id,name'
+                        ]);
             }
         );
 

@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
 use Illuminate\Database\Eloquent\Relations\Pivot;
+
+use App\User;
 
 class Participant extends Pivot
 {
@@ -34,5 +34,20 @@ class Participant extends Pivot
     public function getResourceUrlAttribute()
     {
         return url('/admin/participants/'.$this->getKey());
+    }
+
+    public function attendance()
+    {
+        return $this->belongsTo(Attendance::class, 'attendance_id', 'id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function activity()
+    {
+        return $this->belongsTo(Activity::class);
     }
 }
