@@ -68,10 +68,21 @@ class ActivitiesController extends Controller
         }
         return ['data' => $data];
     }
+    
+    public function enroll(Activity $activity, Request $request) {
+        $status = $request->user()->enroll($activity);
 
-    public function show(Activity $activity) {
+        return [
+            'enrolled' => $status
+        ];
+    }
+
+    public function show(Activity $activity, Request $request) {
+        $user = $request->user();
+
         return view('activity.show', [
-            'activity' => $activity
+            'activity' => $activity,
+            'user_is_enrolled' => $user ? $user->isParticipant($activity) : false 
         ]);
     }
 

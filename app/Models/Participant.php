@@ -21,9 +21,11 @@ class Participant extends Pivot
     
     ];
 
-    protected $table = 'participants';
+    const CREATED_AT = 'enrolled_at';
 
-    public $timestamps = false;
+    const UPDATED_AT = null;
+
+    protected $table = 'participants';
     
     protected $appends = ['resource_url'];
 

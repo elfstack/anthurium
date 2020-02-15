@@ -121,8 +121,11 @@
                 </div>
             </div>
             
-            <button class="btn btn-primary btn-block">Enroll</button>
-
+            <button-enroll
+                :status="{{ $user_is_enrolled ? 'true' : 'false' }}"
+                :activity="{{ $activity->toJson() }}"
+            >
+            </button-enroll>
         </div>
     </div>
 </div>

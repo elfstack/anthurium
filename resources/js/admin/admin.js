@@ -25,6 +25,8 @@ Vue.use(VueQuillEditor);
 Vue.use(Notifications);
 Vue.use(VueCookie);
 
+Vue.component('check-in', require('./components/CheckIn.vue').default);
+
 new Vue({
     mixins: [Admin],
 });

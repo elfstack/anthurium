@@ -129,11 +129,13 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard'), 'admin'])->gro
 
 Route::get('/activity/{activity}', 'ActivitiesController@show')->name('activities/show');
 
-Route::get('/activity/{activity}/checkin', 'ActivitiesController@checkin')->name('activities/checkin');
-
-Route::get('/activities', 'ActivitiesController@index')->name('activities/index');
-
 Auth::routes();
 
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+
+Route::get('/activity/{activity}/checkin', 'ActivitiesController@checkin')->name('activities/checkin');
+
+Route::get('/activity/{activity}/enroll', 'ActivitiesController@enroll')->name('activities/enroll');
+
+Route::get('/activities', 'ActivitiesController@index')->name('activities/index');
 
