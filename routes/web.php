@@ -126,6 +126,7 @@ Route::get('/activity/{activity}', 'ActivitiesController@show')->name('activitie
 Auth::routes();
 
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+Route::get('/profile', 'Auth\ProfileController@profile')->name('profile');
 
 Route::get('/activity/{activity}/checkin', 'ActivitiesController@checkin')->name('activities/checkin');
 

@@ -1,6 +1,11 @@
 import './index';
 import Vue from 'vue';
+import flatPickr from 'vue-flatpickr-component';
+import 'flatpickr/dist/flatpickr.css';
+import VeeValidate from 'vee-validate';
 import VueCookie from 'vue-cookie';
+import Notifications from 'vue-notification';
+import './app-components/bootstrap';
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -9,7 +14,10 @@ import VueCookie from 'vue-cookie';
 
 require('./bootstrap');
 
+Vue.use(Notifications);
 Vue.use(VueCookie);
+Vue.use(VeeValidate, {strict: true});
+Vue.component('datetime', flatPickr);
 
 /**
  * The following block of code may be used to automatically register your
