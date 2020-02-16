@@ -39,6 +39,6 @@ class VolunteerInfo extends Model
 
     public function getResourceUrlAttribute()
     {
-        return url('/admin/volunteer-infos/'.$this->getKey());
+        return url('/admin/user/'.$this->getKey().'/volunteer-info');
     }
 }

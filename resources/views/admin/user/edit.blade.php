@@ -53,8 +53,8 @@
         <div class="card">
 
             <volunteer-info-form
-                :action="'{{ $user->volunteerInfo->resource_url }}'"
-                :data="{{ $user->volunteerInfo->toJson() }}"
+                :action="'{{ $user->resource_url.'/volunteer-info' }}'"
+                :data="{{ $user->volunteerInfo ? $user->volunteerInfo->toJson() : 'null' }}"
                 v-cloak
                 inline-template>
             

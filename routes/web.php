@@ -56,6 +56,7 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard'), 'admin'])->gro
             Route::post('/bulk-destroy',                                'UsersController@bulkDestroy')->name('bulk-destroy');
             Route::post('/{user}',                                      'UsersController@update')->name('update');
             Route::delete('/{user}',                                    'UsersController@destroy')->name('destroy');
+            Route::post('/{user}/volunteer-info',                             'VolunteerInfoController@update')->name('update');
         });
     });
 });
@@ -65,13 +66,6 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard'), 'admin'])->gro
 Route::middleware(['auth:' . config('admin-auth.defaults.guard'), 'admin'])->group(static function () {
     Route::prefix('admin')->namespace('Admin')->name('admin/')->group(static function() {
         Route::prefix('volunteer-infos')->name('volunteer-infos/')->group(static function() {
-            Route::get('/',                                             'VolunteerInfoController@index')->name('index');
-            Route::get('/create',                                       'VolunteerInfoController@create')->name('create');
-            Route::post('/',                                            'VolunteerInfoController@store')->name('store');
-            Route::get('/{volunteerInfo}/edit',                         'VolunteerInfoController@edit')->name('edit');
-            Route::post('/bulk-destroy',                                'VolunteerInfoController@bulkDestroy')->name('bulk-destroy');
-            Route::post('/{volunteerInfo}',                             'VolunteerInfoController@update')->name('update');
-            Route::delete('/{volunteerInfo}',                           'VolunteerInfoController@destroy')->name('destroy');
         });
     });
 });
