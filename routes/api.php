@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -13,6 +11,16 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+// Route for both user and admin user
+Route::middleware(['auth:'.config('auth.defaults.guard').','.config('admin-auth.defaults.guard')])->group(static function () {
+    Route::post('/users', 'Admin\UsersController@store')->name('user/store');
+    Route::post('/user/{user}', 'Admin\UsersController@update')->name('user/update');
 });
+
+
+Route::middleware(['auth:'.config('admin-auth.defaults.guard')])->group(static function () {
+    Route::delete('/user/{user}', 'Admin\UsersController@destroy')->name('user/destroy');
+});
+
+
+

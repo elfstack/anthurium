@@ -19,6 +19,8 @@ use App\Models\Attendance;
 use App\Exceptions\UserNotParticipatedException;
 use App\Exceptions\UserAlreadyCheckedInException;
 
+use Spatie\Permission\Traits\HasRoles;
+
 class User extends Authenticatable implements HasMedia
 {
     use Notifiable;
@@ -26,6 +28,10 @@ class User extends Authenticatable implements HasMedia
     use HasMediaCollectionsTrait;
     use HasMediaThumbsTrait;
     use ProcessMediaTrait;
+
+    use HasRoles;
+
+    protected $guards = 'user';
 
     /**
      * The attributes that are mass assignable.
@@ -60,7 +66,7 @@ class User extends Authenticatable implements HasMedia
 
     public function getResourceUrlAttribute()
     {
-        return url('/admin/users/'.$this->getKey());
+        return url('/api/user/'.$this->getKey());
     }
 
     /**

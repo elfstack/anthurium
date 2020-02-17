@@ -4,6 +4,7 @@ namespace App\Http\Requests\Admin\Activity;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 
 class IndexActivity extends FormRequest
 {

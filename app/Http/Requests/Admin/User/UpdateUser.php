@@ -16,7 +16,15 @@ class UpdateUser extends FormRequest
      */
     public function authorize(): bool
     {
-        return Gate::allows('admin.user.edit', $this->user);
+        $admin = Gate::allows('admin.user.edit');
+
+        $isCurrentUser = false;
+
+        if ($this->user()) {
+            $isCurrentUser = $this->user()->is($this->user);
+        }
+
+        return $admin || $isCurrentUser;
     }
 
     /**

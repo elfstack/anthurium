@@ -114,7 +114,6 @@ class UsersController extends Controller
     {
         $this->authorize('admin.user.edit', $user);
 
-
         return view('admin.user.edit', [
             'user' => $user,
         ]);
@@ -135,14 +134,10 @@ class UsersController extends Controller
         // Update changed values User
         $user->update($sanitized);
 
-        if ($request->ajax()) {
-            return [
-                'redirect' => url('admin/users'),
-                'message' => trans('brackets/admin-ui::admin.operation.succeeded'),
-            ];
-        }
-
-        return redirect('admin/users');
+        return [
+            'redirect' => url('admin/users'),
+            'message' => trans('brackets/admin-ui::admin.operation.succeeded'),
+        ];
     }
 
     /**
