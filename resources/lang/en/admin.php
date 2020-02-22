@@ -30,11 +30,11 @@ return [
     ],
 
     'user' => [
-        'title' => 'Users',
+        'title' => 'Volunteers',
 
         'actions' => [
-            'index' => 'Users',
-            'create' => 'New User',
+            'index' => 'Volunteers',
+            'create' => 'New Volunteer',
             'edit' => 'Edit :name',
         ],
 
@@ -142,9 +142,9 @@ return [
         'columns' => [
             'id' => 'ID',
             'enrolled_at' => 'Enrolled at',
-            'activities_id' => 'Activities',
-            'user_id' => 'User',
-            'attendance_id' => 'Attendance',
+            'activity' => 'Activity',
+            'user' => 'User',
+            'attendance' => 'Attendance',
             
         ],
     ],
@@ -166,6 +166,11 @@ return [
             'attendance_id' => 'Attendance',
             
         ],
+    ],
+
+    'sidebar' => [
+        'volunteer' => 'Volunteer',
+        'manage' => 'Manage'
     ],
 
     // Do not delete me :) I'm used for auto-generation

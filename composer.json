@@ -1,10 +1,10 @@
 {
-    "name": "laravel/laravel",
+    "name": "elfstack/anthurium",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "Volunteer manage system.",
     "keywords": [
-        "framework",
-        "laravel"
+        "anthurium",
+        "volunteer"
     ],
     "license": "MIT",
     "require": {
@@ -15,6 +15,9 @@
         "laravel/tinker": "^1.0",
         "laravel/ui": "^1.1",
         "spomky-labs/otphp": "^10.0"
+    },
+    "replace": {
+        "brackets/admin-translation": "*"
     },
     "require-dev": {
         "brackets/admin-generator": "^5.0",

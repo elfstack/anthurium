@@ -2061,6 +2061,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     activity: {
@@ -80683,33 +80691,33 @@ var render = function() {
           attrs: { href: "/activity/" + _vm.activity.id }
         },
         [_vm._v("View")]
-      )
+      ),
+      _vm._v(" "),
+      _c("a", { staticClass: "card-link" }, [
+        _vm._v(_vm._s(_vm.activity.participants_count) + " Participants")
+      ])
     ]),
     _vm._v(" "),
-    _vm._m(0)
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "flex-grow-1" }, [
+    _c("div", { staticClass: "flex-grow-1" }, [
       _c("div", { staticClass: "progress", staticStyle: { height: "3px" } }, [
         _c("div", {
           staticClass: "progress-bar",
-          staticStyle: { width: "75%" },
+          style:
+            "width: " +
+            (_vm.activity.participants_count / _vm.activity.quota) * 100 +
+            "%",
           attrs: {
             role: "progressbar",
-            "aria-valuenow": "75",
+            "aria-valuenow": _vm.activity.participants_count,
             "aria-valuemin": "0",
-            "aria-valuemax": "100"
+            "aria-valuemax": _vm.activity.quota
           }
         })
       ])
     ])
-  }
-]
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 

@@ -23,7 +23,7 @@ class Activity extends Model
     ];
     public $timestamps = false;
     
-    protected $appends = ['resource_url'];
+    protected $appends = ['resource_url' ,'participants_count'];
 
     /* ************************ ACCESSOR ************************* */
 
@@ -32,6 +32,12 @@ class Activity extends Model
         return url('/admin/activities/'.$this->getKey());
     }
 
+    public function getParticipantsCountAttribute()
+    {
+        return $this->participants()->count();
+    }
+
+    /* *********************** RELATION ************************** */
     public function participants()
     {
         return $this->hasMany(Participant::class);
@@ -43,7 +49,7 @@ class Activity extends Model
     }
 
     /**
-     * How many user participated.
+     * Percantage of user participated in quota
      *
      * @return double
      */
@@ -52,7 +58,7 @@ class Activity extends Model
         return $this->participants()->count() / $this->quota;
     }
 
-    /** How many participants attended.
+    /** Percantage of participants attended in quota
      *
      * @return double
      */
