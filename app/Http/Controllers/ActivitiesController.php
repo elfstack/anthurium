@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Activity;
 use App\Models\Participant;
+use App\User;
 use Brackets\AdminListing\Facades\AdminListing;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -80,29 +81,25 @@ class ActivitiesController extends Controller
     public function show(Activity $activity, Request $request) {
         $user = $request->user();
 
+        if ($request->has('token')) {
+            $this->checkin($activity, $user, $request->input('token'));  
+        };
+
         return view('activity.show', [
             'activity' => $activity,
             'user_is_enrolled' => $user ? $user->isParticipant($activity) : false 
         ]);
     }
 
-    public function checkin(Activity $activity, Request $request) {
-        $input = $request->has('token');
-
-        if (!$input) {
-            abort(400, 'Token has been missing');
-        }
-
-        $token = $request->input('token');
+    private function checkin(Activity $activity, User $user, $token) {
 
         $otp = resolve(\OTPHP\TOTP::class);
 
         if ($otp->verify($token)) {
-            $request->user()->checkin($activity);
-
+            $user->checkin($activity);
         } else {
             // TODO: abort should be replaced with better error message
-            abort(400, 'Token expired');
+            abort(400, 'Incorrect token or expired');
         }
     }
 }
