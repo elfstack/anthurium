@@ -35,7 +35,7 @@ export default {
     },
     methods: {
         toggleEnroll () {
-            window.axios.get(`/activity/${this.activity.id}/enroll`).then(({data}) => {
+            window.axios.patch(`/api/activity/${this.activity.id}/participants`).then(({data}) => {
                 if (data.enrolled) {
                     this.enrollStatus = true
                 }

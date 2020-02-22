@@ -20,9 +20,7 @@ Route::get('/', function () {
 /* Auto-generated admin routes */
 Route::middleware(['auth:' . config('admin-auth.defaults.guard'), 'admin'])->group(static function () {
     Route::prefix('admin')->namespace('Admin')->name('admin/')->group(static function() {
-        Route::get('/', function () {
-            return view('admin.dashboard');
-        });
+        Route::get('/', 'DashboardController@index');
 
         Route::prefix('admin-users')->name('admin-users/')->group(static function() {
             Route::get('/',                                             'AdminUsersController@index')->name('index');
@@ -124,16 +122,23 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard'), 'admin'])->gro
 });
 
 
-Route::get('/activity/{activity}', 'ActivitiesController@show')->name('activities/show');
 
 Auth::routes();
 
-Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
-Route::get('/profile', 'Auth\ProfileController@profile')->name('profile');
+Route::middleware(['auth:' . config('auth.defaults.guard')])->group(static function () {
+    Route::get('/activity/{activity}', 'ActivitiesController@show')->name('activities/show');
+    Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+    Route::get('/profile', 'Auth\ProfileController@profile')->name('profile');
+    Route::get('/activity/{activity}/checkin', 'ActivitiesController@checkin')->name('activities/checkin');
+    Route::get('/activities', 'ActivitiesController@index')->name('activities/index');
+});
 
-Route::get('/activity/{activity}/checkin', 'ActivitiesController@checkin')->name('activities/checkin');
 
-Route::get('/activity/{activity}/enroll', 'ActivitiesController@enroll')->name('activities/enroll');
-
-Route::get('/activities', 'ActivitiesController@index')->name('activities/index');
+// FIXME: not working
+Route::middleware(['auth:' . config('auth.defaults.guard') .','.config('admin-auth.defaults.guard')])->group(static function () {
+    Route::namespace('\Brackets\Media\Http\Controllers')->group(static function () {
+        Route::post('upload', 'FileUploadController@upload')->name('brackets/media::upload');
+        Route::get('view', 'FileViewController@view')->name('brackets/media::view');
+    });
+});
 

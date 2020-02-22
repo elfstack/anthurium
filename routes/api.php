@@ -18,8 +18,15 @@ Route::middleware(['auth:'.config('auth.defaults.guard').','.config('admin-auth.
 });
 
 
+// Route for admin user
 Route::middleware(['auth:'.config('admin-auth.defaults.guard')])->group(static function () {
     Route::delete('/user/{user}', 'Admin\UsersController@destroy')->name('user/destroy');
+});
+
+
+// Route for user only
+Route::middleware(['auth:'.config('auth.defaults.guard')])->group(static function () {
+    Route::patch('/activity/{activity}/participants', 'ActivitiesController@enroll')->name('activities/enroll');
 });
 
 

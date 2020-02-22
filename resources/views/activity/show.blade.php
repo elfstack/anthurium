@@ -44,6 +44,7 @@
                             <table class="table table-hover table-listing">
                                 <thead>
                                     <tr>
+
                                         <th is='sortable' :column="'user_id'">{{ trans('admin.participant.columns.user_id') }}</th>
                                         <th is='sortable' :column="'enrolled_at'">{{ trans('admin.participant.columns.enrolled_at') }}</th>
                                         <th is='sortable' :column="'attendance_id'">Arrived at</th>
@@ -64,10 +65,11 @@
                                 <tbody>
                                     <tr v-for="(item, index) in collection" :key="item.id" :class="bulkItems[item.id] ? 'bg-bulk' : ''">
 
-                                        <td>@{{ item.user_id }}</td>
+
+                                        <td>@{{ item.user.name }}</td>
                                         <td>@{{ item.enrolled_at | datetime }}</td>
-                                        <td>@{{ item.enrolled_at | datetime }}</td>
-                                        <td>@{{ item.enrolled_at | datetime }}</td>
+                                        <td>@{{ item.attendance ? item.attendance.arrived_at : '' }}</td>
+                                        <td>@{{ item.attendance ? item.attendance.left_at : '' }}</td>
 
                                     </tr>
                                 </tbody>
@@ -114,7 +116,7 @@
                         </div>
                         <div class="col">
                             <div class="progress progress-sm">
-                                <div class="progress-bar" role="progressbar" style="width: {{ $activity->usedQuotaPercentage() }}%" aria-valuenow="{{ $activity->participants()->count() }}" aria-valuemin="0" aria-valuemax="{{ $activity->quota }}"></div>
+                                <div class="progress-bar" role="progressbar" style="width: {{ $activity->participantsPercentage() * 100 }}%" aria-valuenow="{{ $activity->participants()->count() }}" aria-valuemin="0" aria-valuemax="{{ $activity->quota }}"></div>
                             </div>
                         </div>
                     </div>

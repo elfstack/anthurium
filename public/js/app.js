@@ -1946,7 +1946,7 @@ __webpack_require__.r(__webpack_exports__);
     toggleEnroll: function toggleEnroll() {
       var _this = this;
 
-      window.axios.get("/activity/".concat(this.activity.id, "/enroll")).then(function (_ref) {
+      window.axios.patch("/api/activity/".concat(this.activity.id, "/participants")).then(function (_ref) {
         var data = _ref.data;
 
         if (data.enrolled) {
@@ -94501,7 +94501,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_participant__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/participant */ "./resources/js/components/participant/index.js");
 /* harmony import */ var _components_user__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/user */ "./resources/js/components/user/index.js");
-/* harmony import */ var _components_volunteer_info__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/volunteer-info */ "./resources/js/components/volunteer-info/index.js");
+/* harmony import */ var _components_volunteer_info__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/volunteer-info */ "./resources/js/components/volunteer-info/index.js");
 
 
 

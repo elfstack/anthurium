@@ -17420,7 +17420,7 @@ canvas {
   flex-direction: column;
   padding: 0;
   color: #fff;
-  background: #485779;
+  background: #132c33;
 }
 
 .sidebar .sidebar-close {
@@ -17450,7 +17450,7 @@ canvas {
 
 .sidebar .sidebar-form .form-control {
   color: #fff;
-  background: #354059;
+  background: #050c0e;
   border: 0;
 }
 
@@ -17804,7 +17804,7 @@ canvas {
 }
 
 .sidebar .progress {
-  background-color: #687ba5 !important;
+  background-color: #285c6b !important;
 }
 
 .sidebar .sidebar-footer {
@@ -17924,7 +17924,7 @@ canvas {
     bottom: 0;
     width: 50px;
     height: 50px;
-    background-color: #3e4c69;
+    background-color: #0c1c20;
   }
 
   .sidebar-minimized .sidebar .sidebar-nav {
@@ -17956,7 +17956,7 @@ canvas {
 
   .sidebar-minimized .sidebar .nav-item:hover .nav-link.disabled,
   .sidebar-minimized .sidebar .nav-item:hover .nav-link :disabled {
-    background: #485779;
+    background: #132c33;
   }
 
   .sidebar-minimized .sidebar .nav-item:hover .nav-link.disabled .nav-icon,
@@ -18015,7 +18015,7 @@ canvas {
   .sidebar-minimized .sidebar .nav > .nav-dropdown > .nav-dropdown-items {
     display: none;
     max-height: 1000px;
-    background: #485779;
+    background: #132c33;
   }
 
   .sidebar-minimized .sidebar .nav > .nav-dropdown:hover {
@@ -18061,7 +18061,7 @@ canvas {
   *[dir=rtl] .sidebar-minimized .sidebar .nav > .nav-dropdown > .nav-dropdown-items {
     display: none;
     max-height: 1000px;
-    background: #485779;
+    background: #132c33;
   }
 
   *[dir=rtl] .sidebar-minimized .sidebar .nav > .nav-dropdown:hover {

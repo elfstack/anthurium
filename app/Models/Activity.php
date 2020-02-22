@@ -42,13 +42,26 @@ class Activity extends Model
         return $this->hasMany(Attendance::class);
     }
 
-    public function usedQuotaPercentage()
+    /**
+     * How many user participated.
+     *
+     * @return double
+     */
+    public function participantsPercentage()
     {
-        return $this->participants()->count() / $this->quota * 100;
+        return $this->participants()->count() / $this->quota;
     }
 
+    /** How many participants attended.
+     *
+     * @return double
+     */
     public function attendedParticipantsPercentage()
     {
+        if ($this->participants()->count() === 0) {
+            return 0;
+        }
+
         return $this->participants()->whereNotNull('attendance_id')->count() / $this->participants()->count() * 100;
     }
 }

@@ -24,7 +24,7 @@
                         </div>
                         <div class="col">
                             <div class="progress progress-sm">
-                                <div class="progress-bar" role="progressbar" style="width: {{ $activity->usedQuotaPercentage() }}%" aria-valuenow="{{ $activity->participants()->count() }}" aria-valuemin="0" aria-valuemax="{{ $activity->quota }}"></div>
+                                <div class="progress-bar" role="progressbar" style="width: {{ $activity->participantsPercentage() * 100 }}%" aria-valuenow="{{ $activity->participants()->count() }}" aria-valuemin="0" aria-valuemax="{{ $activity->quota }}"></div>
                             </div>
                         </div>
                     </div>
@@ -35,7 +35,7 @@
             <div class="card text-primary">
                 <div class="card-body">
                     <div>Attendance</div>
-                    <div class="text-value">{{ $activity->attendedParticipantsPercentage() }}%</div>
+                    <div class="text-value">{{ $activity->attendedParticipantsPercentage() * 100}}%</div>
                 </div>
             </div>
         </div>
@@ -70,7 +70,7 @@
                 <div class="card mb-4">
                     <div class="card-header">
                         <i class="fa fa-align-justify"></i> {{ trans('admin.participant.actions.index') }}
-                        <a class="btn btn-primary btn-spinner btn-sm pull-right m-b-0" href="{{ url('admin/participants/create') }}" role="button"><i class="fa fa-plus"></i>&nbsp; {{ trans('admin.participant.actions.create') }}</a>
+                        <a class="btn btn-primary btn-spinner btn-sm pull-right m-b-0" href="{{ url('admin/participants/create') }}" role="button"><i class="fa fa-plus"></i>&nbsp; Add Record Manually</a>
                     </div>
                     <div class="card-body" v-cloak>
                             <form @submit.prevent="">
@@ -161,8 +161,7 @@
 
                             <div class="no-items-found" v-if="!collection.length > 0">
                                 <i class="icon-magnifier"></i>
-                                <h3>{{ trans('brackets/admin-ui::admin.index.no_items') }}</h3>
-                                <p>{{ trans('brackets/admin-ui::admin.index.try_changing_items') }}</p>
+                                <h3>No participants</h3>
                             </div>
                     </div>
                 </div>
@@ -175,8 +174,8 @@
                 <div class="card-body">
                     <div>Overall</div>
                         <div class="progress progress-sm">
-                            <div class="progress-bar bg-info" role="progressbar" style="width: {{ $activity->usedQuotaPercentage() * (100 - $activity->attendedParticipantsPercentage()) / 100 }}%" aria-valuenow="{{ $activity->participants()->count() }}" aria-valuemin="0" aria-valuemax="{{ $activity->quota }}"></div>
-                            <div class="progress-bar bg-success" role="progressbar" style="width: {{ $activity->usedQuotaPercentage() * $activity->attendedParticipantsPercentage() / 100 }}%" aria-valuenow="{{ $activity->participants()->count() }}" aria-valuemin="0" aria-valuemax="{{ $activity->quota }}"></div>
+                            <div class="progress-bar bg-info" role="progressbar" style="width: {{ $activity->participantsPercentage() * (1 - $activity->attendedParticipantsPercentage() )* 100 }}%" aria-valuenow="{{ $activity->participants()->count() }}" aria-valuemin="0" aria-valuemax="{{ $activity->quota }}"></div>
+                            <div class="progress-bar bg-success" role="progressbar" style="width: {{ $activity->participantsPercentage() * $activity->attendedParticipantsPercentage() * 100 }}%" aria-valuenow="{{ $activity->participants()->count() }}" aria-valuemin="0" aria-valuemax="{{ $activity->quota }}"></div>
                             <div class="progress-bar bg-danger" role="progressbar" style="width: 0%" aria-valuenow="{{ $activity->participants()->count() }}" aria-valuemin="0" aria-valuemax="{{ $activity->quota }}"></div>
                         </div>
                 </div>
