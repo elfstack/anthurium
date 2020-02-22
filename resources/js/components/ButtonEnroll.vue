@@ -1,6 +1,6 @@
 <template>
     <button class="btn btn-block" :class="statusClass" @click="toggleEnroll" :disabled="enrollStatus">
-        Enroll
+        {{ enrollStatus ? 'Enrolled' : 'Enroll' }}
     </button>
 </template>
 

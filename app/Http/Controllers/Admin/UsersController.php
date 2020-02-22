@@ -135,7 +135,6 @@ class UsersController extends Controller
         $user->update($sanitized);
 
         return [
-            'redirect' => url('admin/users'),
             'message' => trans('brackets/admin-ui::admin.operation.succeeded'),
         ];
     }

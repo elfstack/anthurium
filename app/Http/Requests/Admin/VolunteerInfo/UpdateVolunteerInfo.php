@@ -15,7 +15,15 @@ class UpdateVolunteerInfo extends FormRequest
      */
     public function authorize(): bool
     {
-        return Gate::allows('admin.volunteer-info.edit', $this->volunteerInfo);
+        $admin = Gate::allows('admin.user.edit');
+
+        $isCurrentUser = false;
+
+        if ($this->user()) {
+            $isCurrentUser = $this->user_id == $this->user()->getKey();
+        }
+
+        return $admin || $isCurrentUser;
     }
 
     /**

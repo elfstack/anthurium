@@ -76,7 +76,6 @@ class VolunteerInfoController extends Controller
 
         if ($request->ajax()) {
             return [
-                'redirect' => url('admin/users'),
                 'message' => trans('brackets/admin-ui::admin.operation.succeeded'),
             ];
         }

@@ -14,7 +14,7 @@ class IndexParticipant extends FormRequest
      */
     public function authorize(): bool
     {
-        return Gate::allows('admin.participant.index');
+        return true;
     }
 
     /**

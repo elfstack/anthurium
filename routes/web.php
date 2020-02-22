@@ -57,7 +57,6 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard'), 'admin'])->gro
             Route::get('/create',                                       'UsersController@create')->name('create');
             Route::get('/{user}/edit',                                  'UsersController@edit')->name('edit');
             Route::post('/bulk-destroy',                                'UsersController@bulkDestroy')->name('bulk-destroy');
-            Route::post('/{user}/volunteer-info',                             'VolunteerInfoController@update')->name('update');
             Route::get('/gates', function () {
                 return Gate::has('admin.user.edit') ? 'has' : 'hasnt';
             });
@@ -80,7 +79,6 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard'), 'admin'])->gro
     Route::prefix('admin')->namespace('Admin')->name('admin/')->group(static function() {
         Route::prefix('activities')->name('activities/')->group(static function() {
             Route::get('/',                                             'ActivitiesController@index')->name('index');
-            Route::get('/{activity}/participants',                                             'ActivitiesController@participants')->name('show/participants');
             Route::get('/create',                                       'ActivitiesController@create')->name('create');
             Route::post('/',                                            'ActivitiesController@store')->name('store');
             Route::get('/{activity}',                              'ActivitiesController@show')->name('show');
@@ -134,14 +132,13 @@ Route::middleware(['auth:' . config('auth.defaults.guard')])->group(static funct
     Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
     Route::get('/profile', 'Auth\ProfileController@profile')->name('profile');
     Route::get('/activity/{activity}/checkin', 'ActivitiesController@checkin')->name('activities/checkin');
-    Route::get('/activities', 'ActivitiesController@index')->name('activities/index');
 });
 
 
 // FIXME: not working
 Route::middleware(['auth:' . config('auth.defaults.guard') .','.config('admin-auth.defaults.guard')])->group(static function () {
+    Route::post('upload', 'FileUploadController@upload')->name('brackets/media::upload');
     Route::namespace('\Brackets\Media\Http\Controllers')->group(static function () {
-        Route::post('upload', 'FileUploadController@upload')->name('brackets/media::upload');
         Route::get('view', 'FileViewController@view')->name('brackets/media::view');
     });
 });

@@ -62,7 +62,7 @@
 
     <participant-listing
         :activity-id="{{ $activity->id }}"
-        :url="'{{ url('admin/activities/'.$activity->id.'/participants') }}'"
+        :url="'{{ url('/api/activity/'.$activity->id.'/participants') }}'"
         inline-template>
 
         <div class="row">
@@ -104,7 +104,7 @@
                                             </label>
                                         </th>
 
-                                        <th is='sortable' :column="'user_id'">{{ trans('admin.participant.columns.user_id') }}</th>
+                                        <th is='sortable' :column="'user_id'">{{ trans('admin.participant.columns.user') }}</th>
                                         <th is='sortable' :column="'enrolled_at'">{{ trans('admin.participant.columns.enrolled_at') }}</th>
                                         <th is='sortable' :column="'attendance_id'">Arrived at</th>
                                         <th is='sortable' :column="'attendance_id'">Left at</th>
