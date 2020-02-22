@@ -15,6 +15,7 @@
 Route::middleware(['auth:'.config('auth.defaults.guard').','.config('admin-auth.defaults.guard')])->group(static function () {
     Route::post('/users', 'Admin\UsersController@store')->name('user/store');
     Route::post('/user/{user}', 'Admin\UsersController@update')->name('user/update');
+    Route::get('/activities', 'ActivitiesController@index')->name('activities/index');
 });
 
 

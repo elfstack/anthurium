@@ -33,6 +33,7 @@ Vue.component('datetime', flatPickr);
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
 Vue.component('button-enroll', require('./components/ButtonEnroll.vue').default);
+Vue.component('activity-list', require('./components/ActivityList.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

@@ -29,6 +29,28 @@ $factory->define(App\Models\Activity::class, static function (Faker\Generator $f
     ];
 });
 
+$factory->state(App\Models\Activity::class, 'ongoing', static function (Faker\Generator $faker) {
+    return [
+        'starts_at' => $faker->dateTimeBetween('-2 years', 'now'),
+        'ends_at' => $faker->dateTimeBetween('now', '+2 years'),
+    ];
+});
+
+$factory->state(App\Models\Activity::class, 'past', static function (Faker\Generator $faker) {
+    return [
+        'starts_at' => $faker->dateTimeBetween('-2 years', 'now'),
+        'ends_at' => $faker->dateTimeBetween('-1 years', 'now'),
+    ];
+});
+
+$factory->state(App\Models\Activity::class, 'upcoming', static function (Faker\Generator $faker) {
+    return [
+        'starts_at' => $faker->dateTimeBetween('now', '+1 years'),
+        'ends_at' => $faker->dateTimeBetween('+1 years', '+2 years'),
+    ];
+});
+
+
 /** @var  \Illuminate\Database\Eloquent\Factory $factory */
 $factory->define(App\Models\Attendance::class, static function (Faker\Generator $faker) {
     return [
