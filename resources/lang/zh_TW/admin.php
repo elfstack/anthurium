@@ -1,27 +1,26 @@
 <?php
 
 return [
-    'admin-management' => 'Manage Admin',
-    'configuration' => 'Configuration',
-
+    'admin-management' => '管理員',
+    'configuration' => '系統設定',
     'admin-user' => [
-        'title' => 'Users',
+        'title' => '用戶',
 
         'actions' => [
-            'index' => 'Users',
-            'create' => 'New User',
-            'edit' => 'Edit :name',
-            'edit_profile' => 'Edit Profile',
-            'edit_password' => 'Edit Password',
+            'index' => '用戶列表',
+            'create' => '新增用戶',
+            'edit' => '編輯 :name',
+            'edit_profile' => '更改資料',
+            'edit_password' => '修改密碼',
         ],
 
         'columns' => [
             'id' => 'ID',
-            'first_name' => 'First name',
-            'last_name' => 'Last name',
+            'first_name' => '名',
+            'last_name' => '姓',
             'email' => 'Email',
-            'password' => 'Password',
-            'password_repeat' => 'Password Confirmation',
+            'password' => '密碼',
+            'password_repeat' => '確認密碼',
             'activated' => 'Activated',
             'forbidden' => 'Forbidden',
             'language' => 'Language',
@@ -33,12 +32,12 @@ return [
     ],
 
     'user' => [
-        'title' => 'Volunteers',
+        'title' => '義工',
 
         'actions' => [
-            'index' => 'Volunteers',
-            'create' => 'New Volunteer',
-            'edit' => 'Edit :name',
+            'index' => '義工列表',
+            'create' => '新增義工',
+            'edit' => '編輯 :name',
         ],
 
         'columns' => [
@@ -52,7 +51,7 @@ return [
     ],
 
     'volunteer-info' => [
-        'title' => 'Volunteer Info',
+        'title' => '義工信息',
 
         'actions' => [
             'index' => 'Volunteer Info',
@@ -67,7 +66,7 @@ return [
     ],
 
     'activity' => [
-        'title' => 'Activities',
+        'title' => '活動',
 
         'actions' => [
             'index' => 'Activities',
@@ -115,7 +114,7 @@ return [
     ],
 
     'attendance' => [
-        'title' => 'Attendance',
+        'title' => '出席',
 
         'actions' => [
             'index' => 'Attendance',
@@ -134,7 +133,7 @@ return [
     ],
 
     'participant' => [
-        'title' => 'Participants',
+        'title' => '報名',
 
         'actions' => [
             'index' => 'Participants',
@@ -153,8 +152,8 @@ return [
     ],
 
     'sidebar' => [
-        'volunteer' => 'Volunteer',
-        'manage' => 'Manage'
+        'volunteer' => '義工管理',
+        'manage' => '系統管理'
     ],
 
     // Do not delete me :) I'm used for auto-generation

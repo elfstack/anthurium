@@ -11,7 +11,7 @@
             <li class="nav-title">@lang('admin.sidebar.manage')</li>
             <li class="nav-item"><a class="nav-link" href="{{ url('admin/admin-users') }}"><i class="nav-icon icon-user"></i>@lang('admin.admin-management')</a></li>
             {{-- Do not delete me :) I'm also used for auto-generation menu items --}}
-            {{--<li class="nav-item"><a class="nav-link" href="{{ url('admin/configuration') }}"><i class="nav-icon icon-settings"></i>@lang('configuration')</a></li>--}}
+            <li class="nav-item"><a class="nav-link" href="{{ url('admin/configuration') }}"><i class="nav-icon icon-settings"></i>@lang('admin.configuration')</a></li>
         </ul>
     </nav>
     <button class="sidebar-minimizer brand-minimizer" type="button"></button>
