@@ -132,6 +132,14 @@ class User extends Authenticatable implements HasMedia
                 ->nonQueued();
         });
     }
+    /* ************************* GETTER ************************** */
+
+    public function getVolunteerTotalHours()
+    {
+        $this->activitiesParticipated()->with([
+            'attendance:id,arrived_at,left_at'
+        ])->whereNotNull('attendance.left_at')->get();
+    }
 
     /* ************************ RELATIONS ************************ */
 
@@ -154,6 +162,8 @@ class User extends Authenticatable implements HasMedia
     public function attendance() {
         return $this->hasMany(Attendance::class);
     } 
+
+    /* ************************ METHODS ************************ */
 
     public function enroll(Activity $activity)
     {

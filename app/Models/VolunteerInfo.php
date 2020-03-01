@@ -25,6 +25,8 @@ class VolunteerInfo extends Model
     protected $table = "volunteer_info";
 
     protected $primaryKey = "user_id";
+
+    public $incrementing = false;
     
     protected $dates = [
         'birthday',
