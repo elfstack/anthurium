@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Notifications\Notifiable;
 use Brackets\Media\HasMedia\AutoProcessMediaTrait;
 use Brackets\Media\HasMedia\HasMediaCollectionsTrait;
@@ -236,5 +237,14 @@ class User extends Authenticatable implements HasMedia
         $attendance->left_at = Carbon::now();
 
         return $attendance;
+    }
+
+    public function totalHours()
+    {
+        $attendanceHours = $this->attendance()
+            ->whereNotNull('left_at')
+            ->select(DB::raw('SUM(MINUTE(TIMEDIFF(left_at, arrived_at))) as hours'))
+            ->first()['hours'] / 60;
+        return round($attendanceHours, 1);
     }
 }

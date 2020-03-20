@@ -8,6 +8,23 @@
                 <div class="card-body text-center">
                     <img class="rounded-circle mb-1" src="{{ Auth::user()->getFirstMediaUrl('avatar', 'thumb_150') }}"/>
                     <h3 class="card-title">{{ Auth::user()->name }}</h3>
+            <div class="card-body row text-center">
+                <div class="col">
+                    <div class="text-value-xl">{{ Auth::user()->activitiesParticipated()->count() }}</div>
+                    <div class="text-uppercase text-muted small">Participation</div>
+                </div>
+                <div class="c-vr"></div>
+                <div class="col">
+                    <div class="text-value-xl">{{ Auth::user()->attendance()->count() }}</div>
+                    <div class="text-uppercase text-muted small">Attended</div>
+                </div>
+                <div class="c-vr"></div>
+                <div class="col">
+                    <div class="text-value-xl">{{ Auth::user()->totalHours() }}</div>
+                    <div class="text-uppercase text-muted small">Hours</div>
+                </div>
+            </div>
+
                 </div>
             </div>
 
