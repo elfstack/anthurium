@@ -125,7 +125,7 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard'), 'admin'])->gro
 
 
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 Route::middleware(['auth:' . config('auth.defaults.guard')])->group(static function () {
     Route::get('/activity/{activity}', 'ActivitiesController@show')->name('activities/show');

@@ -94879,11 +94879,37 @@ Vue.component('user-form', {
       form: {
         name: '',
         email: '',
-        email_verified_at: '',
         password: ''
       },
-      mediaCollections: ['avatar']
+      mediaCollections: ['avatar'],
+      countdown: -1,
+      timer: null
     };
+  },
+  methods: {
+    sendVerification: function sendVerification() {
+      var _this = this;
+
+      window.axios.post('/email/resend', {
+        maxRedirects: 0
+      }).then(function () {
+        _this.countdown = 60;
+
+        if (!_this.timer) {
+          _this.timer = setInterval(function () {
+            if (_this.countdown > 0 && _this.countdown <= 60) {
+              _this.countdown--;
+
+              if (_this.countdown === 0) {
+                clearInterval(_this.timer);
+                _this.countdown = 60;
+                _this.timer = null;
+              }
+            }
+          }, 1000);
+        }
+      });
+    }
   }
 });
 

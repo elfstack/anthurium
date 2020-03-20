@@ -7,11 +7,33 @@ Vue.component('user-form', {
             form: {
                 name:  '' ,
                 email:  '' ,
-                email_verified_at:  '' ,
-                password:  '' ,
+                password:  ''
 
             },
-            mediaCollections: ['avatar']
+            mediaCollections: ['avatar'],
+            countdown: -1,
+            timer: null
+        }
+    },
+    methods: {
+        sendVerification () {
+            window.axios.post('/email/resend', {
+                maxRedirects: 0,
+            }).then(() => {
+                this.countdown = 60
+                if (!this.timer) {
+                    this.timer = setInterval(() => {
+                        if (this.countdown > 0 && this.countdown <= 60) {
+                          this.countdown--;
+                          if (this.countdown === 0) {
+                            clearInterval(this.timer);
+                            this.countdown = 60;
+                            this.timer = null;
+                          }
+                       }
+                    }, 1000)
+                }
+            })
         }
     }
 

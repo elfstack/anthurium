@@ -9,8 +9,16 @@
 <div class="form-group row align-items-center" :class="{'has-danger': errors.has('email'), 'has-success': fields.email && fields.email.valid }">
     <label for="email" class="col-form-label text-md-right" :class="isFormLocalized ? 'col-md-4' : 'col-md-2'">{{ trans('admin.user.columns.email') }}</label>
         <div :class="isFormLocalized ? 'col-md-4' : 'col-md-9 col-xl-8'">
-        <input type="text" v-model="form.email" v-validate="'required|email'" @input="validate($event)" class="form-control" :class="{'form-control-danger': errors.has('email'), 'form-control-success': fields.email && fields.email.valid}" id="email" name="email" placeholder="{{ trans('admin.user.columns.email') }}">
-        <small id="emailHelp" class="form-text text-muted">Verified at: @{{ data.email_verified_at }}</small>
+        <div class="input-group">
+        <input type="text" v-model="form.email" v-validate="'required|email'" @input="validate($event)" class="form-control" :class="{'form-control-danger': errors.has('email'), 'form-control-success': fields.email && fields.email.valid}" id="email" name="email" placeholder="{{ trans('admin.user.columns.email') }}" :disabled="data.email_verified_at">
+        <div class="input-group-prepend" v-if="!data.email_verified_at">
+            <button type="button" class="btn btn-primary" @click.prevent="sendVerification" :disabled="countdown > 0 && countdown != 60">
+                <i class="fa fa-envelope" v-if="countdown < 0 || countdown === 60"></i>
+                <span v-else>(@{{ countdown }})</span>
+            </button>
+        </div>
+        </div>
+        <small id="emailHelp" class="form-text text-muted">@{{ data.email_verified_at ? 'Verified at: ' + data.email_verified_at : countdown < 0 ? 'Not Verified' : 'Verification sent' }}</small>
         <div v-if="errors.has('email')" class="form-control-feedback form-text" v-cloak>@{{ errors.first('email') }}</div>
     </div>
 </div>

@@ -7,11 +7,15 @@ Vue.component('user-form', {
             form: {
                 name:  '' ,
                 email:  '' ,
-                password:  ''
-
+                password:  '',
             },
-            mediaCollections: ['avatar']
+            countdown: -1,
+            mediaCollections: ['avatar'],
+        }
+    },
+    methods: {
+        sendVerification () {
+            // TODO: THIS METHOD IS DISABLED
         }
     }
-
 });

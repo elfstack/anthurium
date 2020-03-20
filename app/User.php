@@ -23,7 +23,7 @@ use App\Exceptions\UserAlreadyCheckedInException;
 
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements HasMedia
+class User extends Authenticatable implements HasMedia, MustVerifyEmail
 {
     use Notifiable;
     use AutoProcessMediaTrait;
