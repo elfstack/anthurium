@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -24,8 +25,20 @@ class DashboardController extends Controller
      */
     public function index(Request $request)
     {
+        $activitiesParticipatedOngoing = $request->user()
+            ->activitiesParticipated()
+            ->whereDate('starts_at', '<', Carbon::now())
+            ->whereDate('ends_at', '>', Carbon::now())
+            ->get();
+
+        $activitiesParticipatedUpcoming = $request->user()
+            ->activitiesParticipated()
+            ->whereDate('starts_at', '>', Carbon::now())
+            ->get();
+
         return view('dashboard', [
-            'activitiesParticipated' => $request->user()->activitiesParticipated()->get()
+            'activitiesParticipatedOngoing' => $activitiesParticipatedOngoing,
+            'activitiesParticipatedUpcoming' => $activitiesParticipatedUpcoming
         ]);
     }
 

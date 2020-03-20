@@ -11,6 +11,7 @@ use Brackets\Media\HasMedia\HasMediaThumbsTrait;
 use Brackets\Media\HasMedia\ProcessMediaTrait;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\Models\Media;
+use Carbon\Carbon;
 
 use App\Models\Activity;
 use App\Models\Participant;
@@ -183,9 +184,16 @@ class User extends Authenticatable implements HasMedia
         }
     }
 
-    private function isCheckedIn(Activity $activity) {
+    public function isCheckedIn(Activity $activity) {
         // TODO: performance needs to be improved
         return $activity->attendance()->where('user_id', $this->id)->exists();
+    }
+
+    public function isCheckedOut(Activity $activity) {
+        return $activity->attendance()
+            ->where('user_id', $this->id)
+            ->whereNotNull('left_at')
+            ->exists();
     }
 
     public function checkin(Activity $activity)
@@ -194,17 +202,38 @@ class User extends Authenticatable implements HasMedia
             throw new UserNotParticipatedException("User is not a participant for this activity");
         }
 
-
         if ($this->isCheckedIn($activity)) {
             throw new UserAlreadyCheckedInException("User already checked in");
         }
         
         $attendance = $activity->attendance()->create([
-            'arrived_at' => now(),
+            'arrived_at' => Carbon::now(),
             'user_id' => $this->id
         ]);
 
         $this->activitiesParticipated()->wherePivot('activity_id', $activity->id)->update(['attendance_id' => $attendance->id]);
+
+        return $attendance;
+    }
+
+    public function checkout(Activity $activity)
+    {
+        if (!$this->isParticipant($activity)) {
+            throw new UserNotParticipatedException("User is not a participant for this activity");
+        }
+
+        if (!$this->isCheckedIn($activity)) {
+            throw new \Exception("Please Checkin first");
+        }
+
+        if ($this->isCheckedOut($activity)) {
+            throw new \Exception("Checked out already");
+        }
+
+        $attendance = $activity->attendance()
+            ->where('user_id', $this->id)->first();
+
+        $attendance->left_at = Carbon::now();
 
         return $attendance;
     }

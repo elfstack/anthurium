@@ -91,7 +91,8 @@ class ActivitiesController extends Controller
         ]);
     }
 
-    private function checkin(Activity $activity, User $user, $token) {
+    public function checkin(Activity $activity, User $user, $token) {
+        // TODO: disable checkin for past activities
 
         $otp = resolve(\OTPHP\TOTP::class);
 
@@ -101,5 +102,13 @@ class ActivitiesController extends Controller
             // TODO: abort should be replaced with better error message
             abort(400, 'Incorrect token or expired');
         }
+
+        return [
+            'message' => 'success'
+        ];
+    }
+
+    public function checkout(Activity $activity, Request $request) {
+        return $request->user()->checkout($activity);
     }
 }

@@ -132,6 +132,7 @@ Route::middleware(['auth:' . config('auth.defaults.guard')])->group(static funct
     Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
     Route::get('/profile', 'Auth\ProfileController@profile')->name('profile');
     Route::get('/activity/{activity}/checkin', 'ActivitiesController@checkin')->name('activities/checkin');
+    Route::get('/activity/{activity}/checkout','ActivitiesController@checkout')->name('activities/checkout');
 });
 
 

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\User;
 
 class Attendance extends Model
 {
@@ -32,5 +33,10 @@ class Attendance extends Model
     public function getResourceUrlAttribute()
     {
         return url('/admin/attendances/'.$this->getKey());
+    }
+
+    public function getUserAttendance(User $user)
+    {
+        return $this->where('user_id', $user->id);
     }
 }
