@@ -5,6 +5,7 @@ import 'flatpickr/dist/flatpickr.css';
 import VeeValidate from 'vee-validate';
 import VueCookie from 'vue-cookie';
 import Notifications from 'vue-notification';
+import VModal from 'vue-js-modal'
 import './app-components/bootstrap';
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -15,6 +16,7 @@ import './app-components/bootstrap';
 require('./bootstrap');
 
 Vue.use(Notifications);
+Vue.use(VModal, { dialog: true, dynamic: true, injectModalsContainer: true });
 Vue.use(VueCookie);
 Vue.use(VeeValidate, {strict: true});
 Vue.component('datetime', flatPickr);

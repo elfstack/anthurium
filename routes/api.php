@@ -24,6 +24,10 @@ Route::middleware(['auth:'.config('auth.defaults.guard').','.config('admin-auth.
 // Route for admin user
 Route::middleware(['auth:'.config('admin-auth.defaults.guard')])->group(static function () {
     Route::delete('/user/{user}', 'Admin\UsersController@destroy')->name('user/destroy');
+    Route::get('/clear-cache', function() {
+        Artisan::call('cache:clear');
+        return "Cache is cleared";
+    });
 });
 
 

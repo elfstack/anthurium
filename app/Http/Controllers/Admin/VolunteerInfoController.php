@@ -72,7 +72,11 @@ class VolunteerInfoController extends Controller
         $sanitized = $request->getSanitized();
 
         // Update changed values VolunteerInfo
-        $user->volunteerInfo()->updateOrCreate($sanitized);
+        if ($user->volunteerInfo()->exists()) {
+            $user->volunteerInfo()->update($sanitized);
+        } else {
+            $user->volunteerInfo()->create($sanitized);
+        }
 
         if ($request->ajax()) {
             return [
