@@ -40,7 +40,14 @@ class AttendanceController extends Controller
             ['id', 'arrived_at', 'left_at', 'activity_id', 'user_id'],
 
             // set columns to searchIn
-            ['id']
+            ['id'],
+
+            function ($query) {
+                $query->with([
+                    'user:id,name',
+                    'activity:id,name'
+                ]);
+            }
         );
 
         if ($request->ajax()) {

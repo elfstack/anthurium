@@ -52,8 +52,8 @@
                                         <th is='sortable' :column="'user'">{{ trans('admin.participant.columns.user') }}</th>
                                         <th is='sortable' :column="'activity'">{{ trans('admin.participant.columns.activity') }}</th>
                                         <th is='sortable' :column="'enrolled_at'">{{ trans('admin.participant.columns.enrolled_at') }}</th>
-                                        <th is='sortable' :column="'attendance'">{{ trans('admin.participant.columns.attendance') }}</th>
-
+                                        <th :column="'arrived_at'">{{ trans('admin.attendance.columns.arrived_at') }}</th>
+                                        <th :column="'left_at'">{{ trans('admin.attendance.columns.left_at') }}</th>
                                         <th></th>
                                     </tr>
                                     <tr v-show="(clickedBulkItemsCount > 0) || isClickedAll">
@@ -79,6 +79,8 @@
                                         <td>@{{ item.user.name }}</td>
                                         <td>@{{ item.activity.name }}</td>
                                         <td>@{{ item.enrolled_at | datetime }}</td>
+                                        <td>@{{ item.attendance ? item.attendance.arrived_at : '' | datetime }}</td>
+                                        <td>@{{ item.attendance ? item.attendance.left_at : '' | datetime }}</td>
                                         <td></td>
                                         
                                         <td>

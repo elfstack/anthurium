@@ -49,11 +49,10 @@
                                             </label>
                                         </th>
 
-                                        <th is='sortable' :column="'id'">{{ trans('admin.attendance.columns.id') }}</th>
                                         <th is='sortable' :column="'arrived_at'">{{ trans('admin.attendance.columns.arrived_at') }}</th>
                                         <th is='sortable' :column="'left_at'">{{ trans('admin.attendance.columns.left_at') }}</th>
-                                        <th is='sortable' :column="'activity_id'">{{ trans('admin.attendance.columns.activity_id') }}</th>
-                                        <th is='sortable' :column="'user_id'">{{ trans('admin.attendance.columns.user_id') }}</th>
+                                        <th is='sortable' :column="'activity'">{{ trans('admin.attendance.columns.activity') }}</th>
+                                        <th is='sortable' :column="'user'">{{ trans('admin.attendance.columns.user') }}</th>
 
                                         <th></th>
                                     </tr>
@@ -77,11 +76,10 @@
                                             </label>
                                         </td>
 
-                                    <td>@{{ item.id }}</td>
                                         <td>@{{ item.arrived_at | datetime }}</td>
                                         <td>@{{ item.left_at | datetime }}</td>
-                                        <td>@{{ item.activity_id }}</td>
-                                        <td>@{{ item.user_id }}</td>
+                                        <td>@{{ item.activity.name }}</td>
+                                        <td>@{{ item.user.name }}</td>
                                         
                                         <td>
                                             <div class="row no-gutters">
