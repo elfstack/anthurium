@@ -235,6 +235,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
             ->where('user_id', $this->id)->first();
 
         $attendance->left_at = Carbon::now();
+        $attendance->save();
 
         return $attendance;
     }
