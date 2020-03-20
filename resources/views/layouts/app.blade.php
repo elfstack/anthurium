@@ -21,7 +21,7 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm sticky-top">
+        <nav class="navbar navbar-expand-md navbar-light bg-white sticky-top">
             <div class="container-fluid">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Anthurium') }}
@@ -89,7 +89,7 @@
             </div>
         </nav>
 
-        <main class="mt-3">
+        <main>
             <div class="modals">
                 <v-dialog/>
             </div>
