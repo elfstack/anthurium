@@ -15,7 +15,7 @@ class UpdateVolunteerInfo extends FormRequest
      */
     public function authorize(): bool
     {
-        $admin = Gate::allows('admin.user.edit');
+        $admin = Gate::allows('admin.user.edit', $this->user);
 
         $isCurrentUser = false;
 
