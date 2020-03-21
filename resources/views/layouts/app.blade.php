@@ -89,7 +89,7 @@
             </div>
         </nav>
 
-        <main class="mt-3">
+        <main class="my-3">
             <div class="modals">
                 <v-dialog/>
             </div>
@@ -98,6 +98,16 @@
             </div>
             @yield('content')
         </main>
+
+        <footer class="app-footer">
+          <div>
+            <span>&copy; 2020 {{ config('app.name', 'Anthurium') }}</span>
+          </div>
+          <div class="ml-auto">
+            <span>Powered by</span>
+            <a href="https://anthurium.elfstack.com/cms">Anthurium</a>
+          </div>
+        </footer>
     </div>
 </body>
 </html>

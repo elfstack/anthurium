@@ -6,7 +6,13 @@
         <div class="col-md-3">
             <div class="card">
                 <div class="card-body text-center">
-                    <img class="rounded-circle mb-1" src="{{ Auth::user()->getFirstMediaUrl('avatar', 'thumb_150') }}"/>
+                    @if(Auth::check() && Auth::user()->avatar_thumb_url)
+                        <img src="{{ Auth::user()->avatar_thumb_url }}" class="avatar-photo">
+                    @elseif(Auth::check() && Auth::user()->name)
+                        <span class="avatar-initials avatar_150">{{ mb_substr(Auth::user()->name, 0, 1) }}</span>
+                    @else
+                        <span class="avatar-initials avatar_150"><i class="fa fa-user"></i></span>
+                    @endif
                     <h3 class="card-title">{{ Auth::user()->name }}</h3>
             <div class="card-body row text-center">
                 <div class="col">
