@@ -96,6 +96,13 @@ return [
             'driver' => 'monolog',
             'handler' => NullHandler::class,
         ],
+
+        'stackdriver' => [
+            'driver' => 'custom',
+            'via' => App\Logging\CreateStackdriverLogger::class,
+            'level' => 'error',
+        ],
+
     ],
 
 ];

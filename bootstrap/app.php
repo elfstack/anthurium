@@ -52,6 +52,8 @@ $app->instance(
     )
 );
 
+$app->useStoragePath(env('APP_STORAGE', base_path() . '/storage'));
+
 /*
 |--------------------------------------------------------------------------
 | Return The Application
