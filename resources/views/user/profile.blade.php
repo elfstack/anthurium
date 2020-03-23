@@ -6,7 +6,7 @@
 
     <div class="container-xl">
         <div class="mb-3">
-            <ul class="nav nav-pills sticky-top">
+            <ul class="nav nav-pills">
               <li class="nav-item">
                 <a class="nav-link active" href="/profile">Profile</a>
               </li>

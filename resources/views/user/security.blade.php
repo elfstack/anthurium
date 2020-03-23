@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'Profile')
+@section('title', 'Security')
 
 @section('content')
 
 <div class="container-xl">
     <div class="mb-3">
-        <ul class="nav nav-pills sticky-top">
+        <ul class="nav nav-pills">
           <li class="nav-item">
             <a class="nav-link" href="/profile">Profile</a>
           </li>
