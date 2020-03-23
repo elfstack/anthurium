@@ -20,7 +20,7 @@ class UpdateVolunteerInfo extends FormRequest
         $isCurrentUser = false;
 
         if ($this->user()) {
-            $isCurrentUser = $this->user_id == $this->user()->getKey();
+            $isCurrentUser = $this->route('user')->id == $this->user()->getKey();
         }
 
         return $admin || $isCurrentUser;
