@@ -34341,3 +34341,8 @@ div.trumbowyg-dropdown-table table td.active {
   font-size: 64px !important;
 }
 
+.avatar-initials,
+.avatar-photo {
+  display: inline-block !important;
+}
+
