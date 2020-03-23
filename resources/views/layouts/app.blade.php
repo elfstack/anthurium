@@ -64,9 +64,13 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right position-absolute p-0">
-                                <div class="dropdown-header">Account</div>
+                                <div class="dropdown-header">
+                                    <strong>Account</strong>
+                                </div>
                                 <a class="dropdown-item" href="{{ route('notifications') }}"><i class="fa fa-bell"></i>{{ __('Notifications') }}<span class="badge badge-primary">1</span></a>
-                                <div class="dropdown-header">Settings</div>
+                                <div class="dropdown-header">
+                                    <strong>Settings</strong>
+                                </div>
                                 <a class="dropdown-item" href="{{ route('profile') }}"><i class="fa fa-user"></i>{{ __('Profile') }}</a>
                                 <a class="dropdown-item" href="{{ route('settings') }}"><i class="fa fa-cog"></i>{{ __('Settings') }}</a>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
