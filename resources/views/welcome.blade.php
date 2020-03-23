@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<img src="/images/banner_1.jpg" class="w-100" />
 <div class="container-fluid">
+    <h1>Welcome to Anthurium</h1>
 </div>
 @endsection

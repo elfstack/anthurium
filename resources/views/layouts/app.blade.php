@@ -21,7 +21,7 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white sticky-top">
+        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm sticky-top">
             <div class="container-fluid">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Anthurium') }}
@@ -89,7 +89,7 @@
             </div>
         </nav>
 
-        <main>
+        <main class="my-3">
             <div class="modals">
                 <v-dialog/>
             </div>
@@ -98,6 +98,16 @@
             </div>
             @yield('content')
         </main>
+
+        <footer class="app-footer">
+          <div>
+            <span>&copy; 2020 {{ config('app.name', 'Anthurium') }}</span>
+          </div>
+          <div class="ml-auto">
+            <span>Powered by</span>
+            <a href="https://anthurium.elfstack.com/cms">Anthurium</a>
+          </div>
+        </footer>
     </div>
 </body>
 </html>

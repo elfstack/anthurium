@@ -2,21 +2,24 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use PermissionsSeeder;
 
 use Brackets\AdminAuth\Models\AdminUser;
 use App\User;
 
 class UserTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseTransactions;
 
     public function setUp(): void
     {
         // first include all the normal setUp operations
         parent::setUp();
+
+        $this->seed(PermissionsSeeder::class);
 
         // now re-register all the roles and permissions
         $this->app->make(\Spatie\Permission\PermissionRegistrar::class)->registerPermissions();
@@ -46,7 +49,7 @@ class UserTest extends TestCase
             'forbidden' => false
         ]);
 
-        $adminUser->assignRole('Administrator');
+        $adminUser->assignRole('administrator');
 
         // not logged in
         $response = $this->postJson('/api/user/'.$user->getKey(), [
@@ -81,7 +84,7 @@ class UserTest extends TestCase
             'forbidden' => false
         ]);
 
-        $adminUser->assignRole('Administrator');
+        $adminUser->assignRole('administrator');
 
         // not logged in
         $response = $this
