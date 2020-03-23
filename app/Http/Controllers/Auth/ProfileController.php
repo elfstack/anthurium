@@ -18,4 +18,13 @@ class ProfileController extends Controller
             'user' => $request->user(),
         ]);
     }
+
+    public function security(Request $request)
+    {
+        $user = $request->user();
+
+        return view('user.security', [
+            'recentLogins' => $user->recentLogins,
+        ]);
+    }
 }
