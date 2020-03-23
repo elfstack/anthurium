@@ -25,6 +25,7 @@ Route::get('/', function () {
 Route::middleware(['auth:' . config('admin-auth.defaults.guard'), 'admin'])->group(static function () {
     Route::prefix('admin')->namespace('Admin')->name('admin/')->group(static function() {
         Route::get('/', 'DashboardController@index');
+        Route::get('/configuration', 'ConfigureController@index');
 
         Route::prefix('admin-users')->name('admin-users/')->group(static function() {
             Route::get('/',                                             'AdminUsersController@index')->name('index');
