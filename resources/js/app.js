@@ -6,6 +6,7 @@ import VeeValidate from 'vee-validate';
 import VueCookie from 'vue-cookie';
 import Notifications from 'vue-notification';
 import VModal from 'vue-js-modal'
+import VueQrcode from '@chenfengyuan/vue-qrcode';
 import './app-components/bootstrap';
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -20,6 +21,7 @@ Vue.use(VModal, { dialog: true, dynamic: true, injectModalsContainer: true });
 Vue.use(VueCookie);
 Vue.use(VeeValidate, {strict: true});
 Vue.component('datetime', flatPickr);
+Vue.component('qrcode', VueQrcode);
 
 /**
  * The following block of code may be used to automatically register your

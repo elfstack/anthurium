@@ -99,13 +99,15 @@
             @yield('content')
         </main>
 
-        <footer class="app-footer">
+        <footer class="app-footer py-3">
+          <div class="container-xl row">
           <div>
             <span>&copy; 2020 {{ config('app.name', 'Anthurium') }}</span>
           </div>
           <div class="ml-auto">
             <span>Powered by</span>
-            <a href="https://anthurium.elfstack.com/cms">Anthurium</a>
+            <a href="https://anthurium.elfstack.com/vms">Anthurium</a>
+          </div>
           </div>
         </footer>
     </div>
