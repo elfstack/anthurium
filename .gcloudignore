@@ -16,5 +16,8 @@
 # PHP Composer dependencies:
 /vendor/
 
+# Node modules
+/node_modules/
+
 # Env
 .env
