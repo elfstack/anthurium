@@ -43,19 +43,19 @@ class ActivitiesController extends Controller
 
                     if ($time == 'past')
                     {
-                        $query->whereDate('ends_at', '<', Carbon::now());
+                        $query->where('ends_at', '<', Carbon::now());
                     } 
                     else
                     {
-                        $query->whereDate('ends_at', '>', Carbon::now());
+                        $query->where('ends_at', '>', Carbon::now());
 
                         if ($time == 'upcoming')
                         {
-                            $query->whereDate('starts_at', '>', Carbon::now());
+                            $query->where('starts_at', '>', Carbon::now());
                         }
                         else if ($time == 'ongoing') 
                         {
-                            $query->whereDate('starts_at', '<', Carbon::now());
+                            $query->where('starts_at', '<', Carbon::now());
                         }
                     }
                 }

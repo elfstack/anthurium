@@ -27,13 +27,13 @@ class DashboardController extends Controller
     {
         $activitiesParticipatedOngoing = $request->user()
             ->activitiesParticipated()
-            ->whereDate('starts_at', '<', Carbon::now())
-            ->whereDate('ends_at', '>', Carbon::now())
+            ->where('starts_at', '<', Carbon::now())
+            ->where('ends_at', '>', Carbon::now())
             ->get();
 
         $activitiesParticipatedUpcoming = $request->user()
             ->activitiesParticipated()
-            ->whereDate('starts_at', '>', Carbon::now())
+            ->where('starts_at', '>', Carbon::now())
             ->get();
 
         return view('dashboard', [

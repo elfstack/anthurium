@@ -46,7 +46,7 @@
                       <a class="list-group-item list-group-item-action flex-column align-items-start" href="/activity/{{ $actPart->id }}">
     <div class="d-flex w-100 justify-content-between">
       <h5 class="mb-1">{{ $actPart->name }}</h5>
-      <small>{{ $actPart->ends_at->diffInDays($actPart->starts_at) }} hours</small>
+      <small>{{ $actPart->ends_at->diffInHours($actPart->starts_at) }} hours</small>
     </div>
     <small>{{ $actPart['starts_at'] }} - {{ $actPart['ends_at'] }}</small>
     @if (!Auth::user()->isCheckedIn($actPart))
@@ -66,7 +66,7 @@
     <div class="d-flex w-100 justify-content-between">
       <h5 class="mb-1">{{ $actPart->name }}
 </h5>
-      <small>{{ $actPart->ends_at->diffInDays($actPart->starts_at) }} hours</small>
+      <small>{{ $actPart->ends_at->diffInHours($actPart->starts_at) }} hours</small>
     </div>
     <small>{{ $actPart['starts_at'] }} - {{ $actPart['ends_at'] }}</small>
 </a>
