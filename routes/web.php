@@ -131,7 +131,10 @@ Auth::routes(['verify' => true]);
 Route::middleware(['auth:' . config('auth.defaults.guard')])->group(static function () {
     Route::get('/activity/{activity}', 'ActivitiesController@show')->name('activities/show');
     Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+    Route::get('/notifications', 'NotificationController@index')->name('notifications');
     Route::get('/profile', 'Auth\ProfileController@profile')->name('profile');
+    Route::get('/security', 'Auth\ProfileController@security')->name('security');
+    Route::get('/settings', 'SettingsController@settings')->name('settings');
     Route::get('/activity/{activity}/checkin', 'ActivitiesController@checkin')->name('activities/checkin');
     Route::get('/activity/{activity}/checkout','ActivitiesController@checkout')->name('activities/checkout');
 });

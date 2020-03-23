@@ -248,4 +248,9 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
             ->first()['hours'] / 60;
         return round($attendanceHours, 1);
     }
+
+    public function recentLogins()
+    {
+        return $this->hasMany(\App\Models\UserRecentLogin::class);
+    }
 }
