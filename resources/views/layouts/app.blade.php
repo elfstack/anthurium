@@ -60,15 +60,19 @@
                                         <span class="d-none d-md-inline-block">{{ Auth::user()->name }}</span>
 
                                 </span>
-                                <span class="caret"></span>
+                                <span class="caret d-none d-md-inline"></span>
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right position-absolute p-0">
-                                <a class="dropdown-item" href="{{ route('profile') }}">{{ __('Profile') }}</a>
+                                <div class="dropdown-header">Account</div>
+                                <a class="dropdown-item" href="{{ route('notifications') }}"><i class="fa fa-bell"></i>{{ __('Notifications') }}<span class="badge badge-primary">1</span></a>
+                                <div class="dropdown-header">Settings</div>
+                                <a class="dropdown-item" href="{{ route('profile') }}"><i class="fa fa-user"></i>{{ __('Profile') }}</a>
+                                <a class="dropdown-item" href="{{ route('settings') }}"><i class="fa fa-cog"></i>{{ __('Settings') }}</a>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                    onclick="event.preventDefault();
                                                  document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
+                                    <i class="fa fa-sign-out"></i>{{ __('Logout') }}
                                 </a>
 
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
