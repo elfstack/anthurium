@@ -52,18 +52,24 @@ class ActivitiesController extends Controller
 
                 $upcoming = DB::table('activities')
                     ->where('starts_at','>', Carbon::now())
+                    ->select(['*'])
+                    ->addSelect(DB::raw('1 as status'))
                     ->orderby('starts_at', 'desc');
-
 
                 $past = DB::table('activities')
                     ->where('ends_at','<', Carbon::now())
+                    ->select(['*'])
+                    ->addSelect(DB::raw('3 as status'))
                     ->orderby('starts_at', 'desc');
 
                 $query->where('starts_at','<' ,Carbon::now())
                     ->where('ends_at','>', Carbon::now())
+                    ->select(['*'])
+                    ->addSelect(DB::raw('2 as status'))
                     ->orderby('starts_at', 'desc')
                     ->union($upcoming)
-                    ->union($past);
+                    ->union($past)
+                    ->orderby('status', 'asc');
 
 
             }
