@@ -21,6 +21,7 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use Carbon\Carbon;
 use OTPHP\TOTP;
 
 class ActivitiesController extends Controller
@@ -40,10 +41,32 @@ class ActivitiesController extends Controller
             $request,
 
             // set columns to query
-            ['id', 'name', 'starts_at', 'ends_at', 'quota'],
+            // ['id', 'name', 'starts_at', 'ends_at', 'quota'],
+            ['*'],
 
             // set columns to searchIn
-            ['id', 'name', 'content']
+            ['id', 'name', 'content'],
+
+            function ($query) {
+
+
+                $upcoming = DB::table('activities')
+                    ->where('starts_at','>', Carbon::now())
+                    ->orderby('starts_at', 'desc');
+
+
+                $past = DB::table('activities')
+                    ->where('ends_at','<', Carbon::now())
+                    ->orderby('starts_at', 'desc');
+
+                $query->where('starts_at','<' ,Carbon::now())
+                    ->where('ends_at','>', Carbon::now())
+                    ->orderby('starts_at', 'desc')
+                    ->union($upcoming)
+                    ->union($past);
+
+
+            }
         );
 
         if ($request->ajax()) {
