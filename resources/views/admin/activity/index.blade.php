@@ -70,14 +70,18 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="(item, index) in collection" :key="item.id" :class="bulkItems[item.id] ? 'bg-bulk' : '' + ' ' + item.status == 1 ? 'table-success' : item.status == 2 ? 'table-primary' : 'table-secondary'">
+                                    <tr
+                                        v-for="(item, index) in collection"
+                                        :key="item.id"
+                                        :class="bulkItems[item.id] ? 'bg-bulk' : '' + ' ' + item.statusN == 1 ? 'table-success' : item.statusN == 2 ? 'table-primary' : 'table-secondary'"
+                                    >
                                         <td class="bulk-checkbox">
                                             <input class="form-check-input" :id="'enabled' + item.id" type="checkbox" v-model="bulkItems[item.id]" v-validate="''" :data-vv-name="'enabled' + item.id"  :name="'enabled' + item.id + '_fake_element'" @click="onBulkItemClicked(item.id)" :disabled="bulkCheckingAllLoader">
                                             <label class="form-check-label" :for="'enabled' + item.id">
                                             </label>
                                         </td>
 
-                                    <td>@{{ item.id }}</td>
+                                        <td>@{{ item.id }}</td>
                                         <td>@{{ item.name }}</td>
                                         <td>@{{ item.starts_at | datetime }}</td>
                                         <td>@{{ item.ends_at | datetime }}</td>
@@ -85,6 +89,9 @@
 
                                         <td>
                                             <div class="row no-gutters">
+                                                <div class="col">
+                                                    <a class="btn btn-sm btn-spinner btn-info" :href="item.resource_url" title="{{ trans('brackets/admin-ui::admin.btn.show') }}" role="button"><i class="fa fa-eye"></i></a>
+                                                </div>
                                                 <div class="col">
                                                     <a class="btn btn-sm btn-spinner btn-info" :href="item.resource_url + '/checkin'" title="{{ trans('brackets/admin-ui::admin.btn.checkin') }}" role="button"><i class="fa fa-qrcode"></i></a>
                                                 </div>

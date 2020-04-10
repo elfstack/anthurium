@@ -36,7 +36,7 @@
     </div>
     <div class="card">
         <div class="card-header">
-            <i class="fa fa-lock"></i>Two-factor Authentication 
+            <i class="fa fa-lock"></i>Two-factor Authentication
         </div>
 
         <div class="card-body">
@@ -63,10 +63,10 @@
                 </div>
             </div>
         </div>
-                    
+
         <div class="card-footer">
-            <button type="submit" class="btn btn-primary" :disabled="submiting">
-                <i class="fa" :class="submiting ? 'fa-spinner' : 'fa-check'"></i>
+            <button type="submit" class="btn btn-primary">
+                <i class="fa" ></i>
                     {{ trans('brackets/admin-ui::admin.btn.save') }}
             </button>
         </div>

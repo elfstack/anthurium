@@ -14,11 +14,11 @@ class Participant extends Pivot
         'user_id',
         'attendance_id',
     ];
-    
-    
+
+
     protected $dates = [
         'enrolled_at',
-    
+
     ];
 
     const CREATED_AT = 'enrolled_at';
@@ -26,7 +26,7 @@ class Participant extends Pivot
     const UPDATED_AT = null;
 
     protected $table = 'participants';
-    
+
     protected $appends = ['resource_url'];
 
     /* ************************ ACCESSOR ************************* */
@@ -49,5 +49,10 @@ class Participant extends Pivot
     public function activity()
     {
         return $this->belongsTo(Activity::class);
+    }
+
+    public function expel()
+    {
+        // TODO: expel this participant
     }
 }

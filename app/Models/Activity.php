@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Activity extends Model
@@ -13,17 +14,17 @@ class Activity extends Model
         'ends_at',
         'content',
         'quota',
-    
+
     ];
-    
-    
+
+
     protected $dates = [
         'starts_at',
         'ends_at',
-    
+
     ];
     public $timestamps = false;
-    
+
     protected $appends = ['resource_url' ,'participants_count'];
 
     /* ************************ ACCESSOR ************************* */
@@ -70,5 +71,17 @@ class Activity extends Model
         }
 
         return $this->participants()->whereNotNull('attendance_id')->count() / $this->participants()->count() * 100;
+    }
+
+    public function getStatusAttribute()
+    {
+        $now = Carbon::now();
+        if ($this->starts_at > $now) {
+            return 'upcoming';
+        } else if ($this->ends_at < $now) {
+            return 'past';
+        } else {
+            return 'ongoing';
+        }
     }
 }

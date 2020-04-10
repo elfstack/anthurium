@@ -61,9 +61,11 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard'), 'admin'])->gro
             Route::get('/',                                             'ActivitiesController@index')->name('index');
             Route::get('/create',                                       'ActivitiesController@create')->name('create');
             Route::post('/',                                            'ActivitiesController@store')->name('store');
-            Route::get('/{activity}',                              'ActivitiesController@show')->name('show');
-            Route::get('/{activity}/checkin',                              'ActivitiesController@checkin')->name('checkin');
-            Route::get('/{activity}/checkin/otp',                              'ActivitiesController@checkinOtp')->name('checkin/otp');
+            Route::get('/{activity}',                                   'ActivitiesController@show')->name('show');
+            Route::get('/{activity}/participants',                      'ActivitiesController@showParticipants')->name('show-participants');
+            Route::get('/{activity}/budgets',                           'ActivitiesController@showBudgets')->name('show-budgets');
+            Route::get('/{activity}/checkin',                           'ActivitiesController@checkin')->name('checkin');
+            Route::get('/{activity}/checkin/otp',                       'ActivitiesController@checkinOtp')->name('checkin/otp');
             Route::get('/{activity}/edit',                              'ActivitiesController@edit')->name('edit');
             Route::post('/bulk-destroy',                                'ActivitiesController@bulkDestroy')->name('bulk-destroy');
             Route::post('/{activity}',                                  'ActivitiesController@update')->name('update');

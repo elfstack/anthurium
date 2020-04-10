@@ -53,23 +53,23 @@ class ActivitiesController extends Controller
                 $upcoming = DB::table('activities')
                     ->where('starts_at','>', Carbon::now())
                     ->select(['*'])
-                    ->addSelect(DB::raw('1 as status'))
+                    ->addSelect(DB::raw('2 as statusN'))
                     ->orderby('starts_at', 'desc');
 
                 $past = DB::table('activities')
                     ->where('ends_at','<', Carbon::now())
                     ->select(['*'])
-                    ->addSelect(DB::raw('3 as status'))
+                    ->addSelect(DB::raw('3 as statusN'))
                     ->orderby('starts_at', 'desc');
 
                 $query->where('starts_at','<' ,Carbon::now())
                     ->where('ends_at','>', Carbon::now())
                     ->select(['*'])
-                    ->addSelect(DB::raw('2 as status'))
+                    ->addSelect(DB::raw('1 as statusN'))
                     ->orderby('starts_at', 'desc')
                     ->union($upcoming)
                     ->union($past)
-                    ->orderby('status', 'asc');
+                    ->orderby('statusN', 'asc');
 
 
             }
@@ -267,5 +267,19 @@ class ActivitiesController extends Controller
         });
 
         return response(['message' => trans('brackets/admin-ui::admin.operation.succeeded')]);
+    }
+
+    public function showParticipants(Activity $activity)
+    {
+        return view('admin.activity.participants', [
+            'activity' => $activity
+        ]);
+    }
+
+    public function showBudgets(Activity $activity)
+    {
+        return view('admin.activity.budgets', [
+            'activity' => $activity
+        ]);
     }
 }

@@ -3,7 +3,7 @@ version: '3.6'
 services:
     anthurium:
         tty: true
-        image: bitnami/laravel:6.4.0
+        image: dodaydream/laravel:latest
         environment:
             - DB_HOST=mysql
             - DB_USERNAME=root
@@ -19,4 +19,4 @@ services:
             - MYSQL_ROOT_PASSWORD=secret
             - MYSQL_DATABASE=anthurium
         ports:
-            - 3306:33060
+            - 33060:3306
