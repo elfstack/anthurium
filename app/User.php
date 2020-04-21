@@ -163,7 +163,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
 
     public function attendance() {
         return $this->hasMany(Attendance::class);
-    } 
+    }
 
     /* ************************ METHODS ************************ */
 
@@ -206,7 +206,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         if ($this->isCheckedIn($activity)) {
             throw new UserAlreadyCheckedInException("User already checked in");
         }
-        
+
         $attendance = $activity->attendance()->create([
             'arrived_at' => Carbon::now(),
             'user_id' => $this->id
@@ -252,5 +252,10 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     public function recentLogins()
     {
         return $this->hasMany(\App\Models\UserRecentLogin::class);
+    }
+
+    public function otp()
+    {
+        return $this->hasOne(\App\Models\OTP::class);
     }
 }

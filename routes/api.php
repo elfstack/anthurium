@@ -51,7 +51,10 @@ Route::middleware(['auth:'.config('admin-auth.defaults.guard')])->group(static f
 // Route for user only
 Route::middleware(['auth:'.config('auth.defaults.guard')])->group(static function () {
     Route::patch('/activity/{activity}/participants', 'ActivitiesController@enroll')->name('activities/enroll');
+    Route::post('/otp/enable', 'OTPController@enable');
+    Route::post('/otp/verify', 'OTPController@verify');
 });
+
 
 
 
