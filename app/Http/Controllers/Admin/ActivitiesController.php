@@ -10,12 +10,14 @@ use App\Http\Requests\Admin\Participant\IndexParticipant;
 use App\Http\Requests\Admin\Activity\StoreActivity;
 use App\Http\Requests\Admin\Activity\UpdateActivity;
 use App\Models\Activity;
+use App\Models\BudgetCategory;
 use App\Models\Participant;
 use Brackets\AdminListing\Facades\AdminListing;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
@@ -279,7 +281,29 @@ class ActivitiesController extends Controller
     public function showBudgets(Activity $activity)
     {
         return view('admin.activity.budgets', [
-            'activity' => $activity
+            'activity' => $activity,
+            'budgetCategory' => BudgetCategory::all()
+        ]);
+    }
+
+    /**
+     * Get activity budgets
+     *
+     * @api /activity/{id}/budgets
+     * @param Activity $activity
+     *
+     * @return JsonResponse
+     */
+    public function budgets(Activity $activity)
+    {
+        $budgets = $activity->budgets();
+        $totalExpenses = $budgets->sum('expense');
+        $totalBudgets = $budgets->sum('budget');
+
+        return JsonResponse::create([
+            'totalExpenses' => $totalExpenses,
+            'totalBudgets' => $totalBudgets,
+            'details' => $budgets->with(['budgetCategory'])->get()->groupBy('budgetCategory.name')
         ]);
     }
 }

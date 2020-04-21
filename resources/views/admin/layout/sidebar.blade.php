@@ -8,6 +8,10 @@
            <li class="nav-item"><a class="nav-link" href="{{ url('admin/participants') }}"><i class="nav-icon icon-magnet"></i> {{ trans('admin.participant.title') }}</a></li>
            {{-- Do not delete me :) I'm used for auto-generation menu items --}}
 
+
+            <li class="nav-title">@lang('admin.sidebar.configuration')</li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('admin/budget-categories') }}"><i class="nav-icon icon-drop"></i> {{ trans('admin.budget-category.title') }}</a></li>
+
             <li class="nav-title">@lang('admin.sidebar.manage')</li>
             <li class="nav-item"><a class="nav-link" href="{{ url('admin/admin-users') }}"><i class="nav-icon icon-user"></i>@lang('admin.admin-management')</a></li>
             {{-- Do not delete me :) I'm also used for auto-generation menu items --}}

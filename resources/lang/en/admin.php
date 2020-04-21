@@ -157,5 +157,41 @@ return [
         'manage' => 'Manage'
     ],
 
+    'budget-category' => [
+        'title' => 'Budget Categories',
+
+        'actions' => [
+            'index' => 'Budget Categories',
+            'create' => 'New Budget Category',
+            'edit' => 'Edit :name',
+        ],
+
+        'columns' => [
+            'id' => 'ID',
+            'name' => 'Name',
+            
+        ],
+    ],
+
+    'budget' => [
+        'title' => 'Budgets',
+
+        'actions' => [
+            'index' => 'Budgets',
+            'create' => 'New Budget',
+            'edit' => 'Edit :name',
+        ],
+
+        'columns' => [
+            'id' => 'ID',
+            'activity_id' => 'Activity',
+            'budget_category_id' => 'Budget category',
+            'budget' => 'Budget',
+            'expense' => 'Expense',
+            'name' => 'Name',
+            
+        ],
+    ],
+
     // Do not delete me :) I'm used for auto-generation
 ];

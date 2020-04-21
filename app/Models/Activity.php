@@ -84,4 +84,9 @@ class Activity extends Model
             return 'ongoing';
         }
     }
+
+    public function budgets()
+    {
+        return $this->hasMany(Budget::class);
+    }
 }

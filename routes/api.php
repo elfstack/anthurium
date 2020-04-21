@@ -36,7 +36,16 @@ Route::middleware(['auth:'.config('admin-auth.defaults.guard')])->group(static f
         Artisan::call('config:clear');
         return "Config cache cleared";
     });
+
+    Route::get('/activity/{activity}/budgets', 'Admin\ActivitiesController@budgets');
+
+    Route::prefix('/activity/{activity}')->name('activity/budgets/')->group(static function() {
+            Route::post('/budgets', 'Admin\BudgetsController@store')->name('store');
+            Route::post('/budget/{budget}', 'Admin\BudgetsController@update')->name('update');
+            Route::delete('/budget/{budget}', 'Admin\BudgetsController@destroy')->name('destroy');
+    });
 });
+
 
 
 // Route for user only

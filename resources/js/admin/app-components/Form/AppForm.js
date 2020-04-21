@@ -1,5 +1,5 @@
-import { BaseForm } from 'craftable';
+import {BaseForm} from 'craftable';
 
 export default {
-	mixins: [BaseForm]
+    mixins: [BaseForm]
 };

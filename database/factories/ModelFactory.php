@@ -84,3 +84,25 @@ $factory->define(App\Models\Participant::class, static function (Faker\Generator
         
     ];
 });
+/** @var  \Illuminate\Database\Eloquent\Factory $factory */
+$factory->define(App\Models\BudgetCategory::class, static function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->firstName,
+        
+        
+    ];
+});
+/** @var  \Illuminate\Database\Eloquent\Factory $factory */
+$factory->define(App\Models\Budget::class, static function (Faker\Generator $faker) {
+    return [
+        'activity_id' => $faker->sentence,
+        'budget_category_id' => $faker->sentence,
+        'budget' => $faker->randomNumber(5),
+        'expense' => $faker->randomNumber(5),
+        'name' => $faker->firstName,
+        'created_at' => $faker->dateTime,
+        'updated_at' => $faker->dateTime,
+        
+        
+    ];
+});

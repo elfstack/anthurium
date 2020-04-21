@@ -8,3 +8,5 @@ import './attendance';
 import './participant';
 
 import '../components/participant';
+import './budget-category';
+import './budget';

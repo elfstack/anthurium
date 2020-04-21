@@ -37,3 +37,21 @@ Route::middleware(['auth:' . config('auth.defaults.guard') .','.config('admin-au
     });
 });
 
+
+
+/* Auto-generated admin routes */
+Route::middleware(['auth:' . config('admin-auth.defaults.guard'), 'admin'])->group(static function () {
+    Route::prefix('admin')->namespace('Admin')->name('admin/')->group(static function() {
+        Route::prefix('budget-categories')->name('budget-categories/')->group(static function() {
+            Route::get('/',                                             'BudgetCategoriesController@index')->name('index');
+            Route::get('/create',                                       'BudgetCategoriesController@create')->name('create');
+            Route::post('/',                                            'BudgetCategoriesController@store')->name('store');
+            Route::get('/{budgetCategory}/edit',                        'BudgetCategoriesController@edit')->name('edit');
+            Route::post('/bulk-destroy',                                'BudgetCategoriesController@bulkDestroy')->name('bulk-destroy');
+            Route::post('/{budgetCategory}',                            'BudgetCategoriesController@update')->name('update');
+            Route::delete('/{budgetCategory}',                          'BudgetCategoriesController@destroy')->name('destroy');
+        });
+    });
+});
+
+
