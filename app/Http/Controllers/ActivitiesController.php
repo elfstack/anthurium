@@ -2,23 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Activity\IndexActivity;
 use App\Models\Activity;
-use App\Models\Participant;
 use App\User;
 use Brackets\AdminListing\Facades\AdminListing;
-use Exception;
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Contracts\Routing\ResponseFactory;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Response;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Redirector;
-use Illuminate\Support\Facades\DB;
-use Illuminate\View\View;
 use Carbon\Carbon;
-use App\Http\Requests\Activity\IndexActivity;
-use OTPHP\TOTP;
+use Illuminate\Http\Request;
 
 class ActivitiesController extends Controller
 {
@@ -37,14 +26,14 @@ class ActivitiesController extends Controller
             ['id', 'name', 'content'],
 
             function ($query) use ($request) {
-                if ($request->has('status')) 
+                if ($request->has('status'))
                 {
                     $time = $request->input('status');
 
                     if ($time == 'past')
                     {
                         $query->where('ends_at', '<', Carbon::now());
-                    } 
+                    }
                     else
                     {
                         $query->where('ends_at', '>', Carbon::now());
@@ -53,7 +42,7 @@ class ActivitiesController extends Controller
                         {
                             $query->where('starts_at', '>', Carbon::now());
                         }
-                        else if ($time == 'ongoing') 
+                        else if ($time == 'ongoing')
                         {
                             $query->where('starts_at', '<', Carbon::now());
                         }
@@ -69,7 +58,7 @@ class ActivitiesController extends Controller
         }
         return ['data' => $data];
     }
-    
+
     public function enroll(Activity $activity, Request $request) {
         $status = $request->user()->enroll($activity);
 
@@ -79,16 +68,34 @@ class ActivitiesController extends Controller
     }
 
     public function show(Activity $activity, Request $request) {
-        $user = $request->user();
+        if (!$activity->is_public) {
+            $user = $request->user();
 
-        if ($request->has('token')) {
-            $this->checkin($activity, $user, $request->input('token'));  
-        };
+            if (!$user) {
+                abort('403', 'Forbidden');
+            }
 
-        return view('activity.show', [
-            'activity' => $activity,
-            'user_is_enrolled' => $user ? $user->isParticipant($activity) : false 
-        ]);
+            if ($request->has('token')) {
+                $this->checkin($activity, $user, $request->input('token'));
+            };
+
+            return view('activity.show', [
+                'activity' => $activity,
+                'user_is_enrolled' => $user ? $user->isParticipant($activity) : false
+            ]);
+
+        } else {
+            // TODO: guest is participated
+            if ($request->has('token')) {
+                // TODO: guest way to checkin
+            }
+
+            // TODO: unenrolled
+            return view('activity.show', [
+                'activity' => $activity,
+                'user_is_enrolled' => false
+            ]);
+        }
     }
 
     /**

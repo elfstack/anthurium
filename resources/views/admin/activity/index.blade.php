@@ -82,7 +82,7 @@
                                         </td>
 
                                         <td>@{{ item.id }}</td>
-                                        <td>@{{ item.name }}</td>
+                                        <td><span class="text-danger pr-1" v-if="!item.is_published">Draft</span>@{{ item.name }}</td>
                                         <td>@{{ item.starts_at | datetime }}</td>
                                         <td>@{{ item.ends_at | datetime }}</td>
                                         <td>@{{ item.quota }}</td>

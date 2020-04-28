@@ -14,15 +14,20 @@ class Activity extends Model
         'ends_at',
         'content',
         'quota',
-
+        'is_published',
+        'is_public'
     ];
-
 
     protected $dates = [
         'starts_at',
         'ends_at',
-
     ];
+
+    protected $casts = [
+        'is_published' => 'boolean',
+        'is_public' => 'boolean'
+    ];
+
     public $timestamps = false;
 
     protected $appends = ['resource_url' ,'participants_count'];

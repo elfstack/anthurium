@@ -22,6 +22,9 @@
                 <a class="nav-link {{ Request::is('admin/activities/*/itinerary') ? 'active' : null }}" href="{{ '/admin/activities/'.$activity->id.'/itinerary' }}">Itinerary</a>
             </li>
         </ul>
+
+        <div class="flex-md-fill">
+        </div>
     </div>
 
     @yield('contents')

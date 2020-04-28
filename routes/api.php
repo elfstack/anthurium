@@ -17,6 +17,7 @@ Route::middleware(['auth:'.config('auth.defaults.guard').','.config('admin-auth.
     Route::post('/user/{user}', 'Admin\UsersController@update')->name('user/update');
     Route::post('/user/{user}/volunteer-info', 'Admin\VolunteerInfoController@update')->name('user/volunteer-info/update');
     Route::get('/activities', 'ActivitiesController@index')->name('activities/index');
+
     Route::get('/activity/{activity}/participants', 'Admin\ActivitiesController@participants')->name('show/participants');
 });
 
@@ -38,6 +39,7 @@ Route::middleware(['auth:'.config('admin-auth.defaults.guard')])->group(static f
     });
 
     Route::get('/activity/{activity}/budgets', 'Admin\ActivitiesController@budgets');
+    Route::patch('/activity/{activity}/visibility', 'Admin\ActivitiesController@updateVisibility')->name('activity/visibility');
 
     Route::prefix('/activity/{activity}')->name('activity/budgets/')->group(static function() {
             Route::post('/budgets', 'Admin\BudgetsController@store')->name('store');

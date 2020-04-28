@@ -19,6 +19,7 @@ use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
@@ -51,29 +52,35 @@ class ActivitiesController extends Controller
 
             function ($query) {
 
+                $draft = DB::table('activities')
+                    ->where('is_published', false)
+                    ->select(['*'])
+                    ->addSelect(DB::raw('0 as statusN'));
 
                 $upcoming = DB::table('activities')
+                    ->where('is_published', true)
                     ->where('starts_at','>', Carbon::now())
                     ->select(['*'])
                     ->addSelect(DB::raw('2 as statusN'))
                     ->orderby('starts_at', 'desc');
 
                 $past = DB::table('activities')
+                    ->where('is_published', true)
                     ->where('ends_at','<', Carbon::now())
                     ->select(['*'])
                     ->addSelect(DB::raw('3 as statusN'))
                     ->orderby('starts_at', 'desc');
 
-                $query->where('starts_at','<' ,Carbon::now())
+                $query->where('is_published', true)
+                    ->where('starts_at','<' ,Carbon::now())
                     ->where('ends_at','>', Carbon::now())
                     ->select(['*'])
                     ->addSelect(DB::raw('1 as statusN'))
                     ->orderby('starts_at', 'desc')
+                    ->union($draft)
                     ->union($upcoming)
                     ->union($past)
                     ->orderby('statusN', 'asc');
-
-
             }
         );
 
@@ -228,6 +235,22 @@ class ActivitiesController extends Controller
         }
 
         return redirect('admin/activities');
+    }
+
+    /**
+     * Update the visibility for activity (published | public)
+     * @param Request $request
+     * @param Activity $activity
+     */
+    public function updateVisibility(Request $request, Activity $activity) {
+        $sanitized = $request->validate([
+            'is_published' => 'sometimes|boolean',
+            'is_public' => 'sometimes|boolean'
+        ]);
+
+        $activity->update($sanitized);
+
+        return [ 'message' => 'success'];
     }
 
     /**

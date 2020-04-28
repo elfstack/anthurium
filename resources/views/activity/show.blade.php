@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', $activity->name)
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -17,7 +19,7 @@
             <div class="col">
                 <div class="card mb-4">
                     <div class="card-header bg-white">
-                        Participants 
+                        Participants
                     </div>
                     <div class="card-body" v-cloak>
                             <form @submit.prevent="">
@@ -32,7 +34,7 @@
                                     </div>
                                     <div class="col-sm-auto form-group ">
                                         <select class="form-control" v-model="pagination.state.per_page">
-                                            
+
                                             <option value="10">10</option>
                                             <option value="25">25</option>
                                             <option value="100">100</option>
@@ -122,7 +124,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <button-enroll
                 :status="{{ $user_is_enrolled ? 'true' : 'false' }}"
                 :activity="{{ $activity->toJson() }}"

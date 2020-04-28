@@ -10,6 +10,8 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/activity/{activity}', 'ActivitiesController@show')->name('activities/show');
+
 Auth::routes(['verify' => true]);
 
 Route::middleware(['auth:' . config('auth.defaults.guard')])->group(static function () {
@@ -18,7 +20,6 @@ Route::middleware(['auth:' . config('auth.defaults.guard')])->group(static funct
             return redirect('/dashboard');
         }
     });
-    Route::get('/activity/{activity}', 'ActivitiesController@show')->name('activities/show');
     Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
     Route::get('/notifications', 'NotificationController@index')->name('notifications');
     Route::get('/profile', 'Auth\ProfileController@profile')->name('profile');
