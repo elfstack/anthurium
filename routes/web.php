@@ -25,8 +25,8 @@ Route::middleware(['auth:' . config('auth.defaults.guard')])->group(static funct
     Route::get('/profile', 'Auth\ProfileController@profile')->name('profile');
     Route::get('/security', 'Auth\ProfileController@security')->name('security');
     Route::get('/settings', 'SettingsController@settings')->name('settings');
-    Route::get('/activity/{activity}/checkin', 'ActivitiesController@checkin')->name('activities/checkin');
-    Route::get('/activity/{activity}/checkout','ActivitiesController@checkout')->name('activities/checkout');
+    Route::get('/activity/{activity}/checkin', 'ActivitiesController@checkin')->name('activity/checkin');
+    Route::get('/activity/{activity}/checkout','ActivitiesController@checkout')->name('activity/checkout');
 });
 
 

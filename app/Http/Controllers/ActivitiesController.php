@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\UserAlreadyCheckedInException;
+use App\Exceptions\UserNotParticipatedException;
 use App\Http\Requests\Activity\IndexActivity;
 use App\Models\Activity;
 use App\User;
 use Brackets\AdminListing\Facades\AdminListing;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class ActivitiesController extends Controller
 {
@@ -106,13 +109,17 @@ class ActivitiesController extends Controller
      *
      * @return void
      */
-    private function checkin(Activity $activity, User $user, $token) {
+    public function checkin(Request $request, Activity $activity) {
         // TODO: disable checkin for past activities
 
-        $otp = resolve(\OTPHP\TOTP::class);
-
-        if ($otp->verify($token)) {
-            $user->checkin($activity);
+        if ($request->hasValidSignature()) {
+            try {
+                $request->user()->checkin($activity);
+            } catch (UserAlreadyCheckedInException $e) {
+                return 'already checked in';
+            } catch (UserNotParticipatedException $e) {
+                return 'NotParticipated';
+            }
         } else {
             // TODO: abort should be replaced with better error message
             abort(400, 'Incorrect token or expired');

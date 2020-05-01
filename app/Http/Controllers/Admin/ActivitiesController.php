@@ -23,6 +23,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
 use Illuminate\View\View;
 use Carbon\Carbon;
 use OTPHP\TOTP;
@@ -136,12 +137,15 @@ class ActivitiesController extends Controller
         ]);
     }
 
-    public function checkinOtp(Activity $activity)
+    // TODO: rename
+    public function checkInUrl(Activity $activity)
     {
-        $otp = resolve(\OTPHP\TOTP::class);
-
         return [
-            'otp' => $otp->now()
+            'url' => URL::temporarySignedRoute(
+                'activity/checkin',
+                    now()->addRealSeconds(30),
+                [ 'activity' => $activity->id ]
+            )
         ];
     }
 

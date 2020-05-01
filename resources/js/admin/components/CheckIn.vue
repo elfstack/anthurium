@@ -36,13 +36,13 @@ export default {
         'qrcode': VueQrcode
     },
     created () {
-        this.getOTP();
-        setInterval(this.getOTP, 10000);
+        this.refreshUrl();
+        setInterval(this.refreshUrl, 30000);
     },
     methods: {
-        getOTP () {
-            window.axios.get('/admin/activities/' + this.activityId + '/checkin/otp').then(({data}) => {
-                this.tokenUrl = this.url + '/activity/' + this.activityId + '?token=' + data.otp
+        refreshUrl () {
+            window.axios.get('/admin/activities/' + this.activityId + '/checkin/url').then(({data}) => {
+                this.tokenUrl = data.url
             })
         }
     }
