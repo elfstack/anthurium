@@ -15,7 +15,8 @@ class Activity extends Model
         'content',
         'quota',
         'is_published',
-        'is_public'
+        'is_public',
+        'visible_to'
     ];
 
     protected $dates = [
@@ -25,7 +26,8 @@ class Activity extends Model
 
     protected $casts = [
         'is_published' => 'boolean',
-        'is_public' => 'boolean'
+        'is_public' => 'boolean',
+        'visible_to' => 'array'
     ];
 
     public $timestamps = false;

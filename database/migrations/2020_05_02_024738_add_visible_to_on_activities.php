@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddIsPublishedAndIsPublicColumnsToActivities extends Migration
+class AddVisibleToOnActivities extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,7 @@ class AddIsPublishedAndIsPublicColumnsToActivities extends Migration
     public function up()
     {
         Schema::table('activities', function (Blueprint $table) {
-            $table->boolean('is_public')->default(false);
-            $table->boolean('is_published')->default(false);
+            $table->string('visible_to', 255)->default('[]');
         });
     }
 
@@ -27,8 +26,7 @@ class AddIsPublishedAndIsPublicColumnsToActivities extends Migration
     public function down()
     {
         Schema::table('activities', function (Blueprint $table) {
-            $table->dropColumn('is_public');
-            $table->dropColumn('is_published');
+            $table->dropColumn('visible_to');
         });
     }
 }

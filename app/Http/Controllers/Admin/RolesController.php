@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\User\BulkDestroyUser;
-use App\Http\Requests\Admin\User\DestroyUser;
-use App\Http\Requests\Admin\User\IndexUser;
-use App\Http\Requests\Admin\User\StoreUser;
-use App\Http\Requests\Admin\User\UpdateUser;
-use App\User;
+use App\Http\Requests\Admin\Role\BulkDestroyRole;
+use App\Http\Requests\Admin\Role\DestroyRole;
+use App\Http\Requests\Admin\Role\IndexRole;
+use App\Http\Requests\Admin\Role\StoreRole;
+use App\Http\Requests\Admin\Role\UpdateRole;
+use App\Models\Role;
 use Brackets\AdminListing\Facades\AdminListing;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -19,30 +19,28 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
-use Spatie\Permission\Models\Role;
 
-class UsersController extends Controller
+class RolesController extends Controller
 {
 
-    private $guard = 'web';
     /**
      * Display a listing of the resource.
      *
-     * @param IndexUser $request
+     * @param IndexRole $request
      * @return array|Factory|View
      */
-    public function index(IndexUser $request)
+    public function index(IndexRole $request)
     {
         // create and AdminListing instance for a specific model and
-        $data = AdminListing::create(User::class)->processRequestAndGet(
+        $data = AdminListing::create(Role::class)->processRequestAndGet(
             // pass the request with params
             $request,
 
             // set columns to query
-            ['id', 'name', 'email', 'email_verified_at'],
+            ['id', 'name', 'guard_name'],
 
             // set columns to searchIn
-            ['id', 'name', 'email']
+            ['id', 'name', 'guard_name']
         );
 
         if ($request->ajax()) {
@@ -54,7 +52,7 @@ class UsersController extends Controller
             return ['data' => $data];
         }
 
-        return view('admin.user.index', ['data' => $data]);
+        return view('admin.role.index', ['data' => $data]);
     }
 
     /**
@@ -65,46 +63,42 @@ class UsersController extends Controller
      */
     public function create()
     {
-        $this->authorize('admin.user.create');
+        $this->authorize('admin.role.create');
 
-        return view('admin.user.create', [
-            'roles' => Role::where('guard_name', $this->guard)->get(),
-        ]);
+        return view('admin.role.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreUser $request
+     * @param StoreRole $request
      * @return array|RedirectResponse|Redirector
      */
-    public function store(StoreUser $request)
+    public function store(StoreRole $request)
     {
         // Sanitize input
-        $sanitized = $request->getModifiedData();
+        $sanitized = $request->getSanitized();
 
-        // Store the User
-        $user = User::create($sanitized);
-
-        $user->roles()->sync(collect($request->input('roles', []))->map->id->toArray());
+        // Store the Role
+        $role = Role::create($sanitized);
 
         if ($request->ajax()) {
-            return ['redirect' => url('admin/users'), 'message' => trans('brackets/admin-ui::admin.operation.succeeded')];
+            return ['redirect' => url('admin/roles'), 'message' => trans('brackets/admin-ui::admin.operation.succeeded')];
         }
 
-        return redirect('admin/users');
+        return redirect('admin/roles');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param User $user
+     * @param Role $role
      * @throws AuthorizationException
      * @return void
      */
-    public function show(User $user)
+    public function show(Role $role)
     {
-        $this->authorize('admin.user.show', $user);
+        $this->authorize('admin.role.show', $role);
 
         // TODO your code goes here
     }
@@ -112,57 +106,56 @@ class UsersController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param User $user
+     * @param Role $role
      * @throws AuthorizationException
      * @return Factory|View
      */
-    public function edit(User $user)
+    public function edit(Role $role)
     {
-        $this->authorize('admin.user.edit', $user);
+        $this->authorize('admin.role.edit', $role);
 
-        $user->load('roles');
 
-        return view('admin.user.edit', [
-            'user' => $user,
-            'roles' => Role::where('guard_name', $this->guard)->get(),
+        return view('admin.role.edit', [
+            'role' => $role,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param UpdateUser $request
-     * @param User $user
+     * @param UpdateRole $request
+     * @param Role $role
      * @return array|RedirectResponse|Redirector
      */
-    public function update(UpdateUser $request, User $user)
+    public function update(UpdateRole $request, Role $role)
     {
         // Sanitize input
-        $sanitized = $request->getModifiedData();
+        $sanitized = $request->getSanitized();
 
-        // Update changed values User
-        $user->update($sanitized);
+        // Update changed values Role
+        $role->update($sanitized);
 
-        if ($request->input('roles')) {
-            $user->roles()->sync(collect($request->input('roles', []))->map->id->toArray());
+        if ($request->ajax()) {
+            return [
+                'redirect' => url('admin/roles'),
+                'message' => trans('brackets/admin-ui::admin.operation.succeeded'),
+            ];
         }
 
-        return [
-            'message' => trans('brackets/admin-ui::admin.operation.succeeded'),
-        ];
+        return redirect('admin/roles');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param DestroyUser $request
-     * @param User $user
+     * @param DestroyRole $request
+     * @param Role $role
      * @throws Exception
      * @return ResponseFactory|RedirectResponse|Response
      */
-    public function destroy(DestroyUser $request, User $user)
+    public function destroy(DestroyRole $request, Role $role)
     {
-        $user->delete();
+        $role->delete();
 
         if ($request->ajax()) {
             return response(['message' => trans('brackets/admin-ui::admin.operation.succeeded')]);
@@ -174,17 +167,17 @@ class UsersController extends Controller
     /**
      * Remove the specified resources from storage.
      *
-     * @param BulkDestroyUser $request
+     * @param BulkDestroyRole $request
      * @throws Exception
      * @return Response|bool
      */
-    public function bulkDestroy(BulkDestroyUser $request) : Response
+    public function bulkDestroy(BulkDestroyRole $request) : Response
     {
         DB::transaction(static function () use ($request) {
             collect($request->data['ids'])
                 ->chunk(1000)
                 ->each(static function ($bulkChunk) {
-                    User::whereIn('id', $bulkChunk)->delete();
+                    Role::whereIn('id', $bulkChunk)->delete();
 
                     // TODO your code goes here
                 });

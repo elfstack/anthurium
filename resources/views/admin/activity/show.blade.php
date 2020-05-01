@@ -125,7 +125,16 @@
                                         </label>
                                     </div>
                                 </div>
-                                </div>
+                            </div>
+
+                            <ul class="list-group list-group-flush" v-if="!form.is_public">
+                                @foreach ($roles as $role)
+                                    <li class="list-group-item">
+                                        <input type="checkbox" class="form-check-input" id="role-{{ $role->id }}" value="{{ $role->id }}" v-model="form.visible_to" @change="toggleVisibility"/>
+                                        <label class="form-check-label mb-0" for="role-{{ $role->id }}">{{ $role->name }}</label>
+                                    </li>
+                                @endforeach
+                            </ul>
                         </div>
                     </div>
                 </div>

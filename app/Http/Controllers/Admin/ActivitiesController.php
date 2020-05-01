@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Carbon\Carbon;
 use OTPHP\TOTP;
+use Spatie\Permission\Models\Role;
 
 class ActivitiesController extends Controller
 {
@@ -182,8 +183,8 @@ class ActivitiesController extends Controller
      * Display the specified resource.
      *
      * @param Activity $activity
-     * @throws AuthorizationException
-     * @return void
+     * @return Factory|View
+     *@throws AuthorizationException
      */
     public function show(Activity $activity)
     {
@@ -191,7 +192,8 @@ class ActivitiesController extends Controller
 
         // TODO your code goes here
         return view('admin.activity.show', [
-            'activity' => $activity
+            'activity' => $activity,
+            'roles' => Role::where('guard_name', 'web')->get()
         ]);
     }
 
@@ -245,7 +247,8 @@ class ActivitiesController extends Controller
     public function updateVisibility(Request $request, Activity $activity) {
         $sanitized = $request->validate([
             'is_published' => 'sometimes|boolean',
-            'is_public' => 'sometimes|boolean'
+            'is_public' => 'sometimes|boolean',
+            'visible_to' => 'sometimes|array'
         ]);
 
         $activity->update($sanitized);

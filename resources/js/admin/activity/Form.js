@@ -11,18 +11,23 @@ Vue.component('activity-form', {
                 content:  '' ,
                 quota:  '' ,
                 is_published: false,
-                is_public: false
+                is_public: false,
+                visible_to: []
             }
         }
     },
     methods: {
         togglePublished () {
-            this.sendToggleRequest({ is_published: this.form.is_published});
+            this.sendRequest({ is_published: this.form.is_published });
         },
         togglePublicity () {
-            this.sendToggleRequest({ is_public: this.form.is_public});
+            this.sendRequest({ is_public: this.form.is_public });
         },
-        sendToggleRequest (data) {
+        toggleVisibility () {
+            this.sendRequest({ visible_to: this.form.visible_to });
+        },
+        // TODO: debounce
+        sendRequest (data) {
             window.axios.patch('/api/activity/' + this.data.id + '/visibility', data).then(({ data }) => {
                 this.$notify({
                     type: 'info',
