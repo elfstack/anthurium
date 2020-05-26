@@ -9,7 +9,7 @@
             tag="div"
             class="logo h4 center" style="color: #fff;"
         >
-            {{ !collapsed ? 'Laravel Skeleton' : 'LS' }}
+            {{ !collapsed ? 'Anthurium' : 'An' }}
         </router-link>
         <a-menu
             theme="dark"
@@ -17,6 +17,18 @@
             v-model="selectedKeys"
             mode="inline"
         >
+            <a-sub-menu key="Activities">
+                <span slot="title"><a-icon type="schedule"/><span>Activities</span></span>
+                <a-menu-item key="all">
+                    <router-link to="/activities">All</router-link>
+                </a-menu-item>
+                <a-menu-item key="ongoing">
+                    <router-link to="/activities?type=ongoing">Ongoing</router-link>
+                </a-menu-item>
+                <a-menu-item key="draft">
+                    <router-link to="/activities?type=draft">Draft</router-link>
+                </a-menu-item>
+            </a-sub-menu>
             <a-sub-menu key="manage-access">
                 <span slot="title"><a-icon type="lock"/><span>Manage Access</span></span>
                 <a-menu-item key="admin-users" v-if="$can('admin.admin-users')">
@@ -56,7 +68,7 @@
         watch: {
             'collapsed': function (val) {
                 if (val === true) {
-                   this.openKeys = []
+                    this.openKeys = []
                 }
             }
         },

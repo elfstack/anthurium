@@ -1,6 +1,7 @@
 import config from "../../../api/admin/config";
 
 const state = () => ({
+    name: '',
     permissions: {},
     loaded: false
 })
@@ -16,6 +17,7 @@ const getters = {
 
 const mutations = {
     setConfig( state , payload) {
+        state.name = payload.name
         state.permissions = payload.permissions
     },
     setLoaded( state, payload) {

@@ -40,6 +40,17 @@ const router = new VueRouter({
                     component: () => import('../pages/AdminUsers/Profile')
                 },
                 {
+                    path: 'activities',
+                    component: { render: h => h('router-view') },
+                    children: [
+                        {
+                            path: '/',
+                            name: 'admin.activities.index',
+                            component: () => import('../pages/Activities/Index')
+                        }
+                    ]
+                },
+                {
                     path: 'manage-access/',
                     component: { render: h => h('router-view') },
                     children: [

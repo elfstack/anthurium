@@ -13,5 +13,8 @@ Route::middleware(['auth:admin_api'])->group(function () {
     Route::put('/roles/{roles}/permissions', 'RoleController@updatePermissions');
     Route::get('/file/disk-usage', 'FileController@getDiskUsage');
     Route::get('/file/collections', 'FileController@getCollections');
+
+    // Anthurium Routes
+    Route::apiResource('activities', 'ActivityController');
 });
 

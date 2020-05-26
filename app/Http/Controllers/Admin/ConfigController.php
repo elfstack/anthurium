@@ -15,6 +15,7 @@ class ConfigController extends Controller
             ->pluck('roles.*.name', 'name');
 
         return [
+            'name' => getenv('APP_NAME'),
             'permissions' => $permission
         ];
     }
