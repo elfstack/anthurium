@@ -2,7 +2,7 @@
     <div>
         <a-page-header title="Activities">
             <template #extra>
-                <router-link :to="{ name: 'admin.manage-access.admin-users.create' }">
+                <router-link :to="{ name: 'admin.activities.create' }">
                     <a-button type="primary" icon="plus">
                         Create
                     </a-button>
@@ -33,7 +33,7 @@
                         <a-tag :color="statusColourMapping[record.status]">{{ record.status }}</a-tag>
                     </span>
                     <span slot="action" slot-scope="text,record">
-                        <router-link :to="{ name: 'admin.activities.show', params: { id: record.id }}">Details</router-link>
+                        <router-link :to="{ name: 'admin.activities.show.overview', params: { id: record.id }}">Details</router-link>
                     </span>
                 </a-table>
             </a-card>

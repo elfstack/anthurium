@@ -40,14 +40,34 @@ const router = new VueRouter({
                     component: () => import('../pages/AdminUsers/Profile')
                 },
                 {
-                    path: 'activities',
+                    path: 'activities/',
                     component: { render: h => h('router-view') },
                     children: [
                         {
-                            path: '/',
-                            name: 'admin.activities.index',
+                            path: '',
+                            name: 'admin.activities.activities',
                             component: () => import('../pages/Activities/Index')
-                        }
+                        },
+                        {
+                            path: 'create',
+                            name: 'admin.activities.create'
+                        },
+                        {
+                            path: ':id(\\d+)/',
+                            component: () => import('../pages/Activities/Show'),
+                            children: [
+                                {
+                                    path: '',
+                                    component: () => import('../pages/Activities/Fragments/Overview'),
+                                    name: 'admin.activities.show.overview'
+                                },
+                                {
+                                    path: 'settings',
+                                    component: () => import('../pages/Activities/Fragments/Settings'),
+                                    name: 'admin.activities.show.settings'
+                                }
+                            ]
+                        },
                     ]
                 },
                 {

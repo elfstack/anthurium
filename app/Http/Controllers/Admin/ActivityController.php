@@ -34,10 +34,37 @@ class ActivityController extends Controller
         return response()->json($activities);
     }
 
-    public function show (Activity $activity) : JsonResponse
+    public function show(Activity $activity) : JsonResponse
     {
+        $activity->status = $activity->getStatus();
+
         return response()->json([
             'activity' => $activity
+        ]);
+    }
+
+    public function store(Activity $activity) : JsonResponse
+    {
+        return response()->json([
+            'activity' => Activity::create()
+        ]);
+    }
+
+    public function update(Request $request, Activity $activity) : JsonResponse
+    {
+        $sanitized = $request->validate([
+            'content' => 'sometimes|string',
+            'is_published' => 'sometimes|boolean',
+            'name' => 'sometimes|string'
+        ]);
+
+        $activity->update($sanitized);
+
+        $activityDiff = $activity->getChanges();
+        $activityDiff['status'] = $activity->getStatus();
+
+        return response()->json([
+            'activity' => $activityDiff
         ]);
     }
 
@@ -47,15 +74,14 @@ class ActivityController extends Controller
             ->where('is_published', false)
             ->select(['*'])
             ->addSelect(DB::raw('\'draft\' as status'))
-            ->addSelect(DB::raw('2 as statusN'));
+            ->addSelect(DB::raw('1 as statusN'));
 
         $upcoming = DB::table('activities')
             ->where('is_published', true)
-            ->where('starts_at','<' ,Carbon::now())
-            ->where('ends_at','>', Carbon::now())
+            ->where('starts_at','>' ,Carbon::now())
             ->select(['*'])
             ->addSelect(DB::raw('\'upcoming\' as status'))
-            ->addSelect(DB::raw('1 as statusN'))
+            ->addSelect(DB::raw('2 as statusN'))
             ->orderby('starts_at', 'desc');
 
         $past = DB::table('activities')
@@ -67,7 +93,8 @@ class ActivityController extends Controller
             ->orderby('starts_at', 'desc');
 
         $query->where('is_published', true)
-            ->where('starts_at','>', Carbon::now())
+            ->where('starts_at','<', Carbon::now())
+            ->where('ends_at', '>', Carbon::now())
             ->select(['*'])
             ->addSelect(DB::raw('\'ongoing\' as status'))
             ->addSelect(DB::raw('0 as statusN'))
