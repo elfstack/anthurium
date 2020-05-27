@@ -10,7 +10,9 @@ class Activity extends Model
     public $fillable = [
         'name',
         'content',
-        'is_published'
+        'is_published',
+        'starts_at',
+        'ends_at'
     ];
 
     public $casts = [

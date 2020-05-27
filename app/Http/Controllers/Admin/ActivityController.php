@@ -53,9 +53,11 @@ class ActivityController extends Controller
     public function update(Request $request, Activity $activity) : JsonResponse
     {
         $sanitized = $request->validate([
+            'name' => 'sometimes|string',
             'content' => 'sometimes|string',
+            'starts_at' => 'sometimes|date',
+            'ends_at' => 'sometimes|date',
             'is_published' => 'sometimes|boolean',
-            'name' => 'sometimes|string'
         ]);
 
         $activity->update($sanitized);

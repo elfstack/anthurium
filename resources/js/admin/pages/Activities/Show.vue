@@ -13,12 +13,13 @@
             <template #tags>
                 <a-tag :color="statusColour[activity.status]">{{ activity.status }}</a-tag>
                 <a-tag>
+                    {{ activity.starts_at | moment('LLL') }} - {{ activity.ends_at | moment('LLL') }}
+                </a-tag>
+                <a-tag>
                     <a-icon type="clock-circle" />
                     {{ activity.ends_at | moment('from', activity.starts_at, true) }}
                 </a-tag>
             </template>
-
-            {{ activity.starts_at }} - {{ activity.ends_at }}
 
             <template #extra>
                 <a-button key="1" type="primary" v-if="!activity.is_published" @click="publish">
