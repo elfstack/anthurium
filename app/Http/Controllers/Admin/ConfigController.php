@@ -16,6 +16,7 @@ class ConfigController extends Controller
 
         return [
             'name' => getenv('APP_NAME'),
+            'timezone' => getenv('APP_TIMEZONE'),
             'permissions' => $permission
         ];
     }
