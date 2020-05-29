@@ -4,11 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Activity;
 use App\Http\Controllers\Controller;
-use App\Models\Participation;
 use App\Utils\Listing;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -45,10 +43,17 @@ class ActivityController extends Controller
         ]);
     }
 
-    public function store(Activity $activity) : JsonResponse
+    public function store(Request $request) : JsonResponse
     {
+        $sanitized = $request->validate([
+            'name' => 'required|string',
+            'quota' => 'sometimes|integer',
+            'starts_at' => 'sometimes|date',
+            'ends_at' => 'sometimes|date',
+        ]);
+
         return response()->json([
-            'activity' => Activity::create()
+            'activity' => Activity::create($sanitized)
         ]);
     }
 

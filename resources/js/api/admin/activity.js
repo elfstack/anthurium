@@ -7,6 +7,9 @@ export default {
     show (id) {
         return window.axios.get(`/activities/${id}`)
     },
+    create (activity) {
+        return window.axios.post('/activities', activity)
+    },
     update (id, activity) {
         return window.axios.patch(`/activities/${id}`, activity)
     },

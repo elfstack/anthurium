@@ -46,7 +46,6 @@
         },
         methods: {
             updateDuration (value) {
-                console.log(value)
                 this.updateActivity({
                     starts_at: value[0],
                     ends_at: value[1]

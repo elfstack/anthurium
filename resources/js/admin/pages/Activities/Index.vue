@@ -1,12 +1,35 @@
 <template>
     <div>
+        <a-modal
+            title="Create Activity"
+            :visible="createModalVisible"
+            :confirm-loading="creating"
+            @ok="createActivity"
+            @cancel="() => { createModalVisible = false }"
+        >
+            <a-form-model :model="activityForm" ref="activityForm" :rules="rules">
+                <a-form-model-item prop="name" label="Name">
+                    <a-input v-model="activityForm.name" placeholder="Name" />
+                </a-form-model-item>
+
+                <a-form-model-item prop="quota" label="Quota">
+                    <a-input-number v-model="activityForm.quota" placeholder="Quota" />
+                </a-form-model-item>
+
+                <a-form-model-item prop="time" label="Time">
+                    <a-range-picker
+                        :show-time="{ format: 'HH:mm' }"
+                        @ok="updateDuration"
+                    />
+                </a-form-model-item>
+            </a-form-model>
+        </a-modal>
+
         <a-page-header title="Activities">
             <template #extra>
-                <router-link :to="{ name: 'admin.activities.create' }">
-                    <a-button type="primary" icon="plus">
-                        Create
-                    </a-button>
-                </router-link>
+                <a-button type="primary" icon="plus" @click="createModalVisible = true">
+                    Create
+                </a-button>
             </template>
         </a-page-header>
 
@@ -43,12 +66,13 @@
 
 <script>
     import listing from '../../../common/mixins/listing'
+    import form from "../../../common/mixins/form";
     import activity from "../../../api/admin/activity";
-
     import moment from 'vue-moment'
+
     export default {
         name: "Index",
-        mixins: [ listing ],
+        mixins: [ listing, form ],
         metaInfo: {
             title: 'Activities'
         },
@@ -65,7 +89,28 @@
                     ongoing: 'green',
                     upcoming: 'blue',
                     past: null
+                },
+                creating: false,
+                createModalVisible: false,
+                rules: {
+                    name: [
+                        { required: true }
+                    ]
+                },
+                activityForm: {
+
                 }
+            }
+        },
+        methods: {
+            createActivity () {
+                this.$submit('activityForm', activity.create, this.activityForm).then(({data}) => {
+                    this.$router.push({ name: 'admin.activities.show.overview', params: { id: data.activity.id } })
+                })
+            },
+            updateDuration (value) {
+                this.activityForm.starts_at = value[0]
+                this.activityForm.ends_at = value[1]
             }
         }
     }
