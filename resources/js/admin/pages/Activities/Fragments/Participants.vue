@@ -20,6 +20,27 @@
                         :columns="columns"
                         row-key="id"
                         :data-source="data">
+                        <p slot="expandedRowRender" slot-scope="record" style="margin: 0">
+                            <a-timeline>
+                                <a-timeline-item color="blue">Requested {{ record.created_at | moment('LLL') }}</a-timeline-item>
+                                <a-timeline-item v-if="record.participation_status === 'admitted'" color="green">
+                                    Admit {{ record.approved_at | moment('LLL') }}
+                                </a-timeline-item>
+                                <a-timeline-item v-if="record.participation_status === 'rejected'" color="red">
+                                    Reject {{ record.rejected_at | moment('LLL') }}
+                                </a-timeline-item>
+
+                                <template v-if="record.participation_status === 'admitted'">
+                                    <a-timeline-item v-if="record.attend_status !== 'unattended'" color="blue">
+                                        Attend {{ record.arrived_at | moment('LLL') }}
+                                    </a-timeline-item>
+
+                                    <a-timeline-item v-if="record.attend_status === 'left'" color="green">
+                                        Leave {{ record.left_at | moment('LLL') }}
+                                    </a-timeline-item>
+                                </template>
+                            </a-timeline>
+                        </p>
                         <span slot="status" slot-scope="text, record">
                             <a-tag
                                 :color="participationColourMapping[record.participation_status]"
@@ -42,7 +63,7 @@
                         </span>
                         <span slot="action" slot-scope="text,record,idx">
                             <!-- before event -->
-                            <template v-if="record.participation_status === 'pending' && activity.status == 'upcoming'">
+                            <template v-if="record.participation_status === 'pending' && activity.status === 'upcoming'">
                                 <a-button type="danger" icon="close" @click="updateStatus(record, idx, 'rejected')">Reject</a-button>
                                 <a-button icon="check" @click="updateStatus(record, idx, 'admitted')">Admit</a-button>
                             </template>
