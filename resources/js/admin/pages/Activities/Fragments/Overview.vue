@@ -2,9 +2,9 @@
     <div>
         <a-row :gutter="[16,16]">
             <a-col>
-                <a-card>
-                    <a-tooltip title="3 attended / 3 not checked in / 4 quota left">
-                        <a-progress :percent="60" :success-percent="30"/>
+                <a-card title="Processing Status">
+                    <a-tooltip :title="statisticsToolTip">
+                        <a-progress :percent="percent" :success-percent="successPercent"/>
                     </a-tooltip>
                 </a-card>
             </a-col>
@@ -88,10 +88,31 @@
                 editing: false
             }
         },
+        mounted () {
+            this.getStatistics()
+        },
         computed: {
             ...mapState({
-                activity: state => state.activity.activity
-            })
+                activity: state => state.activity.activity,
+                statistics: state => state.activity.statistics
+            }),
+            statisticsToolTip () {
+                if (this.activity.status === 'upcoming') {
+                    let processed = this.statistics.admitted + this.statistics.rejected
+                    return `${this.activity.quota} quota / ${this.statistics.applicant} applicant / ${processed} processed / ${this.statistics.applicant - processed} pending`
+                }
+            },
+            percent () {
+                if (this.activity.status === 'upcoming') {
+                    return (this.statistics.applicant / this.activity.quota * 100).toFixed()
+                }
+            },
+            successPercent () {
+                if (this.activity.status === 'upcoming') {
+                    let processed = this.statistics.admitted + this.statistics.rejected
+                    return (processed / this.statistics.applicant * 100).toFixed()
+                }
+            }
         },
         methods: {
             saveDescription() {
@@ -105,7 +126,8 @@
                 })
             },
             ...mapActions({
-                updateActivity: 'activity/updateActivity'
+                updateActivity: 'activity/updateActivity',
+                getStatistics: 'activity/getStatistics'
             })
         }
     }

@@ -13,6 +13,9 @@ export default {
     participants (id, paramBag) {
         return index(paramBag, `/activities/${id}/participants`)
     },
+    statistics (id) {
+        return window.axios.get(`/activities/${id}/statistics`)
+    },
     updateParticipationStatus (id, status) {
         return window.axios.patch(`/participation/${id}`, {
             status: status

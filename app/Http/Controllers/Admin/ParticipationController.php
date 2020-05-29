@@ -11,15 +11,15 @@ class ParticipationController extends Controller
     public function update(Request $request, Participation $participation)
     {
         $sanitized = $request->validate([
-            'status' => 'required|in:rejected,approved,attended,left,cancelled'
+            'status' => 'required|in:rejected,admitted,attended,left,cancelled'
         ]);
 
         switch ($sanitized['status']) {
             case 'rejected':
                 $participation->reject();
                 return;
-            case 'approved':
-                $participation->approve();
+            case 'admitted':
+                $participation->admit();
                 return;
             case 'attended':
                 $participation->checkIn();

@@ -15,10 +15,24 @@
                 <a-tag>
                     {{ activity.starts_at | moment('LLL') }} - {{ activity.ends_at | moment('LLL') }}
                 </a-tag>
-                <a-tag>
-                    <a-icon type="clock-circle" />
-                    {{ activity.ends_at | moment('from', activity.starts_at, true) }}
-                </a-tag>
+                <a-tooltip>
+                    <template #title>
+                        Duration
+                    </template>
+                    <a-tag>
+                        <a-icon type="clock-circle" />
+                        {{ activity.ends_at | moment('from', activity.starts_at, true) }}
+                    </a-tag>
+                </a-tooltip>
+                <a-tooltip>
+                    <template #title>
+                        Quota
+                    </template>
+                    <a-tag>
+                        <a-icon type="team" />
+                        {{ activity.quota }}
+                    </a-tag>
+                </a-tooltip>
             </template>
 
             <template #extra>
@@ -91,7 +105,7 @@
         },
         methods: {
             ...mapActions({
-                updateActivity: 'activity/updateActivity'
+                updateActivity: 'activity/updateActivity',
             }),
             publish () {
                 this.updateActivity({

@@ -26,7 +26,7 @@ class Participation extends MorphPivot
         }
 
         if ($this->approved_at) {
-            return 'approved';
+            return 'admitted';
         }
 
         return 'pending';
@@ -45,27 +45,65 @@ class Participation extends MorphPivot
         }
     }
 
+    /**
+     * Reject the participation request
+     *
+     * @throws \Exception
+     */
     public function reject()
     {
-        // TODO: validate, send message
+        if ($this->participation_status != 'pending') {
+            throw new \Exception('already admitted or rejected');
+        }
+
         $this->rejected_at = Carbon::now();
         $this->save();
     }
 
-    public function approve()
+    /**
+     * Approve participation request
+     *
+     * @throws \Exception
+     */
+    public function admit()
     {
+        if ($this->participation_status != 'pending') {
+            throw new \Exception('already admitted or rejected');
+        }
+
         $this->approved_at = Carbon::now();
         $this->save();
     }
 
+    /**
+     * Checkin the current participant
+     *
+     * @throws \Exception
+     */
     public function checkIn()
     {
+        if ($this->participation_status != 'admitted') {
+            throw new \Exception('not admitted');
+        }
+
         $this->arrived_at = Carbon::now();
         $this->save();
     }
 
+    /**
+     * Checkout the current participant
+     *
+     * @throws \Exception
+     */
     public function checkOut()
     {
+        if ($this->participation_status != 'admitted') {
+            throw new \Exception('not admitted');
+        }
+
+        if ($this->attend_status != 'attended') {
+            throw new \Exception('please attend first');
+        }
         $this->left_at = Carbon::now();
         $this->save();
     }

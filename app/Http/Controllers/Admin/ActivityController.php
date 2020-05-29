@@ -90,9 +90,21 @@ class ActivityController extends Controller
         return response()->json($listing);
     }
 
-    public function participantsStats(Activity $activity) {
+    public function statistics(Activity $activity) {
+        $attended =  $activity->participations()->whereNotNull('arrived_at')->count();
+        $admitted = $activity->participations()->whereNotNull('approved_at')->count();
+
         return response()->json([
-            'quota' => $activity->quota
+            'statistics' => [
+                'quota' => $activity->quota,
+                'applicant' => $activity->participations()->count(),
+                'admitted' => $admitted,
+                'rejected' => $activity->participations()->whereNotNull('rejected_at')->count(),
+                'attended' => $attended,
+                'unattended' => $admitted - $attended,
+                'left' => $activity->participations()->whereNotNull('left_at')->count(),
+                'cancelled' => $activity->participations()->whereNotNull('cancelled_at')->count()
+            ]
         ]);
     }
 

@@ -1,7 +1,8 @@
 import activity from "../../../api/admin/activity";
 
 const state = () => ({
-    activity: {}
+    activity: {},
+    statistics: {}
 })
 
 const mutations = {
@@ -12,6 +13,13 @@ const mutations = {
         for (const key in activity) {
             state.activity[key] = activity[key]
         }
+    },
+    setStatistics (state, statistics) {
+       state.statistics = statistics
+    },
+    updateStatistics(state, prevStatus, newStatus) {
+        state.statistics[prevStatus] -= 1
+        state.statistics[newStatus] += 1
     }
 }
 
@@ -25,6 +33,14 @@ const actions = {
         return activity.update(state.activity.id, payload).then(({ data }) => {
             commit('updateActivity', data.activity)
         })
+    },
+    getStatistics ({ state, commit }, id) {
+        return activity.statistics(state.activity.id).then(({ data }) => {
+            commit('setStatistics', data.statistics)
+        })
+    },
+    updateStatistics({ state, commit }, prevStatus, newStatus) {
+        commit('updateStatistics', prevStatus, newStatus)
     }
 }
 
