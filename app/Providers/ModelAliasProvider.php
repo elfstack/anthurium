@@ -16,7 +16,8 @@ class ModelAliasProvider extends ServiceProvider
     {
         Relation::morphMap([
             'admin_user' => 'App\Models\AdminUser',
-            'user' => 'App\Models\User'
+            'user' => 'App\Models\User',
+            'guest' => 'App\Models\Guest'
         ]);
     }
 }

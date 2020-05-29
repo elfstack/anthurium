@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Activity;
 use App\Http\Controllers\Controller;
+use App\Models\Participation;
 use App\Utils\Listing;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -67,6 +69,30 @@ class ActivityController extends Controller
 
         return response()->json([
             'activity' => $activityDiff
+        ]);
+    }
+
+    /**
+     * List all participants
+     *
+     * @param Request $request
+     * @param Activity $activity
+     * @return JsonResponse
+     */
+    public function participants(Request $request, Activity $activity) {
+        $query = $activity->participations()
+            ->with('participant')->getQuery();
+
+        $listing = Listing::fromQuery($query)
+            ->attachSorting(['created_at'])
+            ->get($request);
+
+        return response()->json($listing);
+    }
+
+    public function participantsStats(Activity $activity) {
+        return response()->json([
+            'quota' => $activity->quota
         ]);
     }
 

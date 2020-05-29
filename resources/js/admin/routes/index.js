@@ -62,14 +62,19 @@ const router = new VueRouter({
                                     name: 'admin.activities.show.overview'
                                 },
                                 {
-                                    path: 'settings',
-                                    component: () => import('../pages/Activities/Fragments/Settings'),
-                                    name: 'admin.activities.show.settings'
-                                },
-                                {
                                     path: 'itinerary',
                                     component: () => import('../pages/Activities/Fragments/Itinerary'),
                                     name: 'admin.activities.show.itinerary'
+                                },
+                                {
+                                    path: 'participants',
+                                    component: () => import('../pages/Activities/Fragments/Participants'),
+                                    name: 'admin.activities.show.participants'
+                                },
+                                {
+                                    path: 'settings',
+                                    component: () => import('../pages/Activities/Fragments/Settings'),
+                                    name: 'admin.activities.show.settings'
                                 }
                             ]
                         },

@@ -9,5 +9,13 @@ export default {
     },
     update (id, activity) {
         return window.axios.patch(`/activities/${id}`, activity)
+    },
+    participants (id, paramBag) {
+        return index(paramBag, `/activities/${id}/participants`)
+    },
+    updateParticipationStatus (id, status) {
+        return window.axios.patch(`/participation/${id}`, {
+            status: status
+        })
     }
 }

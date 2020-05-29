@@ -65,6 +65,10 @@ class Listing
 
     private function __construct($model)
     {
+        if ($model == null) {
+            return $this;
+        }
+
         if (is_string($model)) {
             $model = new $model;
         }
@@ -90,6 +94,18 @@ class Listing
         return new Listing($model);
     }
 
+    public static function fromQuery($query): self
+    {
+        $listing = new Listing(null);
+        $listing->setQuery($query);
+        return $listing;
+    }
+
+    private function setQuery($query)
+    {
+        $this->query = $query;
+    }
+
     /**
      * Set columns to display
      *
@@ -106,9 +122,11 @@ class Listing
      * Add sorting functionality
      *
      * @param array $sortableColumns
+     * @param string $defaultColumn
+     * @param string $defaultOrder
      * @return $this
      */
-    public function attachSorting(array $sortableColumns, string $defaultColumn='id', string $defaultOrder='asc')
+    public function attachSorting(array $sortableColumns, string $defaultColumn=null, string $defaultOrder='asc')
     {
         $this->sortableColumns = $sortableColumns;
         $this->defaultColumn = $defaultColumn;
@@ -243,7 +261,7 @@ class Listing
 
         if ($this->sortableColumns && !empty($params['orderBy'])) {
             $this->querySorting($params['orderBy'], $params['direction']);
-        } else {
+        } else if ($this->defaultColumn) {
             $this->query->orderBy($this->defaultColumn, $this->defaultOrder);
         }
 

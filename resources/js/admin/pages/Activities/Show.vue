@@ -32,7 +32,7 @@
 
 
             <template #footer>
-                <a-tabs :default-active-key="activeTab" @change="changeTab">
+                <a-tabs :active-key="activeTab" @change="changeTab">
                     <a-tab-pane key="overview" tab="Overview" />
                     <a-tab-pane key="itinerary" tab="Itinerary" />
                     <a-tab-pane key="budget-expense" tab="Budget & expense" />
@@ -109,6 +109,7 @@
                 })
             },
             changeTab (key) {
+                this.activeTab = key
                 this.$router.push({ name: 'admin.activities.show.' + key })
             }
         }
