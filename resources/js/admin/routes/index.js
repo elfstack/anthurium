@@ -46,7 +46,10 @@ const router = new VueRouter({
                         {
                             path: '',
                             name: 'admin.activities.activities',
-                            component: () => import('../pages/Activities/Index')
+                            component: () => import('../pages/Activities/Index'),
+                            meta: {
+                                keepAlive: true
+                            }
                         },
                         {
                             path: 'create',
@@ -60,6 +63,10 @@ const router = new VueRouter({
                                     path: '',
                                     component: () => import('../pages/Activities/Fragments/Overview'),
                                     name: 'admin.activities.show.overview'
+                                },
+                                {
+                                    path: 'budget-expense',
+                                    name: 'admin.activities.show.budget-expense'
                                 },
                                 {
                                     path: 'itinerary',

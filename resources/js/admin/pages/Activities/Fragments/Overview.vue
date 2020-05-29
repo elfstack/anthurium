@@ -1,6 +1,6 @@
 <template>
     <div>
-        <a-row :gutter="[16,16]">
+        <a-row :gutter="[16,16]" v-if="activity.status !== 'draft'">
             <a-col>
                 <a-card title="Processing Status">
                     <a-tooltip :title="statisticsToolTip">

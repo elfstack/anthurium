@@ -15,7 +15,8 @@ class Activity extends Model
         'content',
         'is_published',
         'starts_at',
-        'ends_at'
+        'ends_at',
+        'quota'
     ];
 
     public $casts = [

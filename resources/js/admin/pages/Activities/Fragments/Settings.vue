@@ -1,9 +1,11 @@
 <template>
     <div>
         <a-row :gutter="[16,16]">
-            <a-card title="Danger Zone">
-                <a-button type="danger">Delete</a-button>
-            </a-card>
+            <a-col>
+                <a-card title="Danger Zone">
+                    <a-button type="danger">Delete</a-button>
+                </a-card>
+            </a-col>
         </a-row>
     </div>
 </template>

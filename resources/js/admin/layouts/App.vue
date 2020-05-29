@@ -6,7 +6,12 @@
                 <admin-header></admin-header>
                 <a-layout>
                     <a-layout-content>
-                        <router-view></router-view>
+                        <keep-alive>
+                            <router-view v-if="$route.meta.keepAlive"></router-view>
+                        </keep-alive>
+
+                        <router-view v-if="!$route.meta.keepAlive"></router-view>
+
                     </a-layout-content>
                 </a-layout>
             </a-layout>

@@ -65,6 +65,7 @@ class ActivityController extends Controller
             'starts_at' => 'sometimes|date',
             'ends_at' => 'sometimes|date',
             'is_published' => 'sometimes|boolean',
+            'quota' => 'sometimes|integer',
         ]);
 
         $activity->update($sanitized);

@@ -12,9 +12,6 @@
             </template>
             <template #tags>
                 <a-tag :color="statusColour[activity.status]">{{ activity.status }}</a-tag>
-                <a-tag>
-                    {{ activity.starts_at | moment('LLL') }} - {{ activity.ends_at | moment('LLL') }}
-                </a-tag>
                 <a-tooltip>
                     <template #title>
                         Duration
@@ -24,7 +21,7 @@
                         {{ activity.ends_at | moment('from', activity.starts_at, true) }}
                     </a-tag>
                 </a-tooltip>
-                <a-tooltip>
+                <a-tooltip v-if="!editingQuota" @click="editingQuota = true">
                     <template #title>
                         Quota
                     </template>
@@ -33,6 +30,7 @@
                         {{ activity.quota }}
                     </a-tag>
                 </a-tooltip>
+                <a-input-number size="small" v-else @pressEnter="updateQuota" :value="activity.quota"></a-input-number>
             </template>
 
             <template #extra>
@@ -50,7 +48,7 @@
                     <a-tab-pane key="overview" tab="Overview" />
                     <a-tab-pane key="itinerary" tab="Itinerary" />
                     <a-tab-pane key="budget-expense" tab="Budget & expense" />
-                    <a-tab-pane key="participants" tab="Participants" />
+                    <a-tab-pane key="participants" tab="Participants" v-if="activity.status !== 'draft'"/>
                     <a-tab-pane key="settings" tab="Settings" />
                 </a-tabs>
             </template>
@@ -83,7 +81,8 @@
                     upcoming: 'blue',
                     past: null
                 },
-                editingName: false
+                editingName: false,
+                editingQuota: false
             }
         },
         computed: {
@@ -120,6 +119,14 @@
                 if (name === '') return
                 this.updateActivity({
                     name: name
+                })
+            },
+            updateQuota (e) {
+                let quota = e.target._value
+                this.editingQuota = false
+                if (quota < 1) return
+                this.updateActivity({
+                    quota: quota
                 })
             },
             changeTab (key) {
