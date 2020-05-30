@@ -29,6 +29,10 @@ const listing = {
                 this.data = data.data
                 this.listing.pagination = pagination
                 this.loading = false
+            }).catch(e => {
+                if (e.response.status === 404) {
+                    this.loading = false
+                }
             })
         },
         handleChange (pagination, filters, sorter) {

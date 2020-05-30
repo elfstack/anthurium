@@ -88,6 +88,67 @@ const router = new VueRouter({
                     ]
                 },
                 {
+                    path: 'users/',
+                    component: { render: h => h('router-view') },
+                    children: [
+                        {
+                            path: '',
+                            name: 'admin.users.index',
+                            component: () => import('../pages/Users/Index')
+                        },
+                        {
+                            path: 'create',
+                            name: 'admin.users.create',
+                            component: () => import('../pages/Users/Create')
+                        },
+                        {
+                            path: ':id(\\d+)/',
+                            component: () => import('../pages/Users/Show'),
+                            children: [
+                                {
+                                    path: '',
+                                    name: 'admin.users.show.account',
+                                    component: () => import('../pages/Users/Account')
+                                },
+                                {
+                                    path: 'participation',
+                                    name: 'admin.users.show.participation',
+                                    component: () => import('../pages/Participants/Show'),
+                                    meta: {
+                                        participantType: 'user'
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    path: 'guests/',
+                    component: { render: h => h('router-view') },
+                    children: [
+                        {
+                            path: '',
+                            name: 'admin.guests.index',
+                            component: () => import('../pages/Guests/Index')
+                        },
+                        {
+                            path: ':id(\\d+)/',
+                            component: { render: h => h('router-view') },
+                            // component: () => import('../pages/Guests/Show'),
+                            children: [
+                                {
+                                    path: 'participation',
+                                    name: 'admin.guests.show.participation',
+                                    component: () => import('../pages/Participants/Show'),
+                                    meta: {
+                                        participantType: 'guest'
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
                     path: 'manage-access/',
                     component: { render: h => h('router-view') },
                     children: [

@@ -55,13 +55,6 @@
                         </a-card>
                     </a-col>
                 </a-row>
-                <a-row :gutter="[16,16]">
-                    <a-col>
-                        <a-card title="Eligible To">
-
-                        </a-card>
-                    </a-col>
-                </a-row>
             </a-col>
         </a-row>
 
@@ -85,7 +78,13 @@
         },
         data() {
             return {
-                editing: false
+                editing: false,
+                treeData: [
+                    { title: 'Public', key: 'public' },
+                    { title: 'Internal', key: 'internal', children: [
+                        { title: 'group1', key: 'group1'}
+                    ]}
+                ],
             }
         },
         mounted () {
