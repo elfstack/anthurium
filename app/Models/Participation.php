@@ -9,7 +9,15 @@ class Participation extends MorphPivot
 {
     protected $table = 'participations';
 
-    public $appends = ['participation_status', 'attend_status'];
+    protected $appends = ['participation_status', 'attend_status'];
+
+    protected $casts = [
+        'approved_at' => 'datetime',
+        'rejected_at' => 'datetime',
+        'cancelled_at' => 'datetime',
+        'arrived_at' => 'datetime',
+        'left_at' => 'datetime',
+    ];
 
     public function participant() {
         return $this->morphTo();

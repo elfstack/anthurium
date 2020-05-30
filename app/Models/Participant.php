@@ -25,5 +25,5 @@ interface Participant
      * Get all activities of this participant
      *
      */
-    function activities(): MorphToMany;
+    function participatedActivities(): MorphToMany;
 }

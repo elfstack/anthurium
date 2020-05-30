@@ -16,11 +16,12 @@ trait CanParticipate
 
     }
 
-    public function activities(): MorphToMany {
+    public function participatedActivities(): MorphToMany {
         return $this->morphToMany(
             Activity::class,
             'participant',
             'participations')
-                ->using(Participation::class);
+                ->using(Participation::class)
+                ->as('details');
     }
 }

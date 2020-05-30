@@ -41,6 +41,15 @@
                                 </template>
                             </a-timeline>
                         </p>
+                        <span slot="name" slot-scope="text, record">
+                            <router-link
+                                :to="{
+                                    name: `admin.${record.participant_type}s.show.participation`,
+                                    params: { id: record.participant.id } }"
+                            >
+                                {{ record.participant.name }}
+                            </router-link>
+                        </span>
                         <span slot="status" slot-scope="text, record">
                             <a-tag
                                 :color="participationColourMapping[record.participation_status]"
@@ -110,7 +119,7 @@
                 api: (paramBag) => activity.participants(this.activity.id, paramBag),
                 columns: [
                     { dataIndex: 'status', key: 'status', title: 'Status', scopedSlots: { customRender: 'status' }, align: 'center'},
-                    { dataIndex: 'participant.name', key: 'participant.name', title: 'Name', align: 'center'},
+                    { dataIndex: 'participant.name', key: 'participant.name', title: 'Name', align: 'center', scopedSlots: { customRender: 'name' } },
                     { dataIndex: 'participant_type', key: 'participant_type', title: 'Type', scopedSlots: { customRender: 'participant_type'}, align: 'center' },
                     { dataIndex: 'updated_at', key: 'updated_at', title: 'Last Update', scopedSlots: { customRender: 'updated_at'}, align: 'center' },
                     { dataIndex: 'action', key: 'action', title: 'Action', scopedSlots: { customRender: 'action' }, align: 'center' }
@@ -162,7 +171,7 @@
 
                 if (this.activity.status === 'ongoing' || this.activity.status === 'past') {
                     statistics.push({
-                        title: 'Participant',
+                        title: 'Participants',
                         value: this.statistics.admitted
                     })
                     statistics.push({

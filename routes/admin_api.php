@@ -19,5 +19,10 @@ Route::middleware(['auth:admin_api'])->group(function () {
     Route::get('/activities/{activity}/participants', 'ActivityController@participants');
     Route::get('/activities/{activity}/statistics', 'ActivityController@statistics');
     Route::patch('/participation/{participation}', 'ParticipationController@update');
+
+    Route::apiResource('users', 'UserController');
+    Route::get('/users/{user}/participations', 'UserController@participations');
+
+    Route::apiResource('guests', 'GuestController');
 });
 
