@@ -17,16 +17,19 @@
             v-model="selectedKeys"
             mode="inline"
         >
-            <a-sub-menu key="Activities">
+            <a-sub-menu>
+                <span slot="title"><a-icon type="user"/><span>Participants</span></span>
+                <a-menu-item key="users">
+                    <router-link to="/users">Users</router-link>
+                </a-menu-item>
+                <a-menu-item key="guests">
+                    <router-link to="/guests">Guests</router-link>
+                </a-menu-item>
+            </a-sub-menu>
+            <a-sub-menu key="activities">
                 <span slot="title"><a-icon type="schedule"/><span>Activities</span></span>
-                <a-menu-item key="all">
-                    <router-link to="/activities">All</router-link>
-                </a-menu-item>
-                <a-menu-item key="ongoing">
-                    <router-link to="/activities?type=ongoing">Ongoing</router-link>
-                </a-menu-item>
-                <a-menu-item key="draft">
-                    <router-link to="/activities?type=draft">Draft</router-link>
+                <a-menu-item key="activities">
+                    <router-link to="/activities">Activities</router-link>
                 </a-menu-item>
             </a-sub-menu>
             <a-sub-menu key="manage-access">
