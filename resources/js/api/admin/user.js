@@ -9,5 +9,8 @@ export default {
     },
     index (paramBag) {
         return index(paramBag, '/users')
+    },
+    update (id, data) {
+        return window.axios.patch(`/users/${id}`, data)
     }
 }

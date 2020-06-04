@@ -4,9 +4,11 @@ export default {
          * Submit the form
          *
          * @param ref reference to form
+         * @param api api used for making request, will use data.api if not provided
+         * @param payload data for request, will use data.data if not provided
          * @returns {Q.Promise<any> | Promise<void> | PromiseLike<any>}
          */
-        $submit(ref = 'form', api, payload) {
+        $submit(ref = 'form', api=this.api, payload=this.data) {
             const form = this.$refs[ref]
             return form.validate().then(() => {
                 return api(payload).then(response => {
