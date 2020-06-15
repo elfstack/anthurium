@@ -32,7 +32,7 @@
         },
         metaInfo() {
             return {
-                title: 'Page',
+                title: 'Loading...',
                 // all titles will be injected into this template
                 titleTemplate: `%s | Anthurium`
             }

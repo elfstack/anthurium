@@ -6,12 +6,16 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class User extends Authenticatable implements Participant
+class User extends Authenticatable implements Participant, HasMedia
 {
     use Notifiable;
     use HasApiTokens;
     use CanParticipate;
+    use InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.
@@ -39,4 +43,26 @@ class User extends Authenticatable implements Participant
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('avatars')
+            ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/gif'])
+            ->singleFile();
+    }
+
+    /**
+     * Register media conversions
+     *
+     * @param Media|null $media
+     * @throws \Spatie\Image\Exceptions\InvalidManipulation
+     */
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this->addMediaConversion('avatar')
+            ->width(200)
+            ->height(200)
+            ->performOnCollections('avatars');
+
+    }
 }

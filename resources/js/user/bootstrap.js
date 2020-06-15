@@ -1,4 +1,8 @@
-window._ = require('lodash');
+import router from './routes'
+import axios from 'axios'
+import { debounce } from "lodash";
+import { message } from "ant-design-vue";
+import Vue from 'vue'
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -6,23 +10,40 @@ window._ = require('lodash');
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-window.axios = require('axios');
+const instance = axios.create({
+    baseURL: '/api',
+    withCredentials: true,
+    headers: {
+        common: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    },
+})
 
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+const action = debounce(function action (status) {
+    switch (status) {
+        case 401:
+            if (router.currentRoute.name !== 'Login') {
+                message.warning('Logged out')
+                router.push({ name: 'Login' })
+            }
+            break;
+        case 403:
+            message.error('You don\'t have permission to do this')
+            break;
+        case 500:
+            message.error('Server error')
+            break;
+    }
+}, 200)
 
-/**
- * Echo exposes an expressive API for subscribing to channels and listening
- * for events that are broadcast by Laravel. Echo and event broadcasting
- * allows your team to easily build robust real-time web applications.
- */
+instance.interceptors.response.use(undefined, error => {
+    action(error.response.status)
+    return Promise.reject(error)
+})
 
-// import Echo from 'laravel-echo';
+window.axios = instance
+Vue.prototype.axios = axios
 
-// window.Pusher = require('pusher-js');
+export default instance
 
-// window.Echo = new Echo({
-//     broadcaster: 'pusher',
-//     key: process.env.MIX_PUSHER_APP_KEY,
-//     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
-//     forceTLS: true
-// });

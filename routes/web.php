@@ -16,3 +16,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('app');
 });
+
+Route::post('/api/login', 'Auth\LoginController@authenticate');
+Route::get('/api/logout', 'Auth\LoginController@logout');
+
+Route::prefix('/api/users')->group(function () {
+    Route::post('password/reset-token', 'Auth\LoginController@sendResetPasswordEmail');
+    Route::post('password/reset-token/verify', 'Auth\LoginController@verifyResetPasswordToken');
+    Route::put('password', 'Auth\LoginController@resetPassword');
+});

@@ -12,20 +12,20 @@
                                 class="px2 h4"
                                 style="color: #fff"
                             >
-                                {{ !collapsed ? 'Anthurium' : 'An' }}
+                                Anthurium
                             </router-link>
                         </a-col>
                         <a-col>
                             <a-menu
                                 theme="dark"
                                 mode="horizontal"
-                                :default-selected-keys="['2']"
+                                :default-selected-keys="['dashboard']"
                                 :style="{ lineHeight: '64px' }"
                             >
-                                <a-menu-item key="1">
+                                <a-menu-item key="dashboard">
                                     Dashboard
                                 </a-menu-item>
-                                <a-menu-item key="2">
+                                <a-menu-item key="activities">
                                     Activities
                                 </a-menu-item>
                                 <a-menu-item key="3">
@@ -41,7 +41,7 @@
                         <div @click="e => e.preventDefault()">
                             <a-avatar size="large" :src="user.avatar_url" v-if="user.avatar_url"/>
                             <a-avatar size="large" icon="user" v-else/>
-                            <span class="ml1">
+                            <span class="ml1 color-white">
                             {{ user.name }} <a-icon type="down"/>
                         </span>
                         </div>
@@ -62,15 +62,29 @@
 </template>
 
 <script>
+    import { mapGetters, mapActions } from 'vuex'
+
     export default {
         name: "App",
-        data() {
-            return {
-                user: {}
-            }
+        metaInfo: {
+            title: 'Loading...',
+            titleTemplate: '%s | Anthurium'
+        },
+        computed: {
+            ...mapGetters('user', [
+                'user'
+            ])
+        },
+        methods: {
+            ...mapActions('user', [
+                'logout'
+            ])
         }
     }
 </script>
 
 <style scoped>
+    .color-white {
+        color: #fff;
+    }
 </style>
