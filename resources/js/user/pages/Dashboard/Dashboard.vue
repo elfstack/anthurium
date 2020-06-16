@@ -4,7 +4,10 @@
 
 <script>
     export default {
-        name: "Dashboard"
+        name: "Dashboard",
+        metaInfo: {
+            title: 'Dashboard'
+        }
     }
 </script>
 

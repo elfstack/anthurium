@@ -19,3 +19,5 @@ const app = new Vue({
     store,
     router
 })
+
+Vue.prototype.$isLoggedIn = () => store.getters['user/isLoggedIn']

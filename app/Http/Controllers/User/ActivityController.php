@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\User;
 
 use App\Models\Activity;
 use App\Http\Controllers\Controller;
+use App\Models\Guest;
 use App\Utils\Listing;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -20,7 +21,7 @@ class ActivityController extends Controller
      * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
      */
-    public function index(Request $request) : JsonResponse
+    public function index (Request $request) : JsonResponse
     {
         $activities = Listing::create(Activity::class)
             ->attachFiltering(['type'])
@@ -34,47 +35,23 @@ class ActivityController extends Controller
         return response()->json($activities);
     }
 
-    public function show(Activity $activity) : JsonResponse
+    /**
+     * Get activity
+     *
+     * @param Request $request
+     * @param Activity $activity
+     * @return JsonResponse
+     */
+    public function show(Request $request, Activity $activity) : JsonResponse
     {
         $activity->status = $activity->getStatus();
 
+        if ($request->user()) {
+            $activity->is_enrolled = $request->user()->isParticipant($activity);
+        }
+
         return response()->json([
             'activity' => $activity
-        ]);
-    }
-
-    public function store(Request $request) : JsonResponse
-    {
-        $sanitized = $request->validate([
-            'name' => 'required|string',
-            'quota' => 'sometimes|integer',
-            'starts_at' => 'sometimes|date',
-            'ends_at' => 'sometimes|date',
-        ]);
-
-        return response()->json([
-            'activity' => Activity::create($sanitized)
-        ]);
-    }
-
-    public function update(Request $request, Activity $activity) : JsonResponse
-    {
-        $sanitized = $request->validate([
-            'name' => 'sometimes|string',
-            'content' => 'sometimes|string',
-            'starts_at' => 'sometimes|date',
-            'ends_at' => 'sometimes|date',
-            'is_published' => 'sometimes|boolean',
-            'quota' => 'sometimes|integer',
-        ]);
-
-        $activity->update($sanitized);
-
-        $activityDiff = $activity->getChanges();
-        $activityDiff['status'] = $activity->getStatus();
-
-        return response()->json([
-            'activity' => $activityDiff
         ]);
     }
 
@@ -149,5 +126,60 @@ class ActivityController extends Controller
             ->union($upcoming)
             ->union($past)
             ->orderby('statusN', 'asc');
+    }
+
+    /**
+     * Enroll to activity
+     *
+     * @param Request $request
+     * @param Activity $activity
+     * @return JsonResponse
+     */
+    public function enroll(Request $request, Activity $activity)
+    {
+        if ($request->user('api')) {
+            $request->user('api')->participate($activity);
+            return response()->json([
+                'message' => 'enrolled'
+            ]);
+        }
+
+            // create or find guest
+        $sanitized = $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email'
+        ]);
+
+        $guest = Guest::where('email', $request->input('email'))
+                      ->updateOrCreate($sanitized);
+
+        // TODO: check if email already registered
+        // TODO: if registered, redirect to login page
+
+        // TODO: send verification email
+        $guest->sendEmailEnrollVerificationNotification($activity);
+
+        return response()->json([
+            'message' => 'email-sent'
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param Guest $guest
+     * @param Activity $activity
+     */
+    public function guestEnroll(Request $request, Guest $guest, Activity $activity)
+    {
+        if (!$request->hasValidSignature()) {
+            // TODO: return a view
+            abort(401);
+        }
+
+        $guest->participate($activity);
+
+        return response()->json([
+            'message' => 'enrolled'
+        ]);
     }
 }

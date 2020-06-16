@@ -17,4 +17,9 @@ Route::post('/media/upload', 'FileController@upload');
 
 Route::middleware(['auth:api'])->group(function () {
     Route::get('/users/current', 'UserController@current');
+    // anthurium routes
 });
+
+Route::apiResource('activities', 'ActivityController');
+Route::post('/activities/{activity}/enroll', 'ActivityController@enroll');
+

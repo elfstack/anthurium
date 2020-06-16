@@ -9,7 +9,7 @@
                             <router-link
                                 to="/"
                                 tag="div"
-                                class="px2 h4"
+                                class="pr2 h4"
                                 style="color: #fff"
                             >
                                 Anthurium
@@ -58,6 +58,16 @@
                 </a-col>
             </a-row>
         </a-layout-header>
+
+        <a-layout-content class="layout-content">
+            <keep-alive>
+                <router-view v-if="$route.meta.keepAlive"></router-view>
+            </keep-alive>
+
+            <router-view v-if="!$route.meta.keepAlive"></router-view>
+
+        </a-layout-content>
+
     </a-layout>
 </template>
 
@@ -86,5 +96,9 @@
 <style scoped>
     .color-white {
         color: #fff;
+    }
+    .layout-content {
+        padding: 50px 50px 0;
+        min-height: calc(100vh - 64px);
     }
 </style>

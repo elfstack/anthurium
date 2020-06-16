@@ -24,6 +24,13 @@ class Activity extends Model
         'ends_at' => 'datetime'
     ];
 
+    protected static function booted()
+    {
+        static::updating(function ($activity) {
+            // TODO: set all participant status
+        });
+    }
+
     /**
      * Get the status of activity
      *
@@ -56,6 +63,8 @@ class Activity extends Model
         if ($this->getParticipant($participant)->exists()) {
             throw new \Exception('user already enrolled');
         }
+
+        // TODO: check if user can participate
 
         $this->getParticipant($participant)->save($participant, [
             'participant_type' => $participant->getMorphClass()

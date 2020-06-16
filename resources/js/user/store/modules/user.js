@@ -28,6 +28,9 @@ const getters = {
         let tmp = roles.concat(myRoles)
 
         return new Set(tmp).size < tmp.length
+    },
+    isLoggedIn (state) {
+        return state.id !== ''
     }
 }
 
@@ -62,6 +65,11 @@ const actions = {
         return user.getCurrent().then(({data}) => {
             commit('setUser', data.user)
             commit('setLoaded', true)
+        }).catch(e => {
+            if (e.response.status === 401) {
+                commit('setUser', null)
+                commit('setLoaded', true)
+            }
         })
     },
     logout ({ commit }) {
