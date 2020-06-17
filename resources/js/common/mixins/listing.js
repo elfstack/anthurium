@@ -35,6 +35,13 @@ const listing = {
                 }
             })
         },
+        /**
+         * Handle table change
+         *
+         * @param pagination
+         * @param filters
+         * @param sorter
+         */
         handleChange (pagination, filters, sorter) {
             const pager = { ...this.listing.pagination }
             pager.current = pagination.current
@@ -44,6 +51,19 @@ const listing = {
                 filters: filters,
                 sorter: sorter
             }
+            this.fetchData()
+        },
+        handlePageChange (current) {
+            const pager = { ...this.listing.pagination }
+            pager.current = current
+            this.listing.pagination = pager
+            this.fetchData()
+        },
+        handlePageSizeChange (current, pageSize) {
+            const pager = { ...this.listing.pagination }
+            pager.current = current
+            pager.pageSize = pageSize
+            this.listing.pagination = pager
             this.fetchData()
         },
         handleSearch (keyword) {

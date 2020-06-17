@@ -33,7 +33,8 @@ const router = new VueRouter({
                     children: [
                         {
                             path: '',
-                            name: 'app.activities.index'
+                            name: 'app.activities.index',
+                            component: () => import('../pages/Activities/Index')
                         },
                         {
                             path: ':id(\\d+)/',

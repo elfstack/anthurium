@@ -37,24 +37,33 @@
 
                 </a-col>
                 <a-col>
-                    <a-dropdown :trigger="['click']">
-                        <div @click="e => e.preventDefault()">
-                            <a-avatar size="large" :src="user.avatar_url" v-if="user.avatar_url"/>
-                            <a-avatar size="large" icon="user" v-else/>
-                            <span class="ml1 color-white">
+                    <template v-if="$isLoggedIn()">
+                        <a-dropdown :trigger="['click']">
+                            <div @click="e => e.preventDefault()">
+                                <a-avatar size="large" :src="user.avatar_url" v-if="user.avatar_url"/>
+                                <a-avatar size="large" icon="user" v-else/>
+                                <span class="ml1 color-white">
                             {{ user.name }} <a-icon type="down"/>
                         </span>
-                        </div>
-                        <a-menu slot="overlay">
-                            <a-menu-item key="0">
-                                <router-link :to="{ name: 'user.profile' }">My Profile</router-link>
-                            </a-menu-item>
-                            <a-menu-divider/>
-                            <a-menu-item key="1" @click="logout">
-                                Logout
-                            </a-menu-item>
-                        </a-menu>
-                    </a-dropdown>
+                            </div>
+                            <a-menu slot="overlay">
+                                <a-menu-item key="0">
+                                    <router-link :to="{ name: 'user.profile' }">My Profile</router-link>
+                                </a-menu-item>
+                                <a-menu-divider/>
+                                <a-menu-item key="1" @click="logout">
+                                    Logout
+                                </a-menu-item>
+                            </a-menu>
+                        </a-dropdown>
+                    </template>
+                    <template v-else>
+                        <router-link :to="{ name: 'app.login' }">
+                            <a-button ghost>
+                                Login
+                            </a-button>
+                        </router-link>
+                    </template>
                 </a-col>
             </a-row>
         </a-layout-header>

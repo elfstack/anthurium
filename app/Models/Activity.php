@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Activity extends Model
 {
-    public $fillable = [
+    protected $fillable = [
         'name',
         'content',
         'is_published',
@@ -19,9 +19,14 @@ class Activity extends Model
         'quota'
     ];
 
-    public $casts = [
+    protected $casts = [
         'starts_at' => 'datetime',
         'ends_at' => 'datetime'
+    ];
+
+    // TODO: this has to be improved
+    protected $appends = [
+        'approved_participants'
     ];
 
     protected static function booted()
@@ -69,6 +74,13 @@ class Activity extends Model
         $this->getParticipant($participant)->save($participant, [
             'participant_type' => $participant->getMorphClass()
         ]);
+    }
+
+    public function getApprovedParticipantsAttribute()
+    {
+        return $this->participations()
+                    ->whereNotNull('approved_at')
+                    ->count();
     }
 
     /**

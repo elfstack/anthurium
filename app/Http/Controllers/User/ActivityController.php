@@ -25,7 +25,7 @@ class ActivityController extends Controller
     {
         $activities = Listing::create(Activity::class)
             ->attachFiltering(['type'])
-            ->attachSearching(['name'])
+            ->attachSearching(['name', 'content'])
             ->attachSorting(['starts_at', 'ends_at', 'created_at', 'published_at'])
             ->modifyQuery(function (Builder $query) {
                 $this->modifyIndexQuery($query);
@@ -93,12 +93,6 @@ class ActivityController extends Controller
 
     private function modifyIndexQuery(Builder $query)
     {
-        $draft = DB::table('activities')
-            ->where('is_published', false)
-            ->select(['*'])
-            ->addSelect(DB::raw('\'draft\' as status'))
-            ->addSelect(DB::raw('1 as statusN'));
-
         $upcoming = DB::table('activities')
             ->where('is_published', true)
             ->where('starts_at','>' ,Carbon::now())
@@ -122,7 +116,6 @@ class ActivityController extends Controller
             ->addSelect(DB::raw('\'ongoing\' as status'))
             ->addSelect(DB::raw('0 as statusN'))
             ->orderby('starts_at', 'desc')
-            ->union($draft)
             ->union($upcoming)
             ->union($past)
             ->orderby('statusN', 'asc');
