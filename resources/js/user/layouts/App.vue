@@ -23,13 +23,14 @@
                                 :style="{ lineHeight: '64px' }"
                             >
                                 <a-menu-item key="dashboard">
-                                    Dashboard
+                                    <router-link to="/">
+                                        Dashboard
+                                    </router-link>
                                 </a-menu-item>
                                 <a-menu-item key="activities">
-                                    Activities
-                                </a-menu-item>
-                                <a-menu-item key="3">
-                                    nav 3
+                                    <router-link to="/activities">
+                                        Activities
+                                    </router-link>
                                 </a-menu-item>
                             </a-menu>
                         </a-col>
@@ -48,7 +49,7 @@
                             </div>
                             <a-menu slot="overlay">
                                 <a-menu-item key="0">
-                                    <router-link :to="{ name: 'user.profile' }">My Profile</router-link>
+                                    <router-link :to="{ name: 'app.user.profile', params: { id: user.id } }">My Profile</router-link>
                                 </a-menu-item>
                                 <a-menu-divider/>
                                 <a-menu-item key="1" @click="logout">

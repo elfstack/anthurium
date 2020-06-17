@@ -28,6 +28,20 @@ const router = new VueRouter({
                     component: () => import('../pages/Dashboard/Dashboard')
                 },
                 {
+                    path: 'user/:id(\\d+)',
+                    component: () => import('../pages/User/Show'),
+                    children: [
+                        {
+                            path: '',
+                            name: 'app.user.profile',
+                        },
+                        {
+                            path: 'participation',
+                            name: 'app.user.participation'
+                        }
+                    ]
+                },
+                {
                     path: 'activities/',
                     component: { render: h => h('router-view') },
                     children: [
@@ -42,7 +56,6 @@ const router = new VueRouter({
                             component: () => import('../pages/Activities/Show')
                         }
                     ]
-
                 },
                 {
                     path: '404',
