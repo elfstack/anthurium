@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Exceptions\AlreadyEnrolledException;
+use App\Exceptions\InactiveActivityException;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -62,11 +63,16 @@ class Activity extends Model
      * Add a participant to this activity
      * @param Participant $participant
      * @throws AlreadyEnrolledException
+     * @throws InactiveActivityException
      */
     public function addParticipant(Participant $participant)
     {
         if ($this->getParticipants($participant)->exists()) {
             throw new AlreadyEnrolledException('user already enrolled');
+        }
+
+        if ($this->getStatus() != 'upcoming') {
+            throw new InactiveActivityException();
         }
 
         // TODO: check if user can participate

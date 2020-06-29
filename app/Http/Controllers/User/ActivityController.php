@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Exceptions\AlreadyEnrolledException;
 use App\Models\Activity;
 use App\Http\Controllers\Controller;
 use App\Models\Guest;
@@ -135,10 +136,14 @@ class ActivityController extends Controller
             $request->user('api')->participate($activity);
             return response()->json([
                 'message' => 'enrolled'
-            ]);
+            ], 201);
         }
 
-            // create or find guest
+        if (!$activity->is_public) {
+            abort(404, 'Activity not found');
+        }
+
+        // create or find guest
         $sanitized = $request->validate([
             'name' => 'required|string',
             'email' => 'required|email'
@@ -155,18 +160,20 @@ class ActivityController extends Controller
 
         return response()->json([
             'message' => 'email-sent'
-        ]);
+        ], 201);
     }
 
     /**
      * Enroll the guest
      *
      * @param Request $request
-     * @param Guest $guest
      * @param Activity $activity
+     * @param Guest $guest
+     *
      * @return JsonResponse
+     * @throws AlreadyEnrolledException
      */
-    public function guestEnroll(Request $request, Guest $guest, Activity $activity)
+    public function guestEnroll(Request $request, Activity $activity, Guest $guest)
     {
         if (!$request->hasValidSignature()) {
             // TODO: return a view
@@ -177,44 +184,6 @@ class ActivityController extends Controller
 
         return response()->json([
             'message' => 'enrolled'
-        ]);
-    }
-
-    /**
-     * Check out participant
-     * TODO: add permission on this api
-     * TODO: add detailed message on this api
-     *
-     * @param Request $request
-     * @param Activity $activity
-     * @param Participation $participation
-     * @return JsonResponse
-     */
-    public function checkOut(Request $request, Activity $activity, Participation $participation)
-    {
-        if ($request->user('api')) {
-            $participant = $request->user('api');
-        } else if ($request->hasValidSignature()) {
-            // TODO: can checkout guest
-            throw new \RuntimeException('not implemented');
-        } else {
-            abort(403);
-        }
-
-        if (!$participant->equals($participation->participant)) {
-            abort(401);
-        }
-
-        try {
-            $participation->pivotParent = $activity;
-            $participation->checkOut();
-        } catch (\Exception $e) {
-            abort(500, 'error checking out');
-        }
-
-        return response()->json([
-            'message' => 'checked out',
-            'left_at' => $participation->left_at
-        ]);
+        ], 200);
     }
 }

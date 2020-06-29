@@ -27,5 +27,5 @@ interface Participant
      */
     function participatedActivities(): MorphToMany;
 
-    function equals(): bool;
+    function equals(Participant $participant): bool;
 }

@@ -26,5 +26,5 @@ Route::prefix('/api/users')->group(function () {
     Route::put('password', 'Auth\LoginController@resetPassword');
 });
 
-Route::get('/guest/{guest}/enroll/{activity}', 'ActivityController@guestEnroll')->name('app.guest.enroll');
+Route::get('/activities/{activity}/enroll/guest/{guest}', 'ActivityController@guestEnroll')->name('app.guest.enroll');
 
