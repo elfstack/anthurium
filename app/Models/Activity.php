@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use App\Exceptions\AlreadyEnrolledException;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
@@ -61,17 +61,17 @@ class Activity extends Model
     /**
      * Add a participant to this activity
      * @param Participant $participant
-     * @throws \Exception
+     * @throws AlreadyEnrolledException
      */
     public function addParticipant(Participant $participant)
     {
-        if ($this->getParticipant($participant)->exists()) {
-            throw new \Exception('user already enrolled');
+        if ($this->getParticipants($participant)->exists()) {
+            throw new AlreadyEnrolledException('user already enrolled');
         }
 
         // TODO: check if user can participate
 
-        $this->getParticipant($participant)->save($participant, [
+        $this->getParticipants($participant)->save($participant, [
             'participant_type' => $participant->getMorphClass()
         ]);
     }
@@ -84,12 +84,12 @@ class Activity extends Model
     }
 
     /**
-     * Get current participant
+     * Get participant with the same type as param
      *
      * @param Participant $participant
-     * @return mixed
+     * @return MorphToMany
      */
-    public function getParticipant(Participant $participant)
+    public function getParticipants(Participant $participant): MorphToMany
     {
         $morphRelation = call_user_func([$this, $participant->getMorphClass().'Participants']);
         return $morphRelation->where('participant_id', $participant->id);
@@ -122,10 +122,27 @@ class Activity extends Model
     }
 
     /**
-     * @return HasMany
+     * Get participations or participation
+     *
+     * @param Participant|null $participant filter the record
+     * @return HasMany | Participation
      */
-    public function participations(): HasMany
+    public function participations(Participant $participant=null)
     {
-        return $this->hasMany(Participation::class);
+        $participations = $this->hasMany(Participation::class);
+
+        if ($participant != null) {
+            $participation = $participations->where('participant_type', $participant->getMorphClass())
+                           ->where('participant_id', $participant->id);
+
+            return Participation::fromRawAttributes(
+                $this,
+                $participation->first()->toArray(),
+                'participations',
+                $participation->exists()
+            );
+        }
+
+        return $participations;
     }
 }

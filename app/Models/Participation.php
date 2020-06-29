@@ -2,15 +2,28 @@
 
 namespace App\Models;
 
+use App\Exceptions\AlreadyProcessedException;
+use App\Exceptions\InactiveActivityException;
+use App\Exceptions\NotAdmittedException;
+use App\Exceptions\NotCheckedInException;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
 
 class Participation extends MorphPivot
 {
+    /**
+     * @var string table for this model
+     */
     protected $table = 'participations';
 
+    /**
+     * @var string[] attributes appended
+     */
     protected $appends = ['participation_status', 'attend_status'];
 
+    /**
+     * @var string[] columns need to be cast
+     */
     protected $casts = [
         'approved_at' => 'datetime',
         'rejected_at' => 'datetime',
@@ -19,10 +32,16 @@ class Participation extends MorphPivot
         'left_at' => 'datetime',
     ];
 
-    public function participant() {
+    public function participant()
+    {
         return $this->morphTo();
     }
 
+    /**
+     * Participation Status
+     *
+     * @return string
+     */
     public function getParticipationStatusAttribute(): string
     {
         if ($this->cancelled_at) {
@@ -40,6 +59,11 @@ class Participation extends MorphPivot
         return 'pending';
     }
 
+    /**
+     * Attend status
+     *
+     * @return string
+     */
     public function getAttendStatusAttribute(): string
     {
         if ($this->left_at) {
@@ -56,14 +80,11 @@ class Participation extends MorphPivot
     /**
      * Reject the participation request
      *
-     * @throws \Exception
+     * @throws AlreadyProcessedException
      */
     public function reject()
     {
-        if ($this->participation_status != 'pending') {
-            throw new \Exception('already admitted or rejected');
-        }
-
+        $this->checkIfAlreadyProcessed();
         $this->rejected_at = Carbon::now();
         $this->save();
     }
@@ -71,48 +92,86 @@ class Participation extends MorphPivot
     /**
      * Approve participation request
      *
-     * @throws \Exception
+     * @throws AlreadyProcessedException
      */
     public function admit()
     {
-        if ($this->participation_status != 'pending') {
-            throw new \Exception('already admitted or rejected');
-        }
+        $this->checkIfAlreadyProcessed();
 
         $this->approved_at = Carbon::now();
         $this->save();
     }
 
     /**
-     * Checkin the current participant
+     * Check in participant
      *
-     * @throws \Exception
+     * @throws NotAdmittedException
+     * @throws InactiveActivityException
+     * @throws AlreadyProcessedException
      */
     public function checkIn()
     {
-        if ($this->participation_status != 'admitted') {
-            throw new \Exception('not admitted');
-        }
-
+        $this->beforeCheckIn();
         $this->arrived_at = Carbon::now();
         $this->save();
     }
 
+
     /**
-     * Checkout the current participant
+     * Check out participant
      *
-     * @throws \Exception
+     * @throws InactiveActivityException
+     * @throws NotAdmittedException
+     * @throws NotCheckedInException
      */
     public function checkOut()
     {
-        if ($this->participation_status != 'admitted') {
-            throw new \Exception('not admitted');
+        $this->beforeCheckIn();
+
+        if ($this->getParticipationStatusAttribute() != 'admitted') {
+            throw new NotAdmittedException();
         }
 
-        if ($this->attend_status != 'attended') {
-            throw new \Exception('please attend first');
+        if ($this->getAttendStatusAttribute() != 'attended') {
+            throw new NotCheckedInException();
         }
+
         $this->left_at = Carbon::now();
         $this->save();
+    }
+
+    /**
+     * @throws InactiveActivityException
+     */
+    private function checkActivityStatus()
+    {
+        if ($this->pivotParent->getStatus() != 'ongoing') {
+            throw new InactiveActivityException();
+        }
+    }
+
+    /**
+     * @throws AlreadyProcessedException
+     */
+    private function checkIfAlreadyProcessed()
+    {
+        if ($this->getParticipationStatusAttribute() != 'pending') {
+            throw new AlreadyProcessedException('already admitted or rejected');
+        }
+    }
+
+    /**
+     * Check conditions before check in
+     *
+     * @throws NotAdmittedException
+     * @throws InactiveActivityException
+     */
+    private function beforeCheckIn()
+    {
+        $this->checkActivityStatus();
+
+        if ($this->getParticipationStatusAttribute() != 'admitted') {
+            throw new NotAdmittedException();
+        }
     }
 }

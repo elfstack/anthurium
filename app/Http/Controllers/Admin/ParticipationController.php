@@ -14,6 +14,8 @@ class ParticipationController extends Controller
             'status' => 'required|in:rejected,admitted,attended,left,cancelled'
         ]);
 
+        // TODO: refactor
+
         switch ($sanitized['status']) {
             case 'rejected':
                 $participation->reject();

@@ -26,4 +26,6 @@ interface Participant
      *
      */
     function participatedActivities(): MorphToMany;
+
+    function equals(): bool;
 }

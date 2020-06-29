@@ -3,11 +3,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Relations\MorphMany;
+use App\Exceptions\AlreadyEnrolledException;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 trait CanParticipate
 {
+    /**
+     * Participate activity
+     *
+     * @param Activity $activity
+     * @throws AlreadyEnrolledException
+     */
     public function participate(Activity $activity): void {
         $activity->addParticipant($this);
     }
@@ -34,6 +40,17 @@ trait CanParticipate
      */
     public function isParticipant(Activity $activity): bool
     {
-        return $activity->getParticipant($this)->exists();
+        return $activity->getParticipants($this)->exists();
+    }
+
+    /**
+     * Check if two participants are the same
+     *
+     * @param Participant $participant
+     * @return bool
+     */
+    public function equals(Participant $participant): bool
+    {
+        return $this->id == $participant->id && $this->getMorphClass() == $participant->getMorphClass();
     }
 }

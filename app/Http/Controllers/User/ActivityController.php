@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Models\Activity;
 use App\Http\Controllers\Controller;
 use App\Models\Guest;
+use App\Models\Participation;
 use App\Utils\Listing;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -18,7 +19,7 @@ class ActivityController extends Controller
      * List activities
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      * @throws \Exception
      */
     public function index (Request $request) : JsonResponse
@@ -158,9 +159,12 @@ class ActivityController extends Controller
     }
 
     /**
+     * Enroll the guest
+     *
      * @param Request $request
      * @param Guest $guest
      * @param Activity $activity
+     * @return JsonResponse
      */
     public function guestEnroll(Request $request, Guest $guest, Activity $activity)
     {
@@ -173,6 +177,44 @@ class ActivityController extends Controller
 
         return response()->json([
             'message' => 'enrolled'
+        ]);
+    }
+
+    /**
+     * Check out participant
+     * TODO: add permission on this api
+     * TODO: add detailed message on this api
+     *
+     * @param Request $request
+     * @param Activity $activity
+     * @param Participation $participation
+     * @return JsonResponse
+     */
+    public function checkOut(Request $request, Activity $activity, Participation $participation)
+    {
+        if ($request->user('api')) {
+            $participant = $request->user('api');
+        } else if ($request->hasValidSignature()) {
+            // TODO: can checkout guest
+            throw new \RuntimeException('not implemented');
+        } else {
+            abort(403);
+        }
+
+        if (!$participant->equals($participation->participant)) {
+            abort(401);
+        }
+
+        try {
+            $participation->pivotParent = $activity;
+            $participation->checkOut();
+        } catch (\Exception $e) {
+            abort(500, 'error checking out');
+        }
+
+        return response()->json([
+            'message' => 'checked out',
+            'left_at' => $participation->left_at
         ]);
     }
 }
