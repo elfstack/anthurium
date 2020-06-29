@@ -12,19 +12,21 @@ const path = require('path')
  |
  */
 
-mix.setPublicPath('public/assets/admin/')
-mix.js('resources/js/admin/app.js', 'assets/admin/js')
-mix.less('resources/js/admin/less/app.less', 'assets/admin/css')
+mix.setPublicPath('public/assets/app/')
+mix.js('resources/js/user/app.js', 'assets/app/js')
+mix.less('resources/js/user/less/app.less', 'assets/app/css')
+
 mix.options({
     hmrOptions: {
-        host: '0.0.0.0',
-        port: 8081
+        host: '127.0.0.1',
+        port: 8082
     }
 })
+
 mix.webpackConfig({
         resolve: {
             alias: {
-                '@': path.resolve('resources/js/admin')
+                '@': path.resolve('resources/js/user')
             }
         },
         output: {

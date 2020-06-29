@@ -1,3 +1,3 @@
 if (process.env.module) {
-    require(`${__dirname}/webpack.${process.env.module}.mix.js`);
+    require(`${__dirname}/build/webpack.${process.env.module}.mix.js`);
 }
