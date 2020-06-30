@@ -37,6 +37,11 @@ class Participation extends MorphPivot
         return $this->morphTo();
     }
 
+    public function activity()
+    {
+        return $this->belongsTo(Activity::class);
+    }
+
     /**
      * Participation Status
      *
