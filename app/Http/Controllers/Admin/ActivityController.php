@@ -104,6 +104,7 @@ class ActivityController extends Controller
             'statistics' => [
                 'quota' => $activity->quota,
                 'applicant' => $activity->participations()->count(),
+                'pending' => $activity->participations()->whereNull('approved_at')->whereNull('rejected_at')->count(),
                 'admitted' => $admitted,
                 'rejected' => $activity->participations()->whereNotNull('rejected_at')->count(),
                 'attended' => $attended,

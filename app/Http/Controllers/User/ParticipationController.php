@@ -7,6 +7,7 @@ use App\Models\Activity;
 use App\Models\User;
 use App\Models\Participation;
 use App\Utils\Listing;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -47,13 +48,22 @@ class ParticipationController extends Controller
 
     /**
      * Drop the enrollment
+     * TODO: a better drop method may be implemented
      *
      * @param Participation $participation
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function destroy(Participation $participation)
     {
-        // TODO: drop enrollment
+        if ($participation->getParticipationStatusAttribute() != "pending") {
+            abort('500', 'Your request has already been processed');
+        }
+
+        $participation->delete();
+
+        return response()->json([
+            'message' => 'dropped'
+        ]);
     }
 
 
@@ -86,7 +96,7 @@ class ParticipationController extends Controller
         try {
             $participation->pivotParent = $activity;
             $participation->checkOut();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             abort(500, 'error checking out');
         }
 

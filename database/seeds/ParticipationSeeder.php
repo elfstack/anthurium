@@ -15,7 +15,7 @@ class ParticipationSeeder extends Seeder
      */
     public function run()
     {
-        $activity = factory(Activity::class)->create();
+        $activity = factory(Activity::class)->state('upcoming')->create();
 
         $this->command->info('Seeding participant on activity with id '.$activity->id);
 

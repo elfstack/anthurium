@@ -35,6 +35,6 @@ $factory->state(Activity::class, 'upcoming', static function (Faker $faker) {
     return [
         'starts_at' => $faker->dateTimeBetween('now', '+1 years'),
         'ends_at' => $faker->dateTimeBetween('+1 years', '+2 years'),
-        'is_published' => $faker->randomElement([true, false])
+        'is_published' => true
     ];
 });

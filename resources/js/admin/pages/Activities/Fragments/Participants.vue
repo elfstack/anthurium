@@ -6,7 +6,11 @@
                     <a-statistic
                         :title="statistic.title"
                         :value="statistic.value"
-                    ></a-statistic>
+                    >
+                      <template #suffix v-if="statistic.suffix">
+                        <span>{{ statistic.suffix }}</span>
+                      </template>
+                    </a-statistic>
                 </a-card>
             </a-col>
         </a-row>
@@ -150,7 +154,8 @@
                 if (this.activity.status === 'upcoming') {
                     statistics.push({
                         title: 'Quota',
-                        value: this.activity.quota
+                        value: this.statistics.applicant,
+                        suffix: `/ ${this.activity.quota}`,
                     })
 
                     statistics.push({
