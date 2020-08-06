@@ -104,6 +104,14 @@ class ParticipationTest extends TestCase
         $this->participation->checkOut();
     }
 
+    public function test_get_otp(): void
+    {
+        $otp = unserialize($this->participation->otp());
+        $this->assertArrayHasKey('id', $otp);
+        $this->assertArrayHasKey('expires', $otp);
+        $this->assertArrayHasKey('signature', $otp);
+    }
+
     private function setActivityToOngoing()
     {
         $this->participation->pivotParent->starts_at = Carbon::now()->subHour();

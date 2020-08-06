@@ -8,9 +8,12 @@ use App\Exceptions\NotAdmittedException;
 use App\Exceptions\NotCheckedInException;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
+use Illuminate\Support\InteractsWithTime;
 
 class Participation extends MorphPivot
 {
+
+    use InteractsWithTime;
     /**
      * @var string table for this model
      */
@@ -31,6 +34,16 @@ class Participation extends MorphPivot
         'arrived_at' => 'datetime',
         'left_at' => 'datetime',
     ];
+
+    public function otp()
+    {
+        $parameters = [
+            'id' => $this->id,
+            'expires' => $this->availableAt(Carbon::now()->addSeconds(10))
+        ];
+
+        return serialize($parameters + [ 'signature' => hash_hmac('sha256', serialize($parameters), getenv('APP_KEY'))]);
+    }
 
     public function participant()
     {

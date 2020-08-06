@@ -21,5 +21,6 @@ Route::middleware(['auth:api'])->group(function () {
 
 Route::apiResource('activities', 'ActivityController');
 Route::apiResource('participations', 'ParticipationController');
+Route::get('/participations/{participation}/otp', 'ParticipationController@otp');
 Route::post('/activities/{activity}/enroll', 'ActivityController@enroll');
 Route::post('/activities/{activity}/participation/{participation}/check-out', 'ActivityController@checkOut');

@@ -7,9 +7,11 @@ use App\Models\Activity;
 use App\Models\User;
 use App\Models\Participation;
 use App\Utils\Listing;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
 
 class ParticipationController extends Controller
 {
@@ -25,6 +27,13 @@ class ParticipationController extends Controller
         $activities = $user->participatedActivities()
             ->withPivot(['arrived_at', 'left_at', 'approved_at', 'rejected_at', 'cancelled_at'])
             ->withTimestamps();
+
+        if ($request->query('current')) {
+            // TODO: filter current participated activities
+            $now = Carbon::now();
+            $activities->whereDate('ends_at', '>', $now);
+            $activities->where('is_published', true);
+        }
 
         $result = Listing::fromQuery($activities)
             ->setColumns(['activities.id', 'name', 'starts_at', 'ends_at'])
@@ -43,6 +52,13 @@ class ParticipationController extends Controller
     {
         return response()->json([
             'participation' => $participation
+        ]);
+    }
+
+    public function otp(Participation $participation)
+    {
+        return response()->json([
+            'otp' => $participation->otp()
         ]);
     }
 
