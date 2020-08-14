@@ -1,7 +1,11 @@
 <template>
   <div>
     <!-- TODO: when activity not started, when user checked in, when activity ends, when activity ends but not checked in -->
-  <a-card v-if="participation.attend_status === 'unattended'" title="Check In">
+  <a-card v-if="participation.attend_status === 'unattended'">
+    <template #title>
+      <a-tag>{{ participation.participant_type }}</a-tag>
+      Check In
+    </template>
     <a-row>
       <a-col :md="12">
         <qrcode :value="otp" v-if="otp"></qrcode>

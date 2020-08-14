@@ -58,6 +58,10 @@ class ParticipationController extends Controller
             }
         }
 
+        if ($participation->getParticipationStatusAttribute() !== 'admitted') {
+            abort(404);
+        }
+
         $participation->load(['activity', 'participant']);
         return response()->json([
             'participation' => $participation

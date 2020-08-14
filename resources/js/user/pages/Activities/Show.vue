@@ -66,6 +66,7 @@
         <enroll
             ref="enroll-modal"
             :id="activity.id"
+            @enrolled="activity.is_enrolled = true"
         />
 
     </div>
