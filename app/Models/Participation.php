@@ -174,6 +174,10 @@ class Participation extends MorphPivot
      */
     private function checkActivityStatus()
     {
+        if (!isset($this->pivotParent)) {
+            $this->pivotParent = $this->activity;
+        }
+
         if ($this->pivotParent->getStatus() != 'ongoing') {
             throw new InactiveActivityException();
         }

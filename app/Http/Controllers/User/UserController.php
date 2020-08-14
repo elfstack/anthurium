@@ -160,4 +160,20 @@ class UserController extends Controller
             'admin_user' => $adminUser
         ];
     }
+
+    /**
+     * List all activities of current user
+     * @param Request $request
+     */
+    public function currentActivities(Request $request) {
+        $user = $request->user();
+
+        $activities = $user->participatedActivities();
+        // TODO: filtering
+        // TODO: listing
+
+        Listing::fromQuery($activities)
+            ->attachSearching(['title'])
+            ->attachSorting(['title', 'starts_at', 'ends_at']);
+    }
 }
