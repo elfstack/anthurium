@@ -58,6 +58,10 @@ const router = new VueRouter({
                     ]
                 },
                 {
+                  path: 'participations/:id',
+                  component: () => import('../pages/Participations/Participation')
+                },
+                {
                     path: '404',
                     name: 'app.not-found',
                     component: () => import('../pages/Error/404')

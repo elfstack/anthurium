@@ -14,7 +14,7 @@ class CreateParticipationsTable extends Migration
     public function up()
     {
         Schema::create('participations', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id');
             $table->morphs('participant');
             $table->foreignId('activity_id')->constrained();
             // created at, updated at

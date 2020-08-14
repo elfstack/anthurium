@@ -11,7 +11,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\URL;
+use RuntimeException;
 
 class ParticipationController extends Controller
 {
@@ -45,11 +45,20 @@ class ParticipationController extends Controller
     /**
      * Display the specified resource.
      *
+     * @param Request $request
      * @param Participation $participation
      * @return JsonResponse
      */
-    public function show(Participation $participation)
+    public function show(Request $request, Participation $participation)
     {
+        if ($participation->participant instanceof User) {
+            $user = $request->user('api');
+            if (empty($user) || !$participation->participant->equals($user)) {
+                abort(403);
+            }
+        }
+
+        $participation->load(['activity', 'participant']);
         return response()->json([
             'participation' => $participation
         ]);
@@ -100,7 +109,7 @@ class ParticipationController extends Controller
             $participant = $request->user('api');
         } else if ($request->hasValidSignature()) {
             // TODO: can checkout guest
-            throw new \RuntimeException('not implemented');
+            throw new RuntimeException('not implemented');
         } else {
             abort(403);
         }
