@@ -17,6 +17,14 @@ class FormQuestion extends Model
         'max_character'
     ];
 
+    protected $casts = [
+        'is_required'
+    ];
+
+    public $timestamps = false;
+
+    // TODO: before create, check if sequence duplicates
+
     public function options(): hasMany {
         return $this->hasMany(FormOptions::class);
     }

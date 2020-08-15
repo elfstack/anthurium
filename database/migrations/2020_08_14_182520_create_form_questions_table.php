@@ -19,8 +19,8 @@ class CreateFormQuestionsTable extends Migration
             $table->unsignedTinyInteger('sequence');
             $table->string('type'); // text, textarea, radio, checkbox
             $table->string('question');
-            $table->boolean('is_required');
-            $table->unsignedSmallInteger('max_character');
+            $table->boolean('is_required')->default(false);
+            $table->unsignedSmallInteger('max_character')->nullable();
         });
     }
 
