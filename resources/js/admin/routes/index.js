@@ -149,6 +149,39 @@ const router = new VueRouter({
                     ]
                 },
                 {
+                    path: 'forms/',
+                    component: { render: h => h('router-view') },
+                    children: [
+                      {
+                          path: '',
+                          name: 'admin.forms.index',
+                          component: () => import('../pages/Forms/Index')
+                      },
+                      {
+                          path: ':id(\\d+)/',
+                          component: { render: h => h('router-view') },
+                          children: [
+                            {
+                              path: '',
+                              name: 'admin.forms.show',
+                              component: () => import('../pages/Forms/Show.vue')
+                            },
+                            {
+                              path: 'questions',
+                              name: 'admin.forms.show.questions',
+                              component: () => import('../pages/Forms/Questions.vue')
+                            },
+                            {
+                              path: 'answers/:answersId(\\d+)',
+                              name: 'admin.forms.show.answers',
+                              component: () => import('../pages/Forms/Answers.vue')
+                            }
+                          ]
+
+                      }
+                    ]
+                },
+                {
                     path: 'manage-access/',
                     component: { render: h => h('router-view') },
                     children: [
