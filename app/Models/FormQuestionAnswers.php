@@ -2,18 +2,17 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class FormQuestionAnswers extends Pivot
+class FormQuestionAnswers extends Model
 {
     protected $table = 'form_question_answers';
 
-    public function question(): BelongsTo {
-        return $this->belongsTo(FormQuestion::class);
-    }
+    public $timestamps = false;
 
-    public function answer(): BelongsTo {
-        return $this->belongsTo(FormAnswer::class);
+    public function question(): belongsTo
+    {
+        return $this->belongsTo(FormQuestion::class, 'form_question_id');
     }
 }
