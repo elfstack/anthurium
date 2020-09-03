@@ -3,6 +3,7 @@ import config from "../../../api/admin/config";
 const state = () => ({
     name: '',
     permissions: {},
+    configs: {},
     loaded: false
 })
 
@@ -22,6 +23,9 @@ const mutations = {
     },
     setLoaded( state, payload) {
         state.loaded = payload
+    },
+    setConfigGroup( state, configs ) {
+      Object.assign(state.configs, configs)
     }
 }
 
@@ -31,6 +35,15 @@ const actions = {
             commit('setConfig', data)
             commit('setLoaded', true)
         })
+    },
+    async getValue({ commit, state }, key) {
+      if (state.configs[key]) return state.configs[key]
+
+      const group = key.split('.')[0]
+      const configs = await config.group(group)
+      commit('setConfigGroup', configs)
+
+      return configs[key]
     },
     checkConfig({ commit }) {
         // TODO: check config for frontend

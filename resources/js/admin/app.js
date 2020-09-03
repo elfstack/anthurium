@@ -25,3 +25,7 @@ const app = new Vue({
 Vue.prototype.$can = value => {
    return store.getters['adminUser/can'](value)
 }
+
+Vue.prototype.$getConfig = key => {
+  return store.dispatch('config/getValue', key)
+}
