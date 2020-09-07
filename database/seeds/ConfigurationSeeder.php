@@ -14,8 +14,7 @@ class ConfigurationSeeder extends Seeder
     {
         $configurations = collect([
             'registration' => true,
-            'registration_form' => false,
-            'registration_form_id' => [ 'integer', null ]
+            'registration.form_id' => [ 'integer', null ]
         ]);
 
         $configurations->each(function ($value, $key) {

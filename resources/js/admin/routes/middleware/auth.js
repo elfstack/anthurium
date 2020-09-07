@@ -6,7 +6,7 @@ export default async function auth (to, from, next) {
     }
 
     if (!store.getters['config/loaded']) {
-        await store.dispatch('config/getConfig')
+        await store.dispatch('config/loadConfigs')
     }
 
     let hasRedirect = false

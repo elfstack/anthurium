@@ -6,13 +6,21 @@
       </template>
       Answer: {{ answer.answer }}
     </a-card>
+      <question v-for="answer in answer.answers">
+
+      </question>
   </div>
 </template>
 
 <script>
   import form from "../../../api/admin/form";
+  import Question from '../../components/Question'
+
   export default {
     name: "Answers",
+    components: {
+      'question': Question
+    },
     beforeRouteEnter (to, from, next) {
       next(vm => {
         vm.loadData(to.params.id, to.params.answersId)

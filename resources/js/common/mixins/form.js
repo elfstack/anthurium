@@ -1,11 +1,7 @@
+import formLayouts from "./formLayouts"
+
 export default {
-  data () {
-    return {
-      labelCol: { md: 8, lg: 6 },
-      wrapperCol: { md: 16, lg: 14 },
-      btnWrapperCol: { md: { span: 16, offset: 8 }, lg: { span: 14, offset: 6 }}
-    }
-  },
+  mixins: [ formLayouts ],
   methods: {
     /**
      * Submit the form

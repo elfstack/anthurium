@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Configuration;
 use App\Models\Form;
 use App\Models\FormAnswer;
+use App\Models\User;
 use App\Utils\Listing;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class FormAnswerController extends Controller
 {
@@ -29,12 +32,56 @@ class FormAnswerController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Form $form
+     * @param \Illuminate\Http\Request $request
+     * @return JsonResponse
      */
-    public function store(Request $request)
+    public function store(Form $form, Request $request)
     {
-        //
+        // TODO: save answer to database
+        /*
+         * {
+         *   "answers": [{
+         *     "question_id": 1,
+         *     "answer": "xx"
+         *     ...
+         *   }]
+         * }
+         */
+        $sanitized = $request->validate([
+            'answers' => 'array',
+            'answers.question_id' => [
+                'required',
+                'integer',
+                Rule::exists('form_questions', 'id')->where(function ($query) use (&$form) {
+                    $query->where('form_id', $form->id);
+                })
+            ],
+            'answers.answer' => [
+                // TODO
+            ]
+        ]);
+
+        $answers = collect($sanitized['answers'])->map(function ($answer) {
+            return [
+                'form_question_id' => $answer['question_id'],
+                'answer' => $answer['answer']
+            ];
+        });
+
+        // TODO: save answerer
+        // FIXME: this is only the case of logged user filling the form
+
+        $answersWrapper = $form->answers()->create([
+            'answerer_id' => $request->user()->id,
+            'answerer_type' => 'user'
+        ]);
+
+        $answersWrapper->answers()->create($answers);
+
+        return response()->json([
+            'message' => 'success'
+        ], 201);
     }
 
     /**
@@ -46,6 +93,50 @@ class FormAnswerController extends Controller
      */
     public function show(Form $form, FormAnswer $answer)
     {
+        $answer->load(['answers.question']);
+
+        return response()->json([
+            'answer' => $answer
+        ]);
+    }
+
+    /**
+     * Get answer by user id
+     *
+     * @param Form $form
+     * @param User $user
+     * @return JsonResponse
+     */
+    public function getAnswersByUserId(Form $form, User $user)
+    {
+        $answer = $form->answersAnsweredBy($user);
+
+        if ($answer == null) {
+            abort(404, 'No information available');
+        }
+        $answer->load(['answers.question']);
+
+        return response()->json([
+            'answer' => $answer
+        ]);
+    }
+
+    /**
+     * Get registration form answer by user id
+     *
+     * @param User $user
+     * @return JsonResponse
+     */
+
+    public function getRegistrationFormAnswerByUserId(User $user)
+    {
+        $registrationFormId = Configuration::getConfig('registration.form_id');
+
+        if (!$registrationFormId) {
+            abort(405, "Registration form is disabled");
+        }
+
+        $answer = Form::find($registrationFormId)->answerAnsweredBy($user);
         $answer->load(['answers.question']);
 
         return response()->json([

@@ -25,7 +25,7 @@ class ParticipationDetailsTest extends TestCase
 
         $participation = $activity->participations($user);
 
-        $response = $this->get('/api/participations/'.$participation->getKey());
+        $response = $this->actingAs($user)->get('/api/participations/'.$participation->getKey());
 
         $response->assertStatus(200);
         $response->assertJson([

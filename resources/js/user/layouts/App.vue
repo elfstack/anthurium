@@ -64,6 +64,12 @@
                                 Login
                             </a-button>
                         </router-link>
+                        <!-- TODO: control button visibility by config -->
+                        <router-link :to="{ name: 'app.register' }">
+                          <a-button ghost>
+                            Register
+                          </a-button>
+                        </router-link>
                     </template>
                 </a-col>
             </a-row>

@@ -4,7 +4,7 @@
             <template #footer>
                 <a-tabs :active-key="activeTab" @change="changeTab">
                     <a-tab-pane key="account" tab="Account" />
-                    <a-tab-pane key="information" tab="Information" v-if="$getConfig('registration_form')"/>
+                    <a-tab-pane key="information" tab="Information" v-if="$getConfig('registration.form')"/>
                     <a-tab-pane key="participation" tab="Participation" />
                 </a-tabs>
             </template>

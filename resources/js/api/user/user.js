@@ -5,6 +5,9 @@ export default {
     logout () {
         return window.axios.get('/logout')
     },
+    register (data) {
+      return window.axios.post('/users', data)
+    },
     getCurrent () {
         return window.axios.get('/users/current')
     }

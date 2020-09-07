@@ -11,6 +11,11 @@ class FormQuestionAnswers extends Model
 
     public $timestamps = false;
 
+    public $fillable = [
+        'form_question_id',
+        'answer'
+    ];
+
     public function question(): belongsTo
     {
         return $this->belongsTo(FormQuestion::class, 'form_question_id');

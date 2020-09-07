@@ -1,0 +1,73 @@
+<template>
+  <div>
+  <p>{{ question.question }}</p>
+    <template v-if="question.type === 'checkbox' || question.type === 'radio'">
+      <component
+        :is="`a-${question.type}-group`"
+        v-model:value="answerForm">
+        <component :is="`a-${question.type}`" v-for="option in question.options" :value="option.id">
+          {{ option.value }}
+        </component>
+      </component>
+    </template>
+
+    <template v-if="question.type.substring(0, 4) === 'text'">
+      <template v-if="!isEditing">
+        Answer: {{ answer.answer }}
+      </template>
+
+      <template v-else>
+        <component :is="`a-${question.type === 'text' ? 'input' : 'textarea'}`" v-model="answerForm"></component>
+      </template>
+    </template>
+  </div>
+</template>
+
+<script>
+  export default {
+    name: 'Question',
+    props: {
+      question: {
+        // can be synced
+        required: true,
+        type: Object
+      },
+      answer: {
+        // can be synced
+        type: [ String, Number ]
+      },
+      isEditing: {
+        default: false,
+        type: Boolean
+      }
+    },
+    data () {
+      return {
+        options: [],
+        answerForm: ''
+      }
+    },
+    mounted () {
+      this.setAnswer()
+    },
+    methods: {
+      setAnswer () {
+        if (question.type === 'checkbox' || question.type === 'radio') {
+          // TODO
+        } else {
+
+        }
+      },
+      $collectAnswer () {
+        return {
+          question_id: this.question.id,
+          answer: this.answerForm
+        }
+      }
+    }
+  }
+</script>
+
+<style scoped>
+
+</style>

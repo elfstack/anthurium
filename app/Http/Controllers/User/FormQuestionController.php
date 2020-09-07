@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\User;
 
 use App\Models\Form;
 use App\Models\FormOptions;
@@ -51,7 +51,7 @@ class FormQuestionController extends Controller
         if ($sanitized['type'] !== 'text' && $sanitized['type'] !== 'textarea') {
 
             $options = collect($sanitized['options'])->map(function ($option) {
-                return FormOptions::make($option);
+                return new FormOptions($option);
             });
 
             $question->options()->saveMany($options);

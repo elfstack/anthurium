@@ -105,13 +105,18 @@ const router = new VueRouter({
                             path: ':id(\\d+)/',
                             component: () => import('../pages/Users/Show'),
                             children: [
-                                {
-                                    path: '',
-                                    name: 'admin.users.show.account',
-                                    component: () => import('../pages/Users/Account')
-                                },
-                                {
-                                    path: 'participation',
+                              {
+                                path: '',
+                                name: 'admin.users.show.account',
+                                component: () => import('../pages/Users/Fragments/Account')
+                              },
+                              {
+                                path: 'information',
+                                name: 'admin.users.show.information',
+                                component: () => import('../pages/Users/Fragments/Information')
+                              },
+                              {
+                                path: 'participation',
                                     name: 'admin.users.show.participation',
                                     component: () => import('../pages/Participants/Show'),
                                     meta: {

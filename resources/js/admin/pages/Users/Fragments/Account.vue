@@ -19,8 +19,8 @@
 
 <script>
     import { mapState } from 'vuex'
-    import Form from './form'
-    import user from "../../../api/admin/user";
+    import Form from '../Form'
+    import user from "../../../../api/admin/user";
 
     export default {
         name: "Account",

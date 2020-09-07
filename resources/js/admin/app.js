@@ -27,5 +27,5 @@ Vue.prototype.$can = value => {
 }
 
 Vue.prototype.$getConfig = key => {
-  return store.dispatch('config/getValue', key)
+  return store.getters['config/getConfig'](key)
 }

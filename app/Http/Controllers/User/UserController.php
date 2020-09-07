@@ -4,13 +4,16 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\AdminUser;
+use App\Models\Configuration;
+use App\Models\Form;
+use App\Models\FormAnswer;
 use App\Models\User;
 use App\Utils\Listing;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
@@ -22,7 +25,17 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $sanitized = $request->validate([
+        $registrationFormId = null;
+
+        if (Configuration::getConfig('registration.form')) {
+            $registrationFormId = Configuration::getConfig('registration.form_id');
+        }
+
+        $hasRegistrationFormId = function () {
+            return isset($registrationFormId);
+        };
+
+        $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => [
                 'required',
@@ -30,13 +43,45 @@ class UserController extends Controller
                 'unique:users'
             ],
             'password' => 'min:6|required',
-            'roles' => 'array|required'
+            // 'roles' => 'array|required'
         ]);
 
+        $validator->sometimes('answers.*.question_id', [
+            'required',
+            'unique',
+            'integer',
+            Rule::exists('form_questions', 'id')->where(function ($query) use ($registrationFormId) {
+                $query->where('form_id', $registrationFormId);
+            })
+        ], $hasRegistrationFormId);
+
+        $sanitized = $validator->validate();
+
+        // TODO: validate answer
         $sanitized['password'] = Hash::make($sanitized['password']);
 
-        $user = User::create($sanitized);
-        // $user->roles()->sync($sanitized['roles']);
+        DB::beginTransaction();
+        try {
+            $user = User::create($sanitized);
+            // TODO: move to FormAnswer
+            if (isset($registrationFormId)) {
+                $answersWrapper = new FormAnswer();
+                $answersWrapper->answerer()->associate($user);
+                $answersWrapper->form()->associate(Form::find($registrationFormId));
+                $answers = collect($request->input('answers'))->map(function ($answer) {
+                    return [
+                        'form_question_id' => $answer['question_id'],
+                        'answer' => $answer['answer']
+                    ];
+                });
+                $answersWrapper->save();
+                $answersWrapper->answers()->createMany($answers);
+            }
+            DB::commit();
+        } catch (\Exception $e) {
+            abort(500, $e);
+            DB::rollBack();
+        }
 
         return [
             'user' => $user

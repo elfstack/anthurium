@@ -16,6 +16,11 @@ const router = new VueRouter({
             name: 'app.reset-password',
         },
         {
+            path: '/register',
+            name: 'app.register',
+            component: () => import('../pages/Register')
+        },
+        {
             path: '/',
             component: () => import('../layouts/App'),
             async beforeEnter (to, from, next) {

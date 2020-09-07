@@ -27,5 +27,8 @@ export default {
     },
     showAnswers (formId, answersId) {
       return window.axios.get(`/forms/${formId}/answers/${answersId}`)
+    },
+    getAnswersByUserId (formId, userId) {
+      return window.axios.get(`/forms/${formId}/users/${userId}/answers`)
     }
 }

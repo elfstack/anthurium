@@ -30,19 +30,20 @@ class Configuration extends Model
      */
     public static function set(string $key, string $value)
     {
+        // TODO: error handling
         return Configuration::find($key)->update([
             'value' => $value
         ]);
     }
 
-    public static function getGroup(string $group)
+    public static function all($columns = ['*'])
     {
-        $configurations = Configuration::where('key', 'like', $group.'\_%')
-            ->orWhere('key', $group)
-            ->get();
+        $configurations = self::getReadable(parent::all($columns));
+        return self::getKeyValuePair($configurations);
+    }
 
-        $configurations = self::getReadable($configurations);
-
+    private static function getKeyValuePair($configurations)
+    {
         return $configurations->keyBy('key')->transform(function ($item) {
             $value = $item->value;
             if ($item->value !== null) {
@@ -50,6 +51,21 @@ class Configuration extends Model
             }
             return $value;
         })->toArray();
+    }
+
+    public static function getConfigs($configKeys) {
+        return self::getKeyValuePair(self::findMany($configKeys));
+    }
+
+    public static function getConfig($key) {
+        $item = self::find($key);
+        $value = $item->value;
+
+        if ($item->value != null) {
+            settype($value, $item->type);
+        }
+
+        return $value;
     }
 
     /**
@@ -69,5 +85,9 @@ class Configuration extends Model
         });
 
         return $configurations->concat($readableConfigurations);
+    }
+
+    public static function lastUpdatedAt() {
+        // TODO: rvm
     }
 }

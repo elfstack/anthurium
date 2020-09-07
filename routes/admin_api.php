@@ -29,6 +29,7 @@ Route::middleware(['auth:admin_api'])->group(function () {
     Route::apiResource('forms', 'FormController');
     Route::apiResource('forms.questions', 'FormQuestionController');
     Route::apiResource('forms.answers', 'FormAnswerController');
+    Route::get('/forms/{form}/users/{user}/answers', 'FormAnswerController@getAnswersByUserId');
 
     // Config
     Route::patch('/config', 'ConfigController@update');
