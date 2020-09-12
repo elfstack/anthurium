@@ -7,7 +7,7 @@
         <a-card v-if="participation.participation_status === 'admitted' && participation.attend_status !== 'left'">
           <template #title>
             <a-tag>{{ participation.participant_type }}</a-tag>
-            {{ participation.attend_status === 'arrived' ? 'Check In' : 'Check Out' }}
+            {{ participation.attend_status === 'arrived' ? 'Check Out' : 'Check In' }}
           </template>
           <a-row>
             <a-col :md="12">

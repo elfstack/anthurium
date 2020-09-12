@@ -37,7 +37,7 @@
                                     {{ item.ends_at | moment('from', item.starts_at, true) }}
                                 </span>
                             </template>
-                            <a-list-item-meta :description="item.content.substring(0,300)">
+                            <a-list-item-meta :description="item.content ? item.content.substring(0,300): 'No description available'">
                                 <router-link
                                     slot="title"
                                     :to="{ name: 'app.activities.show', params: { id: item.id } }"

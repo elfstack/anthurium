@@ -60,6 +60,7 @@
                 enroll().then(({ data }) => {
                     this.$toggleVisibility()
                     this.$message.success(data.message)
+                  // TODO: update view when successfully enrolled
                 })
             },
             handleCancel () {
