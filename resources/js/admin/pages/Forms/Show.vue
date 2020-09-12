@@ -11,7 +11,9 @@
     <div class="p2">
     <a-row :gutter="[16, 16]">
       <a-col>
-        <a-card :loading="isLoading">
+        <a-card
+          title="Description"
+          :loading="isLoading">
           {{ form.description }}
         </a-card>
       </a-col>

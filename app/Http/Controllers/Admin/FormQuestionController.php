@@ -51,7 +51,7 @@ class FormQuestionController extends Controller
         if ($sanitized['type'] !== 'text' && $sanitized['type'] !== 'textarea') {
 
             $options = collect($sanitized['options'])->map(function ($option) {
-                return FormOptions::make($option);
+                return FormOptions::make($option->value);
             });
 
             $question->options()->saveMany($options);

@@ -7,7 +7,12 @@
       @ok="createForm"
       @cancel="() => { createModalVisible = false }"
     >
-      <a-form-model :model="form" ref="form" :rules="rules">
+      <a-form-model
+        :model="form"
+        ref="form"
+        :rules="rules"
+        :wrapper-col="wrapperCol"
+        :label-col="labelCol">
         <a-form-model-item prop="title" label="Title">
           <a-input v-model="form.title" placeholder="Title"/>
         </a-form-model-item>

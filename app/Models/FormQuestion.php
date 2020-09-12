@@ -18,7 +18,7 @@ class FormQuestion extends Model
     ];
 
     protected $casts = [
-        'is_required'
+        'is_required' => 'boolean'
     ];
 
     public $timestamps = false;

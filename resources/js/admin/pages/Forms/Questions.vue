@@ -7,16 +7,16 @@
     <div class="p2">
       <a-skeleton v-if="loading"/>
       <template v-else>
-      <a-row :gutter="[16,16]" v-for="(question, idx) in questions">
+      <a-row :gutter="[16,16]" v-for="(question, idx) in questions" :key="question.id">
         <a-col>
           <a-card :title="`Question ${idx + 1}`">
             <template #extra>
               <a-button icon="delete" @click="removeQuestion(idx)"></a-button>
               <a-button icon="edit" @click="startQuestionEdit(idx)" v-show="currentEditingIndex === null"></a-button>
-              <a-button icon="save" @click="saveQuestionEdit" v-show="currentEditingIndex === idx"></a-button>
+              <a-button icon="save" @click="saveQuestionEdit" v-show="currentEditingIndex === idx" type="primary"></a-button>
             </template>
             <template v-if="idx === currentEditingIndex">
-              <a-form-model :model="questionForm">
+              <a-form-model :model="questionForm" :wrapper-col="wrapperCol" :label-col="labelCol">
                 <a-form-item label="Question" prop="question">
                   <a-input v-model="questionForm.question"></a-input>
                 </a-form-item>
@@ -91,7 +91,7 @@
               </a-form-model>
             </template>
             <template v-else>
-              <p>{{ question.question }}</p>
+              <p :class="{ 'ant-form-item-required': question.is_required }">{{ question.question }}</p>
               <template v-if="question.type === 'checkbox' || question.type === 'radio'">
                 <component :is="`a-${question.type}`" v-for="option in question.options">{{ option.value }}</component>
               </template>
@@ -114,24 +114,27 @@
 
 <script>
   import form from "../../../api/admin/form";
+  import formLayouts from "../../../common/mixins/formLayouts";
+
   export default {
     name: "Questions",
+    mixins: [formLayouts],
     data() {
       return {
         loading: true,
-        questions: [
-          {
-            id: '1',
-            type: 'checkbox',
-            question: 'Price of t-shirt?',
-            options: [
-              { value: 'test' },
-              { value: 'test1' },
-              { value: 'test3' },
-              { value: 'test4' }
-            ]
-          }
-        ],
+        // questions: [
+        //   {
+        //     id: '1',
+        //     type: 'checkbox',
+        //     question: 'Price of t-shirt?',
+        //     options: [
+        //       { value: 'test' },
+        //       { value: 'test1' },
+        //       { value: 'test3' },
+        //       { value: 'test4' }
+        //     ]
+        //   }
+        // ],
         questionForm: {
           question: ''
         },
@@ -199,16 +202,21 @@
         })
       },
       removeQuestion (idx) {
-        let questionId = this.questions[idx].id
+        // FIXME: this method is not reactive
+        const questionId = this.questions[idx].id
+        const deleteQuestionIdx = this.questions.findIndex(question => question.id === questionId)
+        console.log('questions before delete', this.questions)
+        console.log('question id will be deleted', questionId)
+        console.log('delete question idx', deleteQuestionIdx)
+        console.log('questions after delete', this.questions)
 
         if (questionId) {
           form.removeQuestion(this.$route.params.id, questionId).then(({ data }) => {
-            this.questions.splice(this.currentEditingIndex, 1)
-            this.currentEditingIndex = null
+            this.$delete(this.questions, deleteQuestionIdx)
             this.$message.success('deleted')
           })
         } else {
-          this.questions.splice(this.currentEditingIndex, 1)
+          this.$delete(this.questions, deleteQuestionIdx)
           this.$message.success('deleted')
         }
       }
