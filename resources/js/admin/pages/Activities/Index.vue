@@ -7,7 +7,12 @@
             @ok="createActivity"
             @cancel="() => { createModalVisible = false }"
         >
-            <a-form-model :model="activityForm" ref="activityForm" :rules="rules">
+            <a-form-model
+              :model="activityForm"
+              ref="activityForm"
+              :rules="rules"
+              :label-col="labelCol"
+              :wrapper-col="wrapperCol">
                 <a-form-model-item prop="name" label="Name">
                     <a-input v-model="activityForm.name" placeholder="Name" />
                 </a-form-model-item>
@@ -106,6 +111,7 @@
             createActivity () {
                 this.$submit('activityForm', activity.create, this.activityForm).then(({data}) => {
                     this.$router.push({ name: 'admin.activities.show.overview', params: { id: data.activity.id } })
+                    this.createModalVisible = false
                 })
             },
             updateDuration (value) {

@@ -1,5 +1,5 @@
 <template>
-    <a-form-model :model="data" ref="form">
+    <a-form-model :model="data" ref="form" :label-col="labelCol" :wrapper-col="wrapperCol">
         <a-form-model-item label="Name" prop="name">
             <a-input v-model="data.name"></a-input>
         </a-form-model-item>
