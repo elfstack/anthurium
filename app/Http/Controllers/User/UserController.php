@@ -25,9 +25,13 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        if (!app('AnthuriumConfig')->get('registration')) {
+           abort(405, 'Registration is not open');
+        }
+
         $registrationFormId = null;
 
-        if (Configuration::getConfig('registration.form')) {
+        if (app('AnthuriumConfig')->get('registration.form')) {
             $registrationFormId = Configuration::getConfig('registration.form_id');
         }
 

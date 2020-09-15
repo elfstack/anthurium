@@ -174,7 +174,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        App\Providers\ModelAliasProvider::class
+        App\Providers\ModelAliasProvider::class,
+        App\Providers\AnthuriumConfigProvider::class
 
     ],
 
@@ -227,6 +228,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'AnthuriumConfig' => \App\Providers\AnthuriumConfigProvider::class
 
     ],
 

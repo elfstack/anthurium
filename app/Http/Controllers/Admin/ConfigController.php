@@ -32,29 +32,20 @@ class ConfigController extends Controller
      * @return JsonResponse
      */
     public function update(Request $request) {
+        // TODO: resolve conflicts while multiple user editing the config
+
         $sanitized = $request->input();
 
         $configKeys = [];
         foreach ($sanitized as $key=>$value) {
             array_push($configKeys, $key);
-            Configuration::set($key, $value);
+            // Configuration::set($key, $value);
+            app('AnthuriumConfig')->set($key, $value);
         }
 
         return response()->json([
             'message' => 'success',
             'configs' => Configuration::getConfigs($configKeys)
-        ]);
-    }
-
-    /**
-     * Get hash of current configuration
-     *
-     * @return JsonResponse
-     * TODO: query config version, can utilize cache when implemented
-     */
-    public function version() {
-        return response()->json([
-            'hash' => Configuration::lastUpdatedAt()
         ]);
     }
 }
