@@ -16,6 +16,7 @@ Route::middleware(['auth:admin_api'])->group(function () {
 
     // Anthurium Routes
     Route::apiResource('activities', 'ActivityController');
+    Route::apiResource('activities.budgets', 'BudgetController');
     Route::get('/activities/{activity}/participants', 'ActivityController@participants');
     Route::get('/activities/{activity}/statistics', 'ActivityController@statistics');
     Route::patch('/participation/{participation}', 'ParticipationController@update');

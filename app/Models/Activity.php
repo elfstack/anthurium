@@ -30,6 +30,11 @@ class Activity extends Model
         'approved_participants'
     ];
 
+    public function budgets(): HasMany
+    {
+        return $this->hasMany(Budget::class);
+    }
+
     protected static function booted()
     {
         static::updating(function ($activity) {

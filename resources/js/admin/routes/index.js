@@ -66,6 +66,7 @@ const router = new VueRouter({
                                 },
                                 {
                                     path: 'budget-expense',
+                                    component: () => import('../pages/Activities/Fragments/BudgetExpense'),
                                     name: 'admin.activities.show.budget-expense'
                                 },
                                 {
