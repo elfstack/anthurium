@@ -46,7 +46,7 @@
 
 <style scoped lang="less">
 .header {
-    background: #fff;
+    background: #f0f2f5;
     top: 0;
     padding: 0 24px;
     z-index: 3;

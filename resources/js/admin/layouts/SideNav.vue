@@ -2,42 +2,54 @@
   <a-layout-sider
     width="256"
     v-model="collapsed"
-    collapsible
+    style="background: #fff"
   >
     <router-link
       to="/"
       tag="div"
-      class="logo h4 center" style="color: #fff;"
+      class="logo h4 center"
     >
       {{ !collapsed ? 'Anthurium' : 'An' }}
     </router-link>
     <a-menu
-      theme="dark"
       :open-keys.sync="openKeys"
       v-model="selectedKeys"
       mode="inline"
     >
-      <a-sub-menu>
-        <span slot="title"><a-icon type="user"/><span>Participants</span></span>
-        <a-menu-item key="users">
-          <router-link to="/users">Users</router-link>
-        </a-menu-item>
-        <a-menu-item key="guests">
-          <router-link to="/guests">Guests</router-link>
-        </a-menu-item>
-      </a-sub-menu>
-      <a-sub-menu key="activities">
-        <span slot="title"><a-icon type="schedule"/><span>Activities</span></span>
-        <a-menu-item key="activities">
-          <router-link to="/activities">Activities</router-link>
-        </a-menu-item>
-      </a-sub-menu>
-      <a-sub-menu key="forms">
-        <span slot="title"><a-icon type="tool"/>Tools</span>
-        <a-menu-item key="forms">
-          <router-link to="/forms">Forms</router-link>
-        </a-menu-item>
-      </a-sub-menu>
+      <a-menu-item class="menu-group-header" disabled>
+        <div class="ant-menu-item-group-title">Manage</div>
+      </a-menu-item>
+      <a-menu-item key="activities">
+        <router-link to="/activities">
+          <a-icon type="compass"></a-icon>
+          <span>Activities</span>
+        </router-link>
+      </a-menu-item>
+      <a-menu-item key="forms">
+        <router-link to="/forms">
+          <a-icon type="file-text"></a-icon>
+          <span>Forms</span>
+        </router-link>
+      </a-menu-item>
+      <a-menu-item key="Members">
+          <router-link to="/members">
+            <a-icon type="user"></a-icon>
+           <span>Member</span>
+          </router-link>
+      </a-menu-item>
+
+
+      <a-menu-item class="menu-group-header" disabled>
+        <div class="ant-menu-item-group-title">Settings</div>
+      </a-menu-item>
+
+      <a-menu-item key="general">
+        <router-link to="/site-settings/general">
+          <a-icon type="setting"></a-icon>
+          <span>General</span>
+        </router-link>
+      </a-menu-item>
+
       <a-sub-menu key="manage-access">
         <span slot="title"><a-icon type="lock"/><span>Manage Access</span></span>
         <a-menu-item key="admin-users" v-if="$can('admin.admin-users')">
@@ -51,14 +63,6 @@
         </a-menu-item>
       </a-sub-menu>
 
-      <a-sub-menu key="site-settings" v-if="$can('admin.settings')">
-        <span slot="title"><a-icon type="setting"/><span>Site Settings</span></span>
-        <a-menu-item key="site-info">
-          <router-link to="/site-settings/site-info">Site Info</router-link>
-        </a-menu-item>
-        <a-menu-item key="storage">
-          <router-link to="/site-settings/storage">Manage Storage</router-link>
-        </a-menu-item>
       </a-sub-menu>
     </a-menu>
   </a-layout-sider>
@@ -93,5 +97,13 @@
   .logo {
     height: 64px;
     line-height: 64px;
+  }
+
+  .menu-group-header {
+    background: unset !important;
+  }
+
+  .menu-group-header::after {
+    display: none;
   }
 </style>
