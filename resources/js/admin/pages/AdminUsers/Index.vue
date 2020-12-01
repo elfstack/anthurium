@@ -3,27 +3,30 @@
         <a-page-header title="Admin Users">
 
             <template #extra>
+              <a-row type="flex" :gutter="8">
+                <a-col>
+              <a-input-search
+                placeholder="Search"
+                @search="handleSearch"
+                :loading="loading"
+                allow-clear
+              />
+                </a-col>
+                <a-col>
                 <router-link :to="{ name: 'admin.manage-access.admin-users.create' }">
                     <a-button type="primary" icon="plus">
                         Create
                     </a-button>
                 </router-link>
+                </a-col>
+              </a-row>
             </template>
         </a-page-header>
 
-        <div class="p2">
-            <a-card>
-                    <div>
-                        <a-form>
-                            <a-form-item>
-                                <a-input-search
-                                    placeholder="Search"
-                                    @search="handleSearch"
-                                    :loading="loading"
-                                    allow-clear
-                                />
-                            </a-form-item>
-                        </a-form>
+
+      <div class="p2">
+        <a-card class="card-dense">
+            <div>
                     <a-table
                         @change="handleChange"
                         :pagination="listing.pagination"

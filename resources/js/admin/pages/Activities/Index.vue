@@ -39,7 +39,7 @@
         </a-page-header>
 
         <div class="p2">
-            <a-card>
+            <a-card class="card-dense">
                 <a-table
                     @change="handleChange"
                     :pagination="listing.pagination"

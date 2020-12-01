@@ -35,7 +35,7 @@
     <div class="p2">
       <a-row :gutter="[16,16]">
         <a-col>
-          <a-card>
+          <a-card class="card-dense">
             <a-table
               @change="handleChange"
               :pagination="listing.pagination"
