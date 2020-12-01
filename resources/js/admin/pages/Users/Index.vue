@@ -13,7 +13,7 @@
         <div class="p2">
             <a-row :gutter="[16,16]">
                 <a-col>
-                    <a-card>
+                    <a-card class="card-dense">
                         <a-table
                             @change="handleChange"
                             :pagination="listing.pagination"
@@ -22,8 +22,12 @@
                             row-key="id"
                             :data-source="data">
 
+                            <span slot="group" slot-scope="text,record">
+                              <a-tag>{{ record.user_group.name }}</a-tag>
+                            </span>
+
                             <span slot="action" slot-scope="text,record">
-                                <router-link :to="{ name: 'admin.users.show.account', params: { id: record.id }}">Details</router-link>
+                                <router-link :to="{ name: 'admin.members.show.account', params: { id: record.id }}">Details</router-link>
                             </span>
 
                         </a-table>
@@ -61,8 +65,14 @@
                         key: 'name',
                         title: 'Name'
                     },
-                    {
-                        dataIndex: 'email',
+                  {
+                    dataIndex: 'group',
+                    key: 'group',
+                    title: 'Group',
+                    scopedSlots: { customRender: 'group' }
+                  },
+                  {
+                    dataIndex: 'email',
                         key: 'email',
                         title: 'Email'
                     },

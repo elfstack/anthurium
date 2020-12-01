@@ -15,6 +15,7 @@ Route::middleware(['auth:admin_api'])->group(function () {
     Route::get('/file/collections', 'FileController@getCollections');
 
     // Anthurium Routes
+    Route::apiResource('user_groups', 'UserGroupController');
     Route::apiResource('activities', 'ActivityController');
     Route::apiResource('activities.budgets', 'BudgetController');
     Route::get('/activities/{activity}/participants', 'ActivityController@participants');

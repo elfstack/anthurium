@@ -37,18 +37,15 @@
                 <a-button key="1" type="primary" v-if="!activity.is_published" @click="publish">
                     Publish
                 </a-button>
-                <a-button key="1" type="primary" v-if="canCheckIn">
-                    <a-icon type="qrcode" />
-                </a-button>
             </template>
 
 
             <template #footer>
                 <a-tabs :active-key="activeTab" @change="changeTab">
-                    <a-tab-pane key="overview" tab="Overview" />
-                    <a-tab-pane key="itinerary" tab="Itinerary" />
-                    <a-tab-pane key="budget-expense" tab="Budget & expense" />
-                    <a-tab-pane key="participants" tab="Participants" v-if="activity.status !== 'draft'"/>
+                    <a-tab-pane key="overview" tab="Overview"/>
+                    <!-- a-tab-pane key="information" tab="Information" --/ -->
+                    <a-tab-pane key="participants" tab="Members" v-if="activity.status !== 'draft'"/>
+                    <!-- a-tab-pane key="forms" tab="Forms" / -->
                     <a-tab-pane key="settings" tab="Settings" />
                 </a-tabs>
             </template>

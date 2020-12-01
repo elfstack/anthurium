@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\AdminUser;
 use App\Models\User;
+use App\Models\UserGroup;
 use App\Utils\Listing;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -25,6 +26,9 @@ class UserController extends Controller
     {
         $result = Listing::create(User::class)
                          ->attachSorting(['id'])
+                         ->modifyQuery(function ($query) {
+                             $query->with('userGroup:id,name');
+                         })
                          ->get($request);
 
         return response()->json($result);
@@ -45,7 +49,8 @@ class UserController extends Controller
                 'email',
                 'unique:users'
             ],
-            'password' => 'min:6|required'
+            'password' => 'min:6|required',
+            'user_group.id' => 'required|in:user_groups'
         ]);
 
         $sanitized['password'] = Hash::make($sanitized['password']);
@@ -65,6 +70,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        $user->load('userGroup');
         return response()->json([
             'user' => $user
         ]);
@@ -86,7 +92,8 @@ class UserController extends Controller
                 'email',
                 Rule::unique('users')->ignore($user->id)
             ],
-            'password' => 'min:6|sometimes'
+            'password' => 'min:6|sometimes',
+            'user_group.id' => 'sometimes|exists:user_groups,id'
         ]);
 
         if ($request->has('password')) {
@@ -94,6 +101,11 @@ class UserController extends Controller
         }
 
         $user->update($sanitized);
+
+        if ($sanitized['user_group']['id']) {
+            $user->userGroup()->associate(UserGroup::find($sanitized['user_group']['id']));
+            $user->save();
+        }
 
         return response()->json([
             'user' => $user

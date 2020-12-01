@@ -23,7 +23,7 @@ class User extends Authenticatable implements Participant, HasMedia
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password'
     ];
 
     /**
@@ -64,5 +64,10 @@ class User extends Authenticatable implements Participant, HasMedia
             ->height(200)
             ->performOnCollections('avatars');
 
+    }
+
+    public function userGroup()
+    {
+        return $this->belongsTo(UserGroup::class);
     }
 }
