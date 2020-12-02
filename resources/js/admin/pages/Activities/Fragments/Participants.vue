@@ -16,7 +16,7 @@
         </a-row>
         <a-row :gutter="[16,16]">
             <a-col>
-                <a-card>
+                <a-card class="card-dense">
                     <a-table
                         @change="handleChange"
                         :pagination="listing.pagination"
@@ -69,7 +69,7 @@
                             </a-tag>
                         </span>
                         <span slot="participant_type" slot-scope="text,record">
-                            <a-tag :color="typeColourMapping[record.participant_type]">{{ record.participant_type }}</a-tag>
+                            <a-tag :color="typeColourMapping[record.participant.user_group.name ]">{{ record.participant.user_group.name }}</a-tag>
                         </span>
                         <span slot="updated_at" slot-scope="text,record">
                             {{ record.updated_at | moment('LLL') }}
@@ -152,25 +152,26 @@
             currentStatistics () {
                 const statistics = []
                 if (this.activity.status === 'upcoming') {
-                    statistics.push({
-                        title: 'Quota',
-                        value: this.statistics.applicant,
+                  statistics.push({
+                    title: 'Applicant',
+                    value: this.statistics.applicant,
+                    suffix: `/ (applicant quota)`
+                  })
+
+                  statistics.push({
+                        title: 'Admitted',
+                        value: this.statistics.admitted,
                         suffix: `/ ${this.activity.quota}`,
                     })
 
-                    statistics.push({
+                  statistics.push({
+                    title: 'Rejected',
+                    value: this.statistics.rejected
+                  })
+
+                  statistics.push({
                         title: 'Pending',
                         value: this.statistics.pending
-                    })
-
-                    statistics.push({
-                        title: 'Admitted',
-                        value: this.statistics.admitted
-                    })
-
-                    statistics.push({
-                        title: 'Rejected',
-                        value: this.statistics.rejected
                     })
                 }
 

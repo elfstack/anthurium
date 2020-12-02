@@ -4,7 +4,7 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class UserSeeder extends Seeder
+class UserGroupSeeder extends Seeder
 {
     /**
      * Run the database seeds.

@@ -70,4 +70,9 @@ class User extends Authenticatable implements Participant, HasMedia
     {
         return $this->belongsTo(UserGroup::class);
     }
+
+    public function setUserGroup(UserGroup $userGroup)
+    {
+        return $this->userGroup()->associate($userGroup);
+    }
 }

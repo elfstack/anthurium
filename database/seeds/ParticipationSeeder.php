@@ -22,9 +22,5 @@ class ParticipationSeeder extends Seeder
         factory(User::class, 10)->create()->each(function (Participant $user) use ($activity) {
             $user->participate($activity);
         });
-
-        factory(Guest::class, 10)->create()->each(function (Participant $user) use ($activity) {
-            $user->participate($activity);
-        });
     }
 }

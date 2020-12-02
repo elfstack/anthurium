@@ -94,7 +94,7 @@ class ActivityController extends Controller
      */
     public function participants(Request $request, Activity $activity) {
         $query = $activity->participations()
-            ->with('participant')->getQuery();
+            ->with('participant', 'participant.userGroup')->getQuery();
 
         $listing = Listing::fromQuery($query)
             ->attachSorting(['created_at'])

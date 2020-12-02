@@ -10,8 +10,8 @@
             </a-col>
         </a-row>
         <a-row :gutter="[16,16]">
-            <a-col :span="16">
-                <a-card title="Content">
+            <a-col :span="activity.status === 'draft' ? 24 : 16">
+                <a-card title="Description">
                     <template slot="extra">
                         <a-icon
                             type="edit"
@@ -35,8 +35,8 @@
                 </a-card>
             </a-col>
 
-            <a-col :span="8">
-                <a-row :gutter="[16,16]" v-if="activity.status !== 'draft'">
+            <a-col :span="8" v-if="activity.status !== 'draft'">
+                <a-row :gutter="[16,16]">
                     <a-col>
                         <a-card>
                             <a-statistic-countdown

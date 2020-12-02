@@ -15,7 +15,7 @@ class CreateParticipationsTable extends Migration
     {
         Schema::create('participations', function (Blueprint $table) {
             $table->uuid('id');
-            $table->morphs('participant');
+            $table->foreignId('user_id');
             $table->foreignId('activity_id')->constrained();
             // created at, updated at
             $table->timestamps();

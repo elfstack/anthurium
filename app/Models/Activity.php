@@ -88,11 +88,26 @@ class Activity extends Model
             throw new InactiveActivityException();
         }
 
-        // TODO: check if user can participate
+        $this->checkUserGroup($participant);
 
-        $this->getParticipants($participant)->save($participant, [
-            'participant_type' => $participant->getMorphClass()
-        ]);
+        // TODO: check if user can participate
+        $this->getParticipants($participant)->save($participant);
+    }
+
+    /**
+     * Check if user is able to join
+     *
+     * @param Participant $participant
+     * @throws \Exception
+     */
+    private function checkUserGroup(Participant $participant)
+    {
+        $userGroup = $participant->userGroup;
+        try {
+            $this->userGroups()->findOrFail($userGroup->id);
+        } catch (\Exception $exception) {
+            throw new \Exception('the user is not permitted to join');
+        }
     }
 
     public function getApprovedParticipantsAttribute()
@@ -108,32 +123,18 @@ class Activity extends Model
      * @param Participant $participant
      * @return MorphToMany
      */
-    public function getParticipants(Participant $participant): MorphToMany
+    public function getParticipants(Participant $participant): BelongsToMany
     {
-        $morphRelation = call_user_func([$this, $participant->getMorphClass().'Participants']);
-        return $morphRelation->where('participant_id', $participant->id);
+        $participants = $this->userParticipants();
+        return $participants->where('user_id', $participant->id);
     }
 
     /**
-     * @return MorphToMany
+     * @return BelongsToMany
      */
-    private function userParticipants(): MorphToMany
+    private function userParticipants(): BelongsToMany
     {
-        return $this->morphedByMany(User::class,
-            'participant',
-            'participations')
-            ->using(Participation::class)
-            ->as('details')
-            ->withTimestamps();
-    }
-
-    /**
-     * @return MorphToMany
-     */
-    private function guestParticipants(): MorphToMany
-    {
-        return $this->morphedByMany(Guest::class,
-            'participant',
+        return $this->belongsToMany(User::class,
             'participations')
             ->using(Participation::class)
             ->as('details')
@@ -151,8 +152,7 @@ class Activity extends Model
         $participations = $this->hasMany(Participation::class);
 
         if ($participant != null) {
-            $participation = $participations->where('participant_type', $participant->getMorphClass())
-                           ->where('participant_id', $participant->id);
+            $participation = $participations->where('user_id', $participant->id);
 
             return Participation::fromRawAttributes(
                 $this,
