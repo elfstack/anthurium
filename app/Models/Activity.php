@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\ActivityUserGroup;
 use App\Exceptions\AlreadyEnrolledException;
 use App\Exceptions\InactiveActivityException;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Activity extends Model
@@ -33,6 +36,11 @@ class Activity extends Model
     public function budgets(): HasMany
     {
         return $this->hasMany(Budget::class);
+    }
+
+    public function userGroups(): BelongsToMany
+    {
+        return $this->belongsToMany(UserGroup::class, 'activity_user_groups');
     }
 
     protected static function booted()

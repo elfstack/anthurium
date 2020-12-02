@@ -24,6 +24,11 @@ class CreateActivitiesTable extends Migration
             $table->boolean('is_published')->default(false);
             $table->timestamps();
         });
+
+        Schema::create('activity_user_groups', function (Blueprint $table) {
+            $table->foreignId('activity_id');
+            $table->foreignId('user_group_id');
+        });
     }
 
     /**

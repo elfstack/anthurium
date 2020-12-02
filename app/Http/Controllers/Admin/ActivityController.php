@@ -36,6 +36,7 @@ class ActivityController extends Controller
 
     public function show(Activity $activity) : JsonResponse
     {
+        $activity->load('userGroups');
         $activity->status = $activity->getStatus();
 
         return response()->json([
@@ -66,9 +67,15 @@ class ActivityController extends Controller
             'ends_at' => 'sometimes|date',
             'is_published' => 'sometimes|boolean',
             'quota' => 'sometimes|integer',
+            'user_groups' => 'sometimes|array',
+            'user_groups.*' => 'integer'
         ]);
 
         $activity->update($sanitized);
+
+        if (isset($sanitized['user_groups'])) {
+            $activity->userGroups()->sync($sanitized['user_groups']);
+        }
 
         $activityDiff = $activity->getChanges();
         $activityDiff['status'] = $activity->getStatus();
