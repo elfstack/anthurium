@@ -49,7 +49,7 @@
         methods: {
             changeTab (key) {
                 this.activeTab = key
-                this.$router.push({ name: 'admin.users.show.' + key })
+                this.$router.push({ name: 'admin.members.show.' + key })
             }
         }
     }

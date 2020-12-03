@@ -9,10 +9,16 @@
         </a-form-model-item>
 
         <a-form-model-item label="Group" prop="user_group.id">
-          <a-select
+          <async-select
+            v-model="data.user_group"
+            :api="getUserGroup"
+          >
+
+          </async-select>
+          <!--a-select
             @dropdownVisibleChange="getUserGroups"
+            v-model="data.user_group.id"
             :loading="loading"
-            @change="value => data.user_group.id = value"
           >
             <a-select-option
               v-for="group in userGroups"
@@ -20,7 +26,7 @@
             >
               {{ group.name }}
             </a-select-option>
-          </a-select>
+          </a-select -->
         </a-form-model-item>
 
         <a-form-model-item label="Password" prop="password">
@@ -36,9 +42,14 @@
 <script>
     import form from "../../../common/mixins/form";
     import userGroup from "../../../api/admin/userGroup";
+    import AsyncSelect from "../../components/AsyncSelect"
+
     export default {
         name: "Form",
         mixins: [ form ],
+        components: {
+          'async-select': AsyncSelect
+        },
         props: {
             api: {
                 type: Function,
@@ -48,6 +59,9 @@
                 type: Object,
                 required: true
             }
+        },
+        created () {
+          this.userGroups.push(this.data.user_group)
         },
         data () {
             let validateConfirmPassword = (rule, value, callback) => {
@@ -76,19 +90,19 @@
                     password_confirm: [
                         {validator: validateConfirmPassword, trigger: 'change'}
                     ],
-                }
+                },
+                getUserGroup: () => userGroup.index().then(({ data }) => data.user_groups)
             }
         },
         methods: {
           // TODO: use a set
-          getUserGroups() {
-            if (!this.userGroups.length) {
+          getUserGroups () {
               this.loading = true
               userGroup.index().then(({data}) => {
                 this.userGroups = data.user_groups
+                this.loaded = true
                 this.loading = false
               })
-            }
           },
         }
     }

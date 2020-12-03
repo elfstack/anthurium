@@ -14,7 +14,7 @@
     <a-menu
       :open-keys.sync="openKeys"
       v-model="selectedKeys"
-      mode="inline"
+      mode="vertical"
     >
       <a-menu-item class="menu-group-header" disabled>
         <div class="ant-menu-item-group-title">Manage</div>
@@ -32,10 +32,10 @@
         </router-link>
       </a-menu-item>
       <a-menu-item key="Members">
-          <router-link to="/members">
-            <a-icon type="user"></a-icon>
-           <span>Member</span>
-          </router-link>
+        <router-link to="/members">
+          <a-icon type="user"></a-icon>
+          <span>Member</span>
+        </router-link>
       </a-menu-item>
 
 
@@ -50,7 +50,7 @@
         </router-link>
       </a-menu-item>
 
-      <a-sub-menu key="manage-access">
+      <!-- a-sub-menu key="manage-access">
         <span slot="title"><a-icon type="lock"/><span>Manage Access</span></span>
         <a-menu-item key="admin-users" v-if="$can('admin.admin-users')">
           <router-link to="/manage-access/admin-users">Admin Users</router-link>
@@ -61,9 +61,7 @@
         <a-menu-item key="audits" v-if="$can('admin.audits')">
           <router-link to="/manage-access/audits">Action Log</router-link>
         </a-menu-item>
-      </a-sub-menu>
-
-      </a-sub-menu>
+      </a-sub-menu -->
     </a-menu>
   </a-layout-sider>
 </template>

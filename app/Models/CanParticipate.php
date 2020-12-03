@@ -4,6 +4,7 @@
 namespace App\Models;
 
 use App\Exceptions\AlreadyEnrolledException;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 trait CanParticipate
@@ -22,11 +23,10 @@ trait CanParticipate
 
     }
 
-    public function participatedActivities(): MorphToMany
+    public function participatedActivities(): BelongsToMany
     {
-        return $this->morphToMany(
+        return $this->belongsToMany(
             Activity::class,
-            'participant',
             'participations')
                 ->using(Participation::class)
                 ->as('details');

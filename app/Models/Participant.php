@@ -4,6 +4,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 interface Participant
@@ -26,7 +27,7 @@ interface Participant
      * Get all activities of this participant
      *
      */
-    function participatedActivities(): MorphToMany;
+    function participatedActivities(): BelongsToMany;
 
     function userGroup(): BelongsTo;
 
