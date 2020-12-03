@@ -25,8 +25,6 @@ Route::middleware(['auth:admin_api'])->group(function () {
     Route::apiResource('users', 'UserController');
     Route::get('/users/{user}/participations', 'UserController@participations');
 
-    Route::apiResource('guests', 'GuestController');
-
     // Form
     Route::apiResource('forms', 'FormController');
     Route::apiResource('forms.questions', 'FormQuestionController');

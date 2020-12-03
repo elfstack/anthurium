@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <title>Test Documentation</title>
+        <style>
+            body {
+                text-rendering: optimizeLegibility;
+                font-variant-ligatures: common-ligatures;
+                font-kerning: normal;
+                margin-left: 2em;
+            }
+
+            body > ul > li {
+                font-family: Source Serif Pro, PT Sans, Trebuchet MS, Helvetica, Arial;
+                font-size: 2em;
+            }
+
+            h2 {
+                font-family: Tahoma, Helvetica, Arial;
+                font-size: 3em;
+            }
+
+            ul {
+                list-style: none;
+                margin-bottom: 1em;
+            }
+        </style>
+    </head>
+    <body>
+        <h2 id="Tests\Unit\AttendActivityTest">Attend Activity (Tests\Unit\AttendActivity)</h2>
+        <ul>
+            <li style="color: #ef2929;">❌ User is approved participant</li>
+            <li style="color: #ef2929;">❌ Activity is ongoing</li>
+            <li style="color: #ef2929;">❌ Check in user</li>
+            <li style="color: #ef2929;">❌ Check in on activity not started</li>
+            <li style="color: #ef2929;">❌ Check out user</li>
+            <li style="color: #ef2929;">❌ Cannot check in rejected participant</li>
+            <li style="color: #ef2929;">❌ Cannot check out before check in</li>
+        </ul>
+        <h2 id="Tests\Unit\EnrollActivityTest">Enroll Activity (Tests\Unit\EnrollActivity)</h2>
+        <ul>
+            <li style="color: #ef2929;">❌ Cannot enroll if activity is not active</li>
+            <li style="color: #ef2929;">❌ Cannot enroll if not in user group</li>
+            <li style="color: #ef2929;">❌ Activity is active</li>
+            <li style="color: #ef2929;">❌ User is in user group</li>
+            <li style="color: #ef2929;">❌ User is not enrolled before</li>
+            <li style="color: #ef2929;">❌ User enroll activity</li>
+            <li style="color: #ef2929;">❌ User cannot enroll activity twice</li>
+            <li style="color: #ef2929;">❌ Applicant has vacancy</li>
+            <li style="color: #ef2929;">❌ Approve participant</li>
+            <li style="color: #ef2929;">❌ Cannot approve participant when no vacancy</li>
+            <li style="color: #ef2929;">❌ Reject participant</li>
+        </ul>
+        <h2 id="Tests\Feature\FormQuestionTest">Form Question (Tests\Feature\FormQuestion)</h2>
+        <ul>
+            <li style="color: #555753;">✓ Get form questions</li>
+            <li style="color: #555753;">✓ Add form question</li>
+            <li style="color: #ef2929;">❌ Add form question with options</li>
+        </ul>
+        <h2 id="Tests\Feature\FormTest">Form (Tests\Feature\Form)</h2>
+        <ul>
+            <li style="color: #555753;">✓ Create form</li>
+        </ul>
+        <h2 id="Tests\Feature\ParticipantEnrollActivityTest">Participant Enroll Activity (Tests\Feature\ParticipantEnrollActivity)</h2>
+        <ul>

@@ -5,12 +5,14 @@ namespace App\Models;
 use App\ActivityUserGroup;
 use App\Exceptions\AlreadyEnrolledException;
 use App\Exceptions\InactiveActivityException;
+use App\Exceptions\NotPermittedException;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use phpDocumentor\Reflection\Types\Integer;
 
 class Activity extends Model
 {
@@ -77,6 +79,7 @@ class Activity extends Model
      * @param Participant $participant
      * @throws AlreadyEnrolledException
      * @throws InactiveActivityException
+     * @throws NotPermittedException
      */
     public function addParticipant(Participant $participant)
     {
@@ -98,16 +101,25 @@ class Activity extends Model
      * Check if user is able to join
      *
      * @param Participant $participant
-     * @throws \Exception
+     * @throws NotPermittedException
      */
     private function checkUserGroup(Participant $participant)
     {
         $userGroup = $participant->userGroup;
-        try {
-            $this->userGroups()->findOrFail($userGroup->id);
-        } catch (\Exception $exception) {
-            throw new \Exception('the user is not permitted to join');
-        }
+
+        if (!$this->userGroups()->pluck('id')->contains($userGroup->id)) {
+            throw new NotPermittedException();
+        };
+    }
+
+    /**
+     * Set user group
+     *
+     * @param array $ids
+     */
+    public function setUserGroup(array $ids)
+    {
+        $this->userGroups()->sync($ids);
     }
 
     public function getApprovedParticipantsAttribute()
@@ -163,5 +175,10 @@ class Activity extends Model
         }
 
         return $participations;
+    }
+
+    public function getAdmittedApplicantCount(): int
+    {
+        return $this->participations()->whereNotNull('approved_at')->count();
     }
 }

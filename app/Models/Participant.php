@@ -3,6 +3,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 interface Participant
@@ -26,6 +27,8 @@ interface Participant
      *
      */
     function participatedActivities(): MorphToMany;
+
+    function userGroup(): BelongsTo;
 
     function equals(Participant $participant): bool;
 }

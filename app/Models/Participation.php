@@ -6,6 +6,7 @@ use App\Exceptions\AlreadyProcessedException;
 use App\Exceptions\InactiveActivityException;
 use App\Exceptions\NotAdmittedException;
 use App\Exceptions\NotCheckedInException;
+use App\Exceptions\NoVacancyException;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
 use Illuminate\Support\InteractsWithTime;
@@ -58,7 +59,7 @@ class Participation extends MorphPivot
 
     public function participant()
     {
-        return $this->morphTo();
+        return $this->belongsTo(User::class);
     }
 
     public function activity()
@@ -113,7 +114,7 @@ class Participation extends MorphPivot
      */
     public function reject()
     {
-        $this->checkIfAlreadyProcessed();
+        $this->approved_at = null;
         $this->rejected_at = Carbon::now();
         $this->save();
     }
@@ -122,12 +123,17 @@ class Participation extends MorphPivot
      * Approve participation request
      *
      * @throws AlreadyProcessedException
+     * @throws NoVacancyException
      */
     public function admit()
     {
-        $this->checkIfAlreadyProcessed();
+        if (!($this->activity->quota == 0) &&
+            !($this->activity->quota > $this->activity->getAdmittedApplicantCount())) {
+            throw new NoVacancyException();
+        }
 
         $this->approved_at = Carbon::now();
+        $this->rejected_at = null;
         $this->save();
     }
 
@@ -155,8 +161,6 @@ class Participation extends MorphPivot
      */
     public function checkOut()
     {
-        $this->beforeCheckIn();
-
         if ($this->getParticipationStatusAttribute() != 'admitted') {
             throw new NotAdmittedException();
         }
@@ -180,16 +184,6 @@ class Participation extends MorphPivot
 
         if ($this->pivotParent->getStatus() != 'ongoing') {
             throw new InactiveActivityException();
-        }
-    }
-
-    /**
-     * @throws AlreadyProcessedException
-     */
-    private function checkIfAlreadyProcessed()
-    {
-        if ($this->getParticipationStatusAttribute() != 'pending') {
-            throw new AlreadyProcessedException('already admitted or rejected');
         }
     }
 
