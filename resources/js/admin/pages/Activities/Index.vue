@@ -54,7 +54,7 @@
                                 <a-icon type="clock-circle" />
                                 {{ record.ends_at | moment('from', record.starts_at, true) }}
                             </a-tag>
-                            {{ record.starts_at }} - {{ record.ends_at }}
+                            {{ record.starts_at | moment('LLL') }} - {{ record.ends_at | moment('LLL') }}
                         </small>
                     </span>
                     <span slot="status" slot-scope="text,record">
@@ -85,7 +85,7 @@
             return {
                 api: activity.index,
                 columns: [
-                    { dataIndex: 'name', key: 'name', title: 'Name', scopedSlots: { customRender: 'name' } },
+                    { dataIndex: 'name', key: 'name', title: 'Name', width: '70%', scopedSlots: { customRender: 'name' } },
                     { dataIndex: 'status', key: 'status', title: 'Status', scopedSlots: { customRender: 'status'} },
                     { dataIndex: 'action', key: 'action', title: 'Action', scopedSlots: { customRender: 'action' } }
                 ],
