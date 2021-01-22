@@ -11,7 +11,7 @@
         </a-row>
         <a-row :gutter="[16,16]">
             <a-col :span="activity.status === 'draft' ? 24 : 16">
-                <a-card title="Description">
+                <a-card title="Description" :class="editing ? 'card-dense' : ''">
                     <template slot="extra">
                         <a-icon
                             type="edit"

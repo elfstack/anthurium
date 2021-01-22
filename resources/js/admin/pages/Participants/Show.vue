@@ -2,35 +2,73 @@
     <div>
         <a-row :gutter="[16,16]">
             <a-col :span="6">
-                <a-card>
-                    Total Duration: 300h
-                </a-card>
+              <a-card>
+                <a-statistic
+                  title="Activity Hours"
+                  :value="300">
+                </a-statistic>
+              </a-card>
             </a-col>
             <a-col :span="6">
-                <a-card>
-                    18 Activities participated
-                </a-card>
+              <a-card>
+                <a-statistic
+                  title="Activities Applied"
+                  :value="1">
+                </a-statistic>
+              </a-card>
             </a-col>
+          <a-col :span="6">
+            <a-card>
+              <a-statistic
+                title="Activities Approved"
+                :value="1">
+              </a-statistic>
+            </a-card>
+          </a-col>
+          <a-col :span="6">
+            <a-card>
+              <a-statistic
+                title="Activities Attended"
+                :value="1">
+              </a-statistic>
+            </a-card>
+          </a-col>
         </a-row>
-        <a-row :gutter="[16,16]">
-            <a-col>
-                <a-card>
-                    <a-timeline>
-                        <a-timeline-item v-for="item in data">
-                            <a-card>
-                                <p>{{ item.starts_at | moment('ll') }}&nbsp;<b>{{ item.name }}</b></p>
-                                <a-tag v-if="item.details.attend_status !== 'unattended'">
-                                    {{ item.details.participation_status }}
-                                </a-tag>
-                                <a-tag v-if="item.details.participation_status === 'admitted'">
-                                    {{ item.details.attend_status }}
-                                </a-tag>
-                                <a-tag v-if="item.details.attend_status === 'left'">
-                                    {{ item.details.arrived_at | moment('from', item.details.left_at, true) }}
-                                </a-tag>
-                            </a-card>
-                        </a-timeline-item>
-                    </a-timeline>
+      <a-row :gutter="[16,16]">
+        <a-col>
+          <a-card class="card-dense">
+            <a-table
+              @change="handleChange"
+              :pagination="listing.pagination"
+                      :loading="loading"
+                      :columns="columns"
+                      row-key="id"
+                      :data-source="data"
+                    >
+                      <template slot="duration" slot-scope="text, record">
+                          <template v-if="record.details.attend_status === 'unattended'">
+                            N/A
+                          </template>
+                          <template v-if="record.details.attend_status === 'left'">
+                            {{ record.details.left_at | moment('from', record.details.arrived_at, true) }}
+                          </template>
+                          <template v-if="record.details.attend_status === 'attended'">
+                            {{ record.details.arrived_at | moment('from', 'now', true) }}
+                          </template>
+                      </template>
+                      <template slot="updTime" slot-scope="text">
+                        {{ text | moment('YYYY-MM-DD HH:mm:ss')}}
+                      </template>
+                      <template slot="admittance" slot-scope="text">
+                        <a-tag :color="participationColourMapping[text]">{{ text }}</a-tag>
+                      </template>
+                      <template slot="attendance" slot-scope="text, record">
+                        <template v-if="record.details.participation_status !== 'rejected'">
+                          <a-tag :color="attendColourMapping[text]">{{ text }}</a-tag>
+                        </template>
+                      </template>
+
+                    </a-table>
                 </a-card>
             </a-col>
         </a-row>
@@ -39,7 +77,6 @@
 
 <script>
     import users from "../../../api/admin/user";
-    // TODO: switch to guest api
     import listing from "../../../common/mixins/listing";
     import { mapState } from 'vuex'
 
@@ -49,11 +86,34 @@
         data () {
             return {
                 participantType: this.$route.meta.participantType,
-                api: (paramBag) => users.participations(this.participant.id, paramBag)
+                api: (paramBag) => users.participations(this.participant.id, paramBag),
+              columns: [
+                {dataIndex: 'details.participation_status', key: 'details.participation_status', title: 'Admittance', scopedSlots: {customRender: 'admittance'}},
+                {dataIndex: 'details.attend_status', key: 'details.attend_status', title: 'Attendance', scopedSlots: {customRender: 'attendance'}},
+                {dataIndex: 'name', key: 'name', title: 'Activity'},
+                {dataIndex: 'duration', key: 'duration', title: 'Duration', scopedSlots: { customRender: 'duration' }},
+                {
+                  dataIndex: 'details.updated_at',
+                  key: 'details.updated_at',
+                  title: 'Updated At',
+                  sorter: true,
+                  scopedSlots: {customRender: 'updTime'}
+                },
+              ],
+              participationColourMapping: {
+                rejected: 'red',
+                admitted: 'green',
+                pending: 'blue'
+              },
+              attendColourMapping: {
+                unattended: 'red',
+                attended: 'green',
+                left: 'purple'
+              }
             }
         },
-        created() {
-            this.fetchData()
+      created() {
+        this.fetchData()
         },
         computed: {
             participant () {

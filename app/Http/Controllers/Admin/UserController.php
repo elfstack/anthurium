@@ -144,4 +144,20 @@ class UserController extends Controller
 
         return response()->json($result);
     }
+
+    /**
+     * TODO: Get participation stats
+     *
+     * @param User $user
+     * @return JsonResponse
+     */
+    public function participation_stats(User $user)
+    {
+        return response()->json([
+            'activity_hours' => 0,
+            'activities_applied' => $user->participatedActivities()->count(),
+            'activities_admitted' => $user->participatedActivities()->count(),
+            'activities_attended' => $user->participatedActivities()->count()
+        ]);
+    }
 }

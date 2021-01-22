@@ -59,7 +59,7 @@ class Participation extends MorphPivot
 
     public function participant()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function activity()
@@ -129,7 +129,7 @@ class Participation extends MorphPivot
     {
         if (!($this->activity->quota == 0) &&
             !($this->activity->quota > $this->activity->getAdmittedApplicantCount())) {
-            throw new NoVacancyException();
+            throw new NoVacancyException('no quota left');
         }
 
         $this->approved_at = Carbon::now();

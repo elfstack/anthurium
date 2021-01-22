@@ -7,7 +7,7 @@
                 </a-button>
             </template>
         </a-page-header>
-        <a-row :gutter="16" class="p2">
+        <a-row :gutter="[16, 16]">
             <a-col :span="12">
                 <a-card>
                     <a-statistic

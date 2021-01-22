@@ -62,6 +62,10 @@
           <a-form-model :label-col="labelCol" :wrapper-col="wrapperCol">
             <a-form-item label="Quota">
               <a-input-number placeholder="Quota" v-model="activity.quota"/>
+
+              <template slot="help">
+                0 = Unlimited
+              </template>
             </a-form-item>
 
             <a-form-item help="Who is able to view and enroll this activity"

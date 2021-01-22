@@ -48,7 +48,7 @@
                         <span slot="name" slot-scope="text, record">
                             <router-link
                                 :to="{
-                                    name: `admin.${record.participant_type}s.show.participation`,
+                                    name: `admin.members.show.participation`,
                                     params: { id: record.participant.id } }"
                             >
                                 {{ record.participant.name }}
@@ -76,9 +76,20 @@
                         </span>
                         <span slot="action" slot-scope="text,record,idx">
                             <!-- before event -->
-                            <template v-if="record.participation_status === 'pending' && activity.status === 'upcoming'">
-                                <a-button type="danger" icon="close" @click="updateStatus(record, idx, 'rejected')">Reject</a-button>
-                                <a-button icon="check" @click="updateStatus(record, idx, 'admitted')">Admit</a-button>
+                            <template v-if="activity.status === 'upcoming'">
+                                <a-button type="danger"
+                                          icon="close"
+                                          @click="updateStatus(record, idx, 'rejected')"
+                                          v-if="record.participation_status !== 'rejected'"
+                                >
+                                  Reject
+                                </a-button>
+                                <a-button icon="check"
+                                          @click="updateStatus(record, idx, 'admitted')"
+                                          v-if="record.participation_status !== 'admitted'"
+                                >
+                                  Admit
+                                </a-button>
                             </template>
                             <template v-if="record.participation_status === 'admitted'">
                                 <!-- in event -->
@@ -216,6 +227,8 @@
                         this.data[idx].attend_status = status
                     }
                     this.data[idx].updated_at = new Date;
+
+                    this.$message.success(status);
                 })
             }
         }

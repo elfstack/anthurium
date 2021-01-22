@@ -1,44 +1,38 @@
 <template>
     <div>
         <a-page-header title="Action Log">
+          <template #extra>
+            <a-form-model layout="inline">
+              <a-row>
+                <a-col :span="24">
+                    <a-tag
+                      :key="type"
+                      v-for="type in Object.keys(actionColour)"
+                      :color="actionColour[type]"
+                      @click="filterTag('event', [type])"
+                    >
+                      {{ type }}
+                    </a-tag>
+                </a-col>
+
+                <!-- a-col :span="16">
+                  <a-range-picker
+                    :show-time="{ format: 'HH:mm' }"
+                    format="YYYY-MM-DD HH:mm"
+                    :placeholder="['Start Time', 'End Time']"
+                    @ok="filterRange"
+                  />
+                </a-col -->
+              </a-row>
+
+            </a-form-model>
+          </template>
         </a-page-header>
-        <a-card :bordered="false">
-            <div>
-                <a-form-model layout="inline">
-                    <a-row>
-                        <a-col :span="12">
-                            <a-form-model-item label="Range">
-                                <a-range-picker
-                                    :show-time="{ format: 'HH:mm' }"
-                                    format="YYYY-MM-DD HH:mm"
-                                    :placeholder="['Start Time', 'End Time']"
-                                    @ok="filterRange"
-                                />
-                            </a-form-model-item>
-                        </a-col>
-
-                        <a-col :span="12">
-                            <a-form-model-item label="Type">
-                                <a-tag
-                                    :key="type"
-                                    v-for="type in Object.keys(actionColour)"
-                                    :color="actionColour[type]"
-                                    @click="filterTag('event', [type])"
-                                >
-                                    {{ type }}
-                                </a-tag>
-                            </a-form-model-item>
-                        </a-col>
-                    </a-row>
-
-                </a-form-model>
-            </div>
-        </a-card>
-        <div class="p2">
-            <a-card>
-                <a-table
-                    @change="handleChange"
-                    :pagination="listing.pagination"
+      <div class="p2">
+        <a-card class="card-dense">
+          <a-table
+            @change="handleChange"
+            :pagination="listing.pagination"
                     :loading="loading"
                     :columns="columns"
                     row-key="id"

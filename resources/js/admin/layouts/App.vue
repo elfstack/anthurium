@@ -4,8 +4,8 @@
             <admin-side-nav></admin-side-nav>
             <a-layout>
                 <admin-header></admin-header>
-                <a-layout>
-                    <a-layout-content>
+                <a-layout style="display: flex; align-items: center">
+                    <a-layout-content style="max-width: 1440px; width: 100%">
                         <keep-alive>
                             <router-view v-if="$route.meta.keepAlive"></router-view>
                         </keep-alive>

@@ -34,7 +34,13 @@
       <a-menu-item key="Members">
         <router-link to="/members">
           <a-icon type="user"></a-icon>
-          <span>Member</span>
+          <span>Members</span>
+        </router-link>
+      </a-menu-item>
+      <a-menu-item key="user-groups">
+        <router-link to="/user-groups">
+          <a-icon type="team"></a-icon>
+          <span>User Groups</span>
         </router-link>
       </a-menu-item>
 

@@ -25,9 +25,12 @@ interface Participant
 
     /**
      * Get all activities of this participant
-     *
+     * @deprecated use activitiesApplied instead
      */
     function participatedActivities(): BelongsToMany;
+
+    // function activitiesApplied(): BelongsToMany;
+    // function activitiesApproved(): BelongsToMany;
 
     function userGroup(): BelongsTo;
 
