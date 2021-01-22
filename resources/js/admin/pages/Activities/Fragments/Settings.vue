@@ -17,7 +17,7 @@
 
               <template slot="help">
                 <a-icon type="clock-circle"></a-icon>
-                {{ activity.ends_at | moment('from', activity.starts_at, true) }}
+                {{ duration.ends_at | moment('from', duration.starts_at, true) }}
               </template>
             </a-form-item>
 
@@ -124,6 +124,9 @@
       })
     },
     mounted() {
+      this.duration.starts_at = this.activity.starts_at
+      this.duration.ends_at = this.activity.ends_at
+
       userGroup.index().then(({data}) => {
         this.userGroups = data.user_groups.map(item => ({key: item.id.toString(), title: item.name, level: item.level}))
         this.transfer.targetKeys = this.activity.user_groups.map(item => item['id'].toString());
@@ -131,6 +134,10 @@
     },
     data() {
       return {
+        duration: {
+          starts_at: null,
+          ends_at: null
+        },
         userGroups: [],
         transfer: {
           targetKeys: [],
@@ -140,24 +147,24 @@
     },
     methods: {
       updateDuration(value) {
-        this.updateActivity({
+        this.duration = {
           starts_at: value[0],
           ends_at: value[1]
-        })
+        }
       },
       ...mapActions({
         updateActivity: 'activity/updateActivity'
       }),
       getActivityTimeRange() {
         return [
-          this.activity.starts_at === null ? null : this.$moment(this.activity.starts_at),
-          this.activity.ends_at === null ? null : this.$moment(this.activity.ends_at)
+          this.duration.starts_at === null ? null : this.$moment(this.duration.starts_at),
+          this.duration.ends_at === null ? null : this.$moment(this.duration.ends_at)
         ]
       },
       saveSchedule() {
         this.updateActivity({
-          starts_at: this.activity.starts_at,
-          ends_at: this.activity.ends_at
+          starts_at: this.duration.starts_at,
+          ends_at: this.duration.ends_at
         }).then(() => {
           this.$message.success('Activity Updated!')
         })
