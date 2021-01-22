@@ -16,14 +16,14 @@
                     <a-card class="card-dense">
                         <a-table
                             @change="handleChange"
-                            :pagination="listing.pagination"
+                            :pagination="false"
                             :loading="loading"
                             :columns="columns"
                             row-key="id"
                             :data-source="data">
 
-                            <span slot="memberCount" slot-scope="text,record">
-                              <a-tag>0 members</a-tag>
+                            <span slot="usersCount" slot-scope="text,record">
+                              <a-tag>{{ text }} members</a-tag>
                             </span>
 
                             <span slot="action" slot-scope="text,record">
@@ -55,7 +55,7 @@
         },
         data () {
             return {
-                api: listingAdapter(userGroups.index, 'user_groups'),
+                api: listingAdapter(() => userGroups.index(true), 'user_groups'),
                 columns: [
                     {
                         dataIndex: 'name',
@@ -63,9 +63,9 @@
                       width: '70%'
                     },
                   {
-                    dataIndex: 'memberCount',
+                    dataIndex: 'users_count',
                     title: 'No. of Members',
-                    scopedSlots: { customRender: 'memberCount' }
+                    scopedSlots: { customRender: 'usersCount' }
                   },
                     {
                         dataIndex: 'action',

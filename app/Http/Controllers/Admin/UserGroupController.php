@@ -12,11 +12,18 @@ class UserGroupController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        $userGroups = UserGroup::all();
+        $withUserCount = $request->query('count_users', false);
+
+        if ($withUserCount) {
+            $userGroups = UserGroup::withCount('users')->get();
+        } else {
+            $userGroups = UserGroup::all();
+        }
 
         return response()->json([
             'user_groups' => $userGroups

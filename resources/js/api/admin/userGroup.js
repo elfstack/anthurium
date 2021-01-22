@@ -1,5 +1,9 @@
 export default {
-  index () {
-    return window.axios.get('/user_groups');
+  index (countUsers=false) {
+    return window.axios.get('/user_groups', {
+      params: {
+        'count_users': countUsers
+      }
+    });
   }
 }
