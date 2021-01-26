@@ -3,30 +3,33 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Builder;
 
-class Form extends Model
+class DataCollection extends Model
 {
-    protected $table = 'forms';
+    protected $table = 'data_collection';
 
     protected $fillable = [
-        'title',
-        'description'
+        'form_id',
+        'purpose', // FIXME: purpose
+        'is_re_submittable'
     ];
 
-    public function questions() : hasMany {
-        return $this->hasMany(FormQuestion::class);
+    /**
+     * @return BelongsTo
+     */
+    public function form(): BelongsTo {
+        return $this->belongsTo(Form::class);
     }
 
-    public function dataCollection() : HasMany {
-        return $this->hasMany(DataCollection::class);
-    }
-
-    public function answers() : hasMany {
+    // TODO: the answer model class needs to be changed
+    public function answers() : HasMany {
         return $this->hasMany(FormAnswer::class);
     }
 
+    // TDO: the answer model class needs to be changed
     public function answersAnsweredBy(User $user) {
         $answers = $this->answers()->whereHasMorph(
             'answerer',

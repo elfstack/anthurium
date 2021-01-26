@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFormAnswersTable extends Migration
+class CreateDataCollectionResponsesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,10 @@ class CreateFormAnswersTable extends Migration
      */
     public function up()
     {
-        Schema::create('form_answers', function (Blueprint $table) {
+        Schema::create('data_collection_responses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('form_id');
-
-            $table->unsignedBigInteger('answerer_id');
-            $table->string('answerer_type');
-
+            $table->foreignId('data_collection_id');
+            $table->foreignId('user_id');
             $table->timestamps();
         });
     }

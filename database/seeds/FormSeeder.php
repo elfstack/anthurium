@@ -23,15 +23,22 @@ class FormSeeder extends Seeder
                 'sequence' => 1
             ]);
 
-            $answers = $form->answers()->create([
-                'answerer_id' => 1,
-                'answerer_type' => 'user'
+            $dataCollection = $form->dataCollection()->create([
+                'purpose' => 'act:1,enroll',
+                'is_re_submittable' => false,
+                'is_closed' => false,
+                'available_to' => null
             ]);
 
-            $answers->answers()->create([
-                'form_question_id' => $question->id,
-                'answer' => 'test'
-            ]);
+//            $answers = $form->answers()->create([
+//                'answerer_id' => 1,
+//                'answerer_type' => 'user'
+//            ]);
+//
+//            $answers->answers()->create([
+//                'form_question_id' => $question->id,
+//                'answer' => 'test'
+//            ]);
         });
     }
 }
