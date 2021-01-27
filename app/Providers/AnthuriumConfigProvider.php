@@ -23,7 +23,7 @@ class AnthuriumConfigProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('AnthuriumConfig', function ($app) {
+        $this->app->singleton('anthurium-config', function ($app) {
             return $this;
         });
     }

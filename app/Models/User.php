@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -72,8 +73,23 @@ class User extends Authenticatable implements Participant, HasMedia
         return $this->belongsTo(UserGroup::class);
     }
 
-    public function setUserGroup(UserGroup $userGroup)
+    /**
+     * Set user group
+     *
+     * @param string|UserGroup $userGroup
+     * @return Model
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    public function setUserGroup($userGroup=null)
     {
+        if ($userGroup == null) {
+            $userGroup = app()->make('anthurium-config')->get('member.registration.default_user_group');
+        }
+
+        if (!$userGroup instanceof UserGroup) {
+            $userGroup = UserGroup::where('name', $userGroup)->first();
+        }
+
         return $this->userGroup()->associate($userGroup);
     }
 }

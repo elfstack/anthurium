@@ -19,6 +19,8 @@ Route::middleware(['auth:api'])->group(function () {
     // anthurium routes
 });
 
+Route::get('/config', 'ConfigController@config');
+
 Route::apiResource('activities', 'ActivityController');
 Route::apiResource('participations', 'ParticipationController');
 Route::get('/participations/{participation}/otp', 'ParticipationController@otp');

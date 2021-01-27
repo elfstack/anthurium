@@ -8,6 +8,7 @@ use App\Models\Configuration;
 use App\Models\Form;
 use App\Models\FormAnswer;
 use App\Models\User;
+use App\Models\UserGroup;
 use App\Utils\Listing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -25,20 +26,6 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        if (!app('AnthuriumConfig')->get('registration')) {
-           abort(405, 'Registration is not open');
-        }
-
-        $registrationFormId = null;
-
-        if (app('AnthuriumConfig')->get('registration.form')) {
-            $registrationFormId = Configuration::getConfig('registration.form_id');
-        }
-
-        $hasRegistrationFormId = function () {
-            return isset($registrationFormId);
-        };
-
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => [
@@ -46,50 +33,50 @@ class UserController extends Controller
                 'email',
                 'unique:users'
             ],
-            'password' => 'min:6|required',
-            // 'roles' => 'array|required'
+            'password' => 'min:6|required'
         ]);
 
-        $validator->sometimes('answers.*.question_id', [
-            'required',
-            'unique',
-            'integer',
-            Rule::exists('form_questions', 'id')->where(function ($query) use ($registrationFormId) {
-                $query->where('form_id', $registrationFormId);
-            })
-        ], $hasRegistrationFormId);
-
+//        $validator->sometimes('answers.*.question_id', [
+//            'required',
+//            'unique',
+//            'integer',
+//            Rule::exists('form_questions', 'id')->where(function ($query) use ($registrationFormId) {
+//                $query->where('form_id', $registrationFormId);
+//            })
+//        ], $hasRegistrationFormId);
+//
         $sanitized = $validator->validate();
-
-        // TODO: validate answer
         $sanitized['password'] = Hash::make($sanitized['password']);
-
         DB::beginTransaction();
         try {
-            $user = User::create($sanitized);
-            // TODO: move to FormAnswer
-            if (isset($registrationFormId)) {
-                $answersWrapper = new FormAnswer();
-                $answersWrapper->answerer()->associate($user);
-                $answersWrapper->form()->associate(Form::find($registrationFormId));
-                $answers = collect($request->input('answers'))->map(function ($answer) {
-                    return [
-                        'form_question_id' => $answer['question_id'],
-                        'answer' => $answer['answer']
-                    ];
-                });
-                $answersWrapper->save();
-                $answersWrapper->answers()->createMany($answers);
-            }
+            $user = new User;
+
+            $user->fill($sanitized);
+            $user->setUserGroup();
+            $user->save();
+//            // TODO: move to FormAnswer
+//            if (isset($registrationFormId)) {
+//                $answersWrapper = new FormAnswer();
+//                $answersWrapper->answerer()->associate($user);
+//                $answersWrapper->form()->associate(Form::find($registrationFormId));
+//                $answers = collect($request->input('answers'))->map(function ($answer) {
+//                    return [
+//                        'form_question_id' => $answer['question_id'],
+//                        'answer' => $answer['answer']
+//                    ];
+//                });
+//                $answersWrapper->save();
+//                $answersWrapper->answers()->createMany($answers);
+//            }
             DB::commit();
+
+            return [
+                'user' => $user
+            ];
         } catch (\Exception $e) {
             abort(500, $e);
             DB::rollBack();
         }
-
-        return [
-            'user' => $user
-        ];
     }
 
     /**

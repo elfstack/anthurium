@@ -19,6 +19,9 @@ class CreateDataCollectionTable extends Migration
             $table->string('purpose');
             $table->boolean('is_re_submittable')->default(false); // allow resubmit
             $table->boolean('is_closed')->default(false);  // do not accept response if closed
+            $table->boolean('is_archived')->default(false);
+            $table->foreignId('activity_id')->nullable();
+            $table->string('activity_stage')->nullable();
             $table->dateTime('available_to')->nullable();
             $table->timestamps();
         });

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Exceptions\NoSuchConfigKeyException;
 use Illuminate\Database\Eloquent\Model;
 
 class Configuration extends Model
@@ -57,8 +58,16 @@ class Configuration extends Model
         return self::getKeyValuePair(self::findMany($configKeys));
     }
 
+    /**
+     * @param $key
+     * @return mixed
+     * @throws NoSuchConfigKeyException
+     */
     public static function getConfig($key) {
         $item = self::find($key);
+        if ($item == null) {
+            throw new NoSuchConfigKeyException();
+        }
         $value = $item->value;
 
         if ($item->value != null) {
