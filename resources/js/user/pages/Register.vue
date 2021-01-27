@@ -1,6 +1,6 @@
 <template>
   <div class="p3">
-    <h1 class="h1">Register</h1>
+    <h1>Register</h1>
     <a-row :gutter="[16,16]">
       <a-col>
         <a-card title="Account">
@@ -23,18 +23,6 @@
             </a-form-model>
         </a-card>
 
-      </a-col>
-    </a-row>
-
-    <a-row :gutter="[16,16]">
-      <a-col>
-        <a-card title="User Info">
-          <a-row :gutter="[16,16]" v-for="question in questions">
-            <a-col :lg="{ span: 16, offset: 4 }" :md="{ span: 20, offset: 2 }">
-              <question :question="question" is-editing ref="question"/>
-            </a-col>
-          </a-row>
-        </a-card>
       </a-col>
     </a-row>
 
