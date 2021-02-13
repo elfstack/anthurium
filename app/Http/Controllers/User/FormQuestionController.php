@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Models\DataCollection;
 use App\Models\Form;
 use App\Models\FormOptions;
 use App\Models\FormQuestion;
@@ -30,36 +31,31 @@ class FormQuestionController extends Controller
      * Store a newly created resource in storage.
      *
      * @param Request $request
-     * @param Form $form
+     * @param DataCollection $dataCollection
      * @return JsonResponse
      */
-    public function store(Request $request, Form $form)
+    public function store(Request $request, DataCollection $dataCollection)
     {
         $sanitized = $request->validate([
-            'sequence' => 'required|integer',
-            'type' => 'required|in:text,textarea,checkbox,radio',
-            'question' => 'required|string',
-            'is_required' => 'sometimes|boolean',
-            // TODO: only when type is text
-            'max_character' => 'sometimes|integer',
-            'options' => 'sometimes|array',
-            'options.*.value' => 'string'
+            'response' => 'required|array',
+            'response.*.answer' => 'required|string',
+            'response.*.form_question_id' => 'required|integer'
         ]);
 
-        $question = $form->questions()->create($sanitized);
+        $response = $dataCollection->response()->create([
+            'user_id' => $request->user()->id
+        ]);
 
-        if ($sanitized['type'] !== 'text' && $sanitized['type'] !== 'textarea') {
+        $sanitized = collect($sanitized['response'])->map(function ($item) use ($request) {
+            return [
+                'answer' => $item['answer'],
+                'form_question_id' => $item['form_question_id']
+            ];
+        });
 
-            $options = collect($sanitized['options'])->map(function ($option) {
-                return new FormOptions($option);
-            });
-
-            $question->options()->saveMany($options);
-            $question->load(['options']);
-        }
+        $responseRecord = $response->answers()->createMany($sanitized);
 
         return response()->json([
-            'question' => $question
         ], 201);
     }
 

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class DataCollection extends Model
 {
@@ -39,7 +40,7 @@ class DataCollection extends Model
     }
 
     // TODO: the answer model class needs to be changed
-    public function responses() : HasMany {
+    public function response() : HasMany {
         return $this->hasMany(DataCollectionResponse::class);
     }
 

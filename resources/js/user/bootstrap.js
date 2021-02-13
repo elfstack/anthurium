@@ -22,12 +22,12 @@ const instance = axios.create({
 
 const action = debounce(function action (status) {
     switch (status) {
-        // case 401:
-        //     if (router.currentRoute.name !== 'app.login') {
-        //         message.warning('Logged out')
-        //         router.push({ name: 'app.login' })
-        //     }
-        //     break;
+        case 401:
+            if (router.currentRoute.name !== 'app.login') {
+                message.warning('Logged out')
+                router.push({ name: 'app.login' })
+            }
+            break;
         case 403:
             message.error('You don\'t have permission to do this')
             break;

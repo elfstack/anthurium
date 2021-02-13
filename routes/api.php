@@ -30,3 +30,4 @@ Route::post('/activities/{activity}/participation/{participation}/check-out', 'A
 Route::get('/users/{user}/participations', 'ParticipationController@index');
 Route::apiResource('users', 'UserController')->only(['show', 'store', 'update']);
 Route::apiResource('forms.questions', 'FormQuestionController');
+Route::post('/data-collection/{dataCollection}/response', 'FormQuestionController@store');

@@ -52,6 +52,9 @@
                                     <router-link :to="{ name: 'app.user.profile', params: { id: user.id } }">My Profile</router-link>
                                 </a-menu-item>
                               <a-menu-item key="1">
+                                <router-link :to="{ name: 'app.user.inbox' }">Inbox</router-link>
+                              </a-menu-item>
+                              <a-menu-item key="1">
                                 <router-link :to="{ name: 'app.member-registration' }">Member Registration</router-link>
                               </a-menu-item>
                               <a-menu-divider/>

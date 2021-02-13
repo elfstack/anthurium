@@ -4,7 +4,7 @@
       <a-row :gutter="[16, 16]">
         <a-col>
           <a-card class="card-dense">
-            <a-steps :current="0">
+            <a-steps :current="step">
               <a-step title="Personal Info" />
               <a-step title="Pending Approval" />
               <a-step title="Joined" />
@@ -38,7 +38,8 @@
       data () {
         return {
           questions: [],
-          response: {}
+          response: {},
+          step: 0
         }
       },
       mounted () {
@@ -53,6 +54,12 @@
           })
 
           console.log(this.response)
+
+          form.saveResponse(7, {
+            response: this.response
+          }).then(({data}) => {
+            this.step = 1
+          })
         }
       }
   }

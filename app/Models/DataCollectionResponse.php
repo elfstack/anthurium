@@ -8,13 +8,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class DataCollectionResponse extends Model
 {
-    protected $table = 'data_collection_response';
-
-    public $timestamps = false;
+    protected $table = 'data_collection_responses';
 
     public $fillable = [
         'form_question_id',
-        'answer'
+        'answer',
+        'user_id'
     ];
 
     public function question(): BelongsTo

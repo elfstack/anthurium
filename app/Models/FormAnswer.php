@@ -10,7 +10,14 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class FormAnswer extends Model
 {
-    protected $table = 'form_answers';
+    protected $table = 'form_question_answers';
+
+    protected $fillable = [
+        'answer',
+        'form_question_id'
+    ];
+
+    public $timestamps = false;
 
     public function answerer(): BelongsTo {
         return $this->belongsTo(User::class);

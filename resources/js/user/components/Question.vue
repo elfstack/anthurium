@@ -1,6 +1,5 @@
 <template>
-  <div>
-  <p>{{ question.question }}</p>
+  <a-form-model-item :label="question.question" :colon="false">
     <template v-if="question.type === 'checkbox' || question.type === 'radio'">
       <component
         :is="`a-${question.type}-group`"
@@ -20,7 +19,7 @@
         <component :is="`a-${question.type === 'text' ? 'input' : 'textarea'}`" v-model="answerForm"></component>
       </template>
     </template>
-  </div>
+  </a-form-model-item>
 </template>
 
 <script>
@@ -60,7 +59,7 @@
       },
       $collectAnswer () {
         return {
-          question_id: this.question.id,
+          form_question_id: this.question.id,
           answer: this.answerForm
         }
       }
@@ -69,5 +68,4 @@
 </script>
 
 <style scoped>
-
 </style>

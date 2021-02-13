@@ -4,12 +4,21 @@
         <a-row :gutter="[16,16]">
             <a-col :span="24">
                 <a-card>
-                    <a-input-search
+                  <a-row type="flex" justify="end">
+                    <a-col :sm="24" :md="12" :lg="6">
+                      <a-input-search
                         v-model="listing.keyword"
                         @search="handleSearch"
                         :loading="loading"
                         allow-clear
-                    />
+                      />
+                    </a-col>
+                  </a-row>
+                  <a-row>
+                    <a-col>
+                      <tag-filter />
+                    </a-col>
+                  </a-row>
                 </a-card>
             </a-col>
         </a-row>
@@ -61,12 +70,17 @@
     import activity from "../../../api/user/activity"
     import listing from "../../../common/mixins/listing"
 
+    import TagFilter from '../../components/TagFilter'
+
     export default {
         name: "Index",
         metaInfo: {
             title: 'Activities'
         },
         mixins: [ listing ],
+      components: {
+          TagFilter
+      },
         data () {
             return {
                 api: activity.index,
