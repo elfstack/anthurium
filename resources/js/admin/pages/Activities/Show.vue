@@ -46,6 +46,7 @@
                     <!-- a-tab-pane key="information" tab="Information" --/ -->
                     <a-tab-pane key="participants" tab="Members" v-if="activity.status !== 'draft'"/>
                     <!-- a-tab-pane key="forms" tab="Forms" / -->
+                    <a-tab-pane key="data-collection" tab="Data Collection" />
                     <a-tab-pane key="settings" tab="Settings" />
                 </a-tabs>
             </template>

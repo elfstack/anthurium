@@ -69,7 +69,12 @@ const router = new VueRouter({
                                     component: () => import('../pages/Activities/Fragments/BudgetExpense'),
                                     name: 'admin.activities.show.budget-expense'
                                 },
-                                {
+                              {
+                                path: 'data-collection',
+                                component: () => import('../pages/Activities/Fragments/DataCollection'),
+                                name: 'admin.activities.show.data-collection'
+                              },
+                              {
                                     path: 'itinerary',
                                     component: () => import('../pages/Activities/Fragments/Itinerary'),
                                     name: 'admin.activities.show.itinerary'
@@ -128,7 +133,23 @@ const router = new VueRouter({
                         }
                     ]
                 },
-                {
+              {
+                path: 'data-collection/',
+                component: { render: h => h('router-view') },
+                children: [
+                  {
+                    path: ':id(\\d+)/',
+                    name: 'admin.data-collection.show',
+                    component: () => import('../pages/DataCollection/Show')
+                  },
+                  {
+                    path: 'create',
+                    name: 'admin.data-collection.create',
+                    component: () => import('../pages/DataCollection/Create')
+                  }
+                  ]
+              },
+              {
                     path: 'forms/',
                     component: { render: h => h('router-view') },
                     children: [
@@ -237,30 +258,25 @@ const router = new VueRouter({
                         }
                     ]
                 },
-                // {
-                //     path: 'site-settings/',
-                //     component: { render: h => h('router-view') },
-                //     meta: {
-                //         permission: 'admin.settings'
-                //     },
-                //     children: [
-                //       {
-                //         path: 'general',
-                //         name: 'admin.site-settings.general',
-                //         component: () => import('../pages/Settings/General')
-                //       },
-                //       {
-                //         path: 'site-info',
-                //             name: 'admin.site-settings.site-info',
-                //             component: () => import('../pages/Settings/Info')
-                //         },
-                //         {
-                //             path: 'storage',
-                //             name: 'admin.site-settings.storage',
-                //             component: () => import('../pages/Settings/Storage')
-                //         }
-                //     ]
-                // },
+                {
+                    path: 'site-settings/',
+                    component: { render: h => h('router-view') },
+                    meta: {
+                        permission: 'admin.settings'
+                    },
+                    children: [
+                      {
+                        path: 'site-info',
+                            name: 'admin.site-settings.site-info',
+                            component: () => import('../pages/Settings/Info')
+                        },
+                        {
+                            path: 'storage',
+                            name: 'admin.site-settings.storage',
+                            component: () => import('../pages/Settings/Storage')
+                        }
+                    ]
+                },
                 {
                     path: '/403',
                     name: '403',

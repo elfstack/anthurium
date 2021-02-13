@@ -78,7 +78,6 @@ class User extends Authenticatable implements Participant, HasMedia
      *
      * @param string|UserGroup $userGroup
      * @return Model
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function setUserGroup($userGroup=null)
     {

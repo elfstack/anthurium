@@ -1,15 +1,11 @@
 <template>
   <div>
     <a-form-model :model="configs" ref="form" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
-      <a-form-model-item label="Allow Registration" prop="registration">
-        <a-switch v-model="configs.registration"/>
+      <a-form-model-item label="Member Application" prop="can_apply_membership">
+        <a-switch v-model="configs.can_apply_membership"/>
       </a-form-model-item>
 
-      <a-form-model-item label="Collect Register Info" prop="registration.form" v-if="configs.registration">
-        <a-switch v-model="configs['registration.form']"/>
-      </a-form-model-item>
-
-      <a-form-model-item label="Registration Form" prop="registration.form_id" v-if="configs['registration.form']">
+      <a-form-model-item label="Membership Apply Form" prop="registration.form_id" v-if="configs['can_apply_membership']">
         <a-input @click="showModal" :value="formRepr"></a-input>
       </a-form-model-item>
 

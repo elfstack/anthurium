@@ -1,16 +1,11 @@
 <template>
   <div>
-    <a-page-header title='Questions' @back="$router.go(-1)" style="background: #fff">
-      <template slot="extra">
-      </template>
-    </a-page-header>
-    <div class="p2">
       <a-skeleton v-if="loading"/>
       <template v-else>
       <a-row :gutter="[16,16]" v-for="(question, idx) in questions" :key="question.id">
         <a-col>
           <a-card :title="`Question ${idx + 1}`">
-            <template #extra>
+            <template #extra v-if="isEditing">
               <a-button icon="delete" @click="removeQuestion(idx)"></a-button>
               <a-button icon="edit" @click="startQuestionEdit(idx)" v-show="currentEditingIndex === null"></a-button>
               <a-button icon="save" @click="saveQuestionEdit" v-show="currentEditingIndex === idx" type="primary"></a-button>
@@ -108,7 +103,6 @@
         </a-col>
       </a-row>
       </template>
-    </div>
   </div>
 </template>
 
@@ -119,6 +113,17 @@
   export default {
     name: "Questions",
     mixins: [formLayouts],
+    props: {
+      formId: {
+        required: true,
+        type: Number
+      },
+      isEditing: {
+        required: true,
+        type: Boolean,
+        default: false
+      }
+    },
     data() {
       return {
         loading: true,
@@ -145,12 +150,12 @@
       this.loadQuestions()
     },
     watch: {
-      '$route': 'loadQuestions'
+      'formId': 'loadQuestions'
     },
     methods: {
       loadQuestions () {
         this.loading = true
-        form.questions(this.$route.params.id).then(({ data }) => {
+        form.questions(this.formId).then(({ data }) => {
           this.questions = data.questions
           this.loading = false
         })

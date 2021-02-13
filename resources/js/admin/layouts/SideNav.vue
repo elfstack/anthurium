@@ -28,7 +28,7 @@
       <a-menu-item key="forms">
         <router-link to="/forms">
           <a-icon type="file-text"></a-icon>
-          <span>Forms</span>
+          <span>Data Collection</span>
         </router-link>
       </a-menu-item>
       <a-menu-item key="Members">

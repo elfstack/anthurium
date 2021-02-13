@@ -122,6 +122,12 @@ class ActivityController extends Controller
         ]);
     }
 
+    public function dataCollection(Activity $activity) {
+        return response()->json([
+            'data_collection' => $activity->dataCollection()
+        ]);
+    }
+
     private function modifyIndexQuery(Builder $query)
     {
         $draft = DB::table('activities')

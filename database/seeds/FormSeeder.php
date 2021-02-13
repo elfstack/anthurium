@@ -27,7 +27,8 @@ class FormSeeder extends Seeder
                 'purpose' => 'act:1,enroll',
                 'is_re_submittable' => false,
                 'is_closed' => false,
-                'available_to' => null
+                'available_to' => null,
+                'activity_id' => 1
             ]);
 
 //            $answers = $form->answers()->create([

@@ -12,8 +12,8 @@ class FormAnswer extends Model
 {
     protected $table = 'form_answers';
 
-    public function answerer(): MorphTo {
-        return $this->morphTo();
+    public function answerer(): BelongsTo {
+        return $this->belongsTo(User::class);
     }
 
     public function form(): BelongsTo {
@@ -22,6 +22,6 @@ class FormAnswer extends Model
 
     public function answers(): HasMany
     {
-        return $this->hasMany(FormQuestionAnswers::class, 'form_answers_id');
+        return $this->hasMany(DataCollectionResponse::class, 'form_answers_id');
     }
 }

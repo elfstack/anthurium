@@ -181,4 +181,9 @@ class Activity extends Model
     {
         return $this->participations()->whereNotNull('approved_at')->count();
     }
+
+    public function dataCollections(): HasMany
+    {
+        return $this->hasMany(DataCollection::class);
+    }
 }

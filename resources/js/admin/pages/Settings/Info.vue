@@ -4,7 +4,7 @@
     <div class="p2">
       <a-row :gutter="[16, 16]">
         <a-col>
-          <a-card title="Registration">
+          <a-card title="Members">
             <register-config />
           </a-card>
         </a-col>

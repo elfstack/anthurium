@@ -23,5 +23,8 @@ export default {
         return window.axios.patch(`/participation/${id}`, {
             status: status
         })
+    },
+    dataCollections (id) {
+      return window.axios.get(`/activities/${id}/data-collections`)
     }
 }

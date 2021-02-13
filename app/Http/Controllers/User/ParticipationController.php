@@ -25,10 +25,10 @@ class ParticipationController extends Controller
     public function index(Request $request, User $user)
     {
         $activities = $user->participatedActivities()
-            ->withPivot(['arrived_at', 'left_at', 'approved_at', 'rejected_at', 'cancelled_at'])
+            ->withPivot(['id', 'arrived_at', 'left_at', 'approved_at', 'rejected_at', 'cancelled_at'])
             ->withTimestamps();
 
-        if ($request->query('current')) {
+        if ($request->query('is_current')) {
             // TODO: filter current participated activities
             $now = Carbon::now();
             $activities->whereDate('ends_at', '>', $now);
@@ -36,7 +36,7 @@ class ParticipationController extends Controller
         }
 
         $result = Listing::fromQuery($activities)
-            ->setColumns(['activities.id', 'name', 'starts_at', 'ends_at'])
+            ->setColumns(['activities.id', 'name', 'starts_at', 'ends_at', 'quota'])
             ->get($request);
 
         return response()->json($result);

@@ -51,7 +51,20 @@
                     </a-col>
                 </a-row>
 
-                <a-row :gutter="[16,16]">
+              <a-row :gutter="[16,16]">
+                <a-col>
+                  <a-card>
+                    <a-list :data-source="activity.user_groups">
+                      <a-list-item slot="renderItem" slot-scope="item, index">
+                        <a-icon type="check"/>&nbsp;
+                        {{ item.name }}
+                      </a-list-item>
+                    </a-list>
+                  </a-card>
+                </a-col>
+              </a-row>
+
+              <a-row :gutter="[16,16]">
                     <a-col>
                         <a-card title="Calendar" body-style="padding: 0">
                             <a-calendar
@@ -60,29 +73,41 @@
                         </a-card>
                     </a-col>
                 </a-row>
+
             </a-col>
         </a-row>
 
-        <enroll
-            ref="enroll-modal"
+      <enroll
+        ref="enroll-modal"
             :id="activity.id"
             @enrolled="activity.is_enrolled = true"
         />
+
+      <participation
+        ref="participation-modal"
+        :id="$route.params.id"
+        :participationId="$route.params.participationId"
+        v-if="$route.params.participationId"
+      />
 
     </div>
 </template>
 
 <script>
-    import activity from "../../../api/user/activity";
-    import '@toast-ui/editor/dist/toastui-editor-viewer.css'
-    import {Viewer} from '@toast-ui/vue-editor'
-    import Enroll from './Fragments/Enroll'
+  import '@toast-ui/editor/dist/toastui-editor-viewer.css'
+  import {Viewer} from '@toast-ui/vue-editor'
+
+  import activity from "../../../api/user/activity";
+
+  import Enroll from './Fragments/Enroll'
+  import Participation from './Fragments/Participation'
 
     export default {
         name: "Show",
         components: {
-            viewer: Viewer,
-            enroll: Enroll
+            Viewer,
+            Enroll,
+            Participation
         },
         metaInfo() {
             return {

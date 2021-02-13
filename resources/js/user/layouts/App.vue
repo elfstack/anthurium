@@ -51,8 +51,11 @@
                                 <a-menu-item key="0">
                                     <router-link :to="{ name: 'app.user.profile', params: { id: user.id } }">My Profile</router-link>
                                 </a-menu-item>
-                                <a-menu-divider/>
-                                <a-menu-item key="1" @click="logout">
+                              <a-menu-item key="1">
+                                <router-link :to="{ name: 'app.member-registration' }">Member Registration</router-link>
+                              </a-menu-item>
+                              <a-menu-divider/>
+                                <a-menu-item key="2" @click="logout">
                                     Logout
                                 </a-menu-item>
                             </a-menu>

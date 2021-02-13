@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class FormQuestionAnswers extends Model
+class DataCollectionResponse extends Model
 {
-    protected $table = 'form_question_answers';
+    protected $table = 'data_collection_response';
 
     public $timestamps = false;
 
@@ -16,8 +17,13 @@ class FormQuestionAnswers extends Model
         'answer'
     ];
 
-    public function question(): belongsTo
+    public function question(): BelongsTo
     {
         return $this->belongsTo(FormQuestion::class, 'form_question_id');
+    }
+
+    public function answers(): HasMany
+    {
+        return $this->hasMany(FormAnswer::class);
     }
 }

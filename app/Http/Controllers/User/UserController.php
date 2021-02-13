@@ -10,6 +10,7 @@ use App\Models\FormAnswer;
 use App\Models\User;
 use App\Models\UserGroup;
 use App\Utils\Listing;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -19,10 +20,12 @@ use Illuminate\Validation\Rule;
 class UserController extends Controller
 {
     /**
-     * Store a newly created resource in storage.
+     * Create a new user
+     *
+     * This methods stores a newly created user to the database
      *
      * @param Request $request
-     * @return array
+     * @return JsonResponse
      */
     public function store(Request $request)
     {
@@ -36,79 +39,50 @@ class UserController extends Controller
             'password' => 'min:6|required'
         ]);
 
-//        $validator->sometimes('answers.*.question_id', [
-//            'required',
-//            'unique',
-//            'integer',
-//            Rule::exists('form_questions', 'id')->where(function ($query) use ($registrationFormId) {
-//                $query->where('form_id', $registrationFormId);
-//            })
-//        ], $hasRegistrationFormId);
-//
         $sanitized = $validator->validate();
         $sanitized['password'] = Hash::make($sanitized['password']);
-        DB::beginTransaction();
-        try {
-            $user = new User;
 
-            $user->fill($sanitized);
-            $user->setUserGroup();
-            $user->save();
-//            // TODO: move to FormAnswer
-//            if (isset($registrationFormId)) {
-//                $answersWrapper = new FormAnswer();
-//                $answersWrapper->answerer()->associate($user);
-//                $answersWrapper->form()->associate(Form::find($registrationFormId));
-//                $answers = collect($request->input('answers'))->map(function ($answer) {
-//                    return [
-//                        'form_question_id' => $answer['question_id'],
-//                        'answer' => $answer['answer']
-//                    ];
-//                });
-//                $answersWrapper->save();
-//                $answersWrapper->answers()->createMany($answers);
-//            }
-            DB::commit();
 
-            return [
-                'user' => $user
-            ];
-        } catch (\Exception $e) {
-            abort(500, $e);
-            DB::rollBack();
-        }
+        $user = new User;
+        $user->fill($sanitized)->setUserGroup();
+        $user->save();
+
+        return response()->json([
+            'user' => $user
+        ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param AdminUser $adminUser
-     * @return array
+     * @param User $user
+     * @return JsonResponse
      */
-    public function show(AdminUser $adminUser)
+    public function show(User $user)
     {
-        $adminUser->roles = $adminUser->roles()->pluck('id');
-
-        return [
-            'admin_user' => $adminUser
-        ];
+        // TODO: privacy: display email or not
+        $user->load(['userGroup']);
+        $user->makeHidden(['updated_at', 'email_verified_at']);
+        return response()->json([
+            'user' => $user
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param AdminUser $adminUser
-     * @return array
+     * @param User $user
+     * @return JsonResponse
      */
-    public function update(Request $request, AdminUser $adminUser)
+    public function update(Request $request, User $user)
     {
         $sanitized = $request->validate([
             'name' => 'required',
             'email' => [
                 'required',
                 'email',
-                Rule::unique('admin_users')->ignore($adminUser->id)
+                Rule::unique('admin_users')->ignore($user->id)
             ],
             'password' => 'sometimes|min:6',
             'roles' => 'array|required'
@@ -118,13 +92,11 @@ class UserController extends Controller
             $sanitized['password'] = Hash::make($sanitized['password']);
         }
 
-        $adminUser->roles()->sync($sanitized['roles']);
+        $user->update($sanitized);
 
-        $adminUser->update($sanitized);
-
-        return [
-            'admin_user' => $adminUser
-        ];
+        return response()->json([
+            'user' => $user
+        ]);
     }
 
     /**

@@ -27,5 +27,6 @@ Route::get('/participations/{participation}/otp', 'ParticipationController@otp')
 Route::post('/activities/{activity}/enroll', 'ActivityController@enroll');
 Route::post('/activities/{activity}/participation/{participation}/check-out', 'ActivityController@checkOut');
 
+Route::get('/users/{user}/participations', 'ParticipationController@index');
 Route::apiResource('users', 'UserController')->only(['show', 'store', 'update']);
 Route::apiResource('forms.questions', 'FormQuestionController');

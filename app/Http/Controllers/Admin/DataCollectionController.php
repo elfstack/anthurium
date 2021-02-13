@@ -57,7 +57,7 @@ class DataCollectionController extends Controller
      */
     public function show(DataCollection $dataCollection)
     {
-        $dataCollection->load(['form']);
+        $dataCollection->load(['form', 'activity']);
 
         return response()->json([
             'data_collection' => $dataCollection
@@ -100,5 +100,19 @@ class DataCollectionController extends Controller
         return response()->json([
             'message' => 'success'
         ], 204);
+    }
+
+    /**
+     * @param Form $form
+     * @throws \Exception
+     */
+    private function isRegistrationAssigned(Form $form)
+    {
+       $hasDataCollectionForRegistration =
+           DataCollection::where('purpose', DataCollection::REGISTRATION)->count();
+
+       if ($hasDataCollectionForRegistration != 0) {
+            throw new \Exception('Registration data collection has already been assigned');
+       }
     }
 }

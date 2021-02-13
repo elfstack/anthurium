@@ -23,10 +23,6 @@ class Form extends Model
         return $this->hasMany(DataCollection::class);
     }
 
-    public function answers() : hasMany {
-        return $this->hasMany(FormAnswer::class);
-    }
-
     public function answersAnsweredBy(User $user) {
         $answers = $this->answers()->whereHasMorph(
             'answerer',

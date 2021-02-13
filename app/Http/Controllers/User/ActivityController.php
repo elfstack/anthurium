@@ -52,6 +52,8 @@ class ActivityController extends Controller
             $activity->is_enrolled = $request->user()->isParticipant($activity);
         }
 
+        $activity->load('userGroups');
+
         return response()->json([
             'activity' => $activity
         ]);
@@ -59,6 +61,9 @@ class ActivityController extends Controller
 
     /**
      * List all participants
+     *
+     *
+     * TODO: option in admin side for choose whether to disclose participants to permitted userGroup
      *
      * @param Request $request
      * @param Activity $activity
@@ -165,6 +170,8 @@ class ActivityController extends Controller
 
     /**
      * Enroll the guest
+     *
+     * @deprecated since all the activity must have a valid account for registration
      *
      * @param Request $request
      * @param Activity $activity

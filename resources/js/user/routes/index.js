@@ -16,17 +16,17 @@ const router = new VueRouter({
             name: 'app.reset-password',
         },
         {
-            path: '/register',
-            name: 'app.register',
-            component: () => import('../pages/Register')
-        },
-        {
             path: '/',
             component: () => import('../layouts/App'),
             async beforeEnter (to, from, next) {
                 await auth(to, from, next)
             },
             children: [
+              {
+                path: 'register',
+                name: 'app.register',
+                component: () => import('../pages/Register')
+              },
                 {
                     path: '',
                     name: 'app.dashboard',
@@ -42,7 +42,8 @@ const router = new VueRouter({
                         },
                         {
                             path: 'participation',
-                            name: 'app.user.participation'
+                            name: 'app.user.participation',
+                            component: () => import('../pages/User/Participation')
                         }
                     ]
                 },
@@ -56,7 +57,7 @@ const router = new VueRouter({
                             component: () => import('../pages/Activities/Index')
                         },
                         {
-                            path: ':id(\\d+)/',
+                            path: ':id(\\d+)/:participationId?',
                             name: 'app.activities.show',
                             component: () => import('../pages/Activities/Show')
                         }
@@ -66,6 +67,15 @@ const router = new VueRouter({
                   path: 'participations/:id',
                   component: () => import('../pages/Participations/Participation')
                 },
+              {
+                path: 'data-collection/:id',
+                component: () => import('../pages/DataCollection/Form')
+              },
+              {
+                path: 'member-registration',
+                name: 'app.member-registration',
+                component: () => import('../pages/User/MemberRegistration')
+              },
                 {
                     path: '404',
                     name: 'app.not-found',

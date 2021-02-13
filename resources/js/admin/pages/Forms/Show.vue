@@ -2,39 +2,25 @@
   <div>
     <a-page-header title='Form' :sub-title="form.title" @back="$router.go(-1)" style="background: #fff">
       <template slot="extra">
-        <router-link :to="{ name: 'admin.forms.show.questions', params: { id: $route.params.id } }">
-          <a-button type="primary">Edit Questions</a-button>
-        </router-link>
+        <a-button type="primary" @click="isEditing = true" v-if="!isEditing">Edit Questions</a-button>
+        <a-button @click="isEditing = false" v-else>Quit Editing</a-button>
       </template>
     </a-page-header>
 
     <div class="p2">
     <a-row :gutter="[16, 16]">
       <a-col>
+        <h3>Description</h3>
         <a-card
-          title="Description"
           :loading="isLoading">
           {{ form.description }}
         </a-card>
       </a-col>
+    </a-row>
+    <a-row :gutter="[16, 16]">
       <a-col>
-        <a-card title="Answers">
-          <a-table
-            @change="handleChange"
-            :pagination="listing.pagination"
-            :loading="loading"
-            :columns="columns"
-            row-key="id"
-            :data-source="data">
-              <span slot="answerer" slot-scope="text, record">
-                {{ record.answerer.name }}
-              </span>
-              <span slot="action" slot-scope="text,record">
-                <router-link
-                  :to="{ name: 'admin.forms.show.answers', params: { id: $route.params.id, answersId: record.id }}">View</router-link>
-              </span>
-          </a-table>
-        </a-card>
+        <h3>Questions</h3>
+        <questions :form-id="form.id" :is-editing="isEditing"/>
       </a-col>
     </a-row>
     </div>
@@ -44,10 +30,14 @@
 <script>
   import form from "../../../api/admin/form"
   import listing from "../../../common/mixins/listing"
+  import Questions from './Questions'
 
   export default {
     name: "Show",
     mixins: [ listing ],
+    components: {
+      'questions': Questions
+    },
     beforeRouteEnter(to, from, next) {
       next(vm => {
         vm.loadForm(to.params.id)
@@ -61,6 +51,7 @@
       return {
         api: (paramBag) => form.indexAnswers(this.$route.params.id, paramBag),
         isLoading: true,
+        isEditing: false,
         columns: [
           {
             dataIndex: 'id',
