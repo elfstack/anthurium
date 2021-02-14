@@ -44,6 +44,10 @@ class DataCollection extends Model
         return $this->hasMany(DataCollectionResponse::class);
     }
 
+    public function isFilledByUser(User $user) {
+        return $this->response()->where('user_id', $user->id)->exists();
+    }
+
     // TDO: the answer model class needs to be changed
     public function answersAnsweredBy(User $user) {
         $answers = $this->answers()->whereHasMorph(

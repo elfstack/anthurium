@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\AdminUser;
 use App\Models\Configuration;
+use App\Models\DataCollection;
 use App\Models\Form;
 use App\Models\FormAnswer;
 use App\Models\User;
@@ -124,6 +125,9 @@ class UserController extends Controller
 
         $user->avatar_url = $user->getFirstMediaUrl('avatars', 'avatar');
 
+        // TODO: only add this property for guest userGroup
+        $user->is_member_application_form_filled = $this->isMemberApplicationFormFilled($user);
+
         // $user->roles = $adminUser->roles()->pluck('name');
 
         return [
@@ -183,5 +187,15 @@ class UserController extends Controller
         Listing::fromQuery($activities)
             ->attachSearching(['title'])
             ->attachSorting(['title', 'starts_at', 'ends_at']);
+    }
+
+    public function isMemberApplicationFormFilled (User $user) {
+        $dataCollection = DataCollection::memberApplicationForm();
+
+        if ($dataCollection->response()->where('user_id', $user->id)) {
+            return true;
+        }
+
+        return false;
     }
 }

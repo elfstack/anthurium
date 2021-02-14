@@ -36,6 +36,13 @@ class FormQuestionController extends Controller
      */
     public function store(Request $request, DataCollection $dataCollection)
     {
+        $user = $request->user();
+
+        // TODO: bypass this condition for dataCollection that allows resubmit
+        if ($dataCollection->isFilledByUser($user)) {
+            abort(409, 'This form does not allow re-submit');
+        }
+
         $sanitized = $request->validate([
             'response' => 'required|array',
             'response.*.answer' => 'required|string',

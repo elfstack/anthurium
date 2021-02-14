@@ -14,7 +14,7 @@
       </a-row>
       <a-row :gutter="[16, 16]">
         <a-col>
-          <a-card>
+          <a-card v-if="step === 0">
             <question v-for="question in questions"
                       :key="question.id"
                       :question="question"
@@ -22,14 +22,21 @@
             is-editing/>
             <a-button type="primary" @click="collectAnswer">Submit</a-button>
           </a-card>
+
+          <a-card v-if="step === 1">
+            Pending approval
+          </a-card>
         </a-col>
       </a-row>
     </div>
 </template>
 
 <script>
+  import { mapState } from 'vuex';
+
   import Question from '../../components/Question';
   import form from "../../../api/user/form";
+
   export default {
       name: "MemberRegistration",
       components: {
@@ -42,7 +49,14 @@
           step: 0
         }
       },
+      computed: {
+        ...mapState({
+          isMemberApplicationFormFilled: state => state.user.is_member_application_form_filled
+        })
+      },
       mounted () {
+        if (this.isMemberApplicationFormFilled) this.step = 1
+
         form.questions(1).then(({data}) => {
           this.questions = data.questions
         })

@@ -7,6 +7,7 @@ const state = () => ({
     email: '',
     roles: [],
     avatar_url: '',
+    is_member_application_form_filled: false,
     loaded: false
 })
 
@@ -47,6 +48,7 @@ const mutations = {
             state.email = user.email
             state.roles = user.roles
             state.avatar_url = user.avatar_url
+            state.is_member_application_form_filled = user.is_member_application_form_filled
         }
     },
     setLoaded (state, loaded) {
