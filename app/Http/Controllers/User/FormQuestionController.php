@@ -9,6 +9,7 @@ use App\Models\FormOptions;
 use App\Models\FormQuestion;
 use App\Http\Controllers\Controller;
 use App\Utils\Listing;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -40,9 +41,9 @@ class FormQuestionController extends Controller
         $user = $request->user();
 
         // TODO: bypass this condition for dataCollection that allows resubmit
-        if ($dataCollection->isFilledByUser($user)) {
-            abort(409, 'This form does not allow re-submit');
-        }
+//        if ($dataCollection->isFilledByUser($user)) {
+//            abort(409, 'This form does not allow re-submit');
+//        }
 
         $sanitized = $request->validate([
             'response' => 'required|array',
@@ -50,9 +51,16 @@ class FormQuestionController extends Controller
             'response.*.form_question_id' => 'required|integer'
         ]);
 
-        $response = $dataCollection->response()->create([
-            'user_id' => $request->user()->id
-        ]);
+        $response = null;
+
+        try {
+            $response = $dataCollection->response()->where('user_id', $user->id)->firstOrFail();
+            $response->answers()->delete();
+        } catch (ModelNotFoundException $e) {
+            $response = $dataCollection->response()->create([
+                'user_id' => $request->user()->id
+            ]);
+        }
 
         $sanitized = collect($sanitized['response'])->map(function ($item) use ($request) {
             return [

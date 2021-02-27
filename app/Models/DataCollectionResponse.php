@@ -31,4 +31,9 @@ class DataCollectionResponse extends Model
     {
         return $this->questions()->withPivot(['answer'])->as('response');
     }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Action;
 use App\Models\AdminUser;
 use App\Models\Configuration;
 use App\Models\DataCollection;
@@ -126,7 +127,7 @@ class UserController extends Controller
         $user->load('userGroup');
 
         // TODO: only add this property for guest userGroup
-        $user->is_member_application_form_filled = $this->isMemberApplicationFormFilled($user);
+        $user->is_member_application_form_filled = $this->hasPendingMemberApplication($user);
 
         // $user->roles = $adminUser->roles()->pluck('name');
 
@@ -189,10 +190,19 @@ class UserController extends Controller
             ->attachSorting(['title', 'starts_at', 'ends_at']);
     }
 
-    public function isMemberApplicationFormFilled (User $user) {
-        $dataCollection = DataCollection::memberApplicationForm();
+    /**
+     * @deprecated
+     *
+     * @param User $user
+     * @return bool
+     */
+    public function hasPendingMemberApplication(User $user) {
+        $hasMemberApplicationAction = $user->actions()
+                       ->where('type', 'member-application')
+                       ->where('step', '!=', 0)
+                       ->exists();
 
-        if ($dataCollection->response()->where('user_id', $user->id)->exists()) {
+        if ($hasMemberApplicationAction) {
             return true;
         }
 

@@ -46,16 +46,17 @@
         answerForm: ''
       }
     },
-    mounted () {
-      this.setAnswer()
+    mounted() {
+      if (this.question.response) {
+        this.answerForm = this.question.response.answer
+      }
     },
     methods: {
-      setAnswer () {
-        if (this.question.type === 'checkbox' || this.question.type === 'radio') {
-          // TODO
-        } else {
-
-        }
+      $setAnswer (answer) {
+        this.answerForm = answer
+      },
+      $getQuestionId () {
+        return this.question.id
       },
       $collectAnswer () {
         return {
