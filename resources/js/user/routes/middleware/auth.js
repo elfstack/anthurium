@@ -2,7 +2,11 @@ import store from "../../store";
 
 export default async function auth (to, from, next) {
     if (!store.getters['user/loaded']) {
-        await store.dispatch('user/getUser')
+      await store.dispatch('user/getUser')
+    }
+
+    if (!store.getters['user/isLoggedIn']) {
+      next({ name: 'app.login', replace: true })
     }
 
     // if (!store.getters['config/loaded']) {

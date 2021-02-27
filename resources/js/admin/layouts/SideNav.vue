@@ -34,7 +34,7 @@
       <a-menu-item key="Members">
         <router-link to="/members">
           <a-icon type="user"></a-icon>
-          <span>Members</span>
+          <span>Member</span>
         </router-link>
       </a-menu-item>
       <a-menu-item key="user-groups">
@@ -50,9 +50,9 @@
       </a-menu-item>
 
       <a-menu-item key="general">
-        <router-link to="/site-settings/general">
+        <router-link to="/site-settings/site-info">
           <a-icon type="setting"></a-icon>
-          <span>General</span>
+          <span>Site Info</span>
         </router-link>
       </a-menu-item>
 

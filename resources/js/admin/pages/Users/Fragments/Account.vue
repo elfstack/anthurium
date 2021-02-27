@@ -1,5 +1,27 @@
 <template>
     <div>
+      <a-row :gutter="[16, 16]">
+        <a-col>
+          <div v-for="action in user.pending_actions" :key="action.id">
+            <template v-if="action.type === 'member-application'">
+              <a-alert
+                message="Membership Application"
+                type="info"
+                show-icon
+              >
+                <template #description>
+                  <p>
+                    {{ `${user.name} has been applied for membership` }}
+                  </p>
+
+                  <a @click="activeActionId = action.id">View Application Form</a>
+                </template>
+              </a-alert>
+              <action-model :id.sync="activeActionId" v-if="activeActionId"/>
+            </template>
+          </div>
+        </a-col>
+      </a-row>
         <a-row :gutter="[16,16]">
             <a-col>
                 <a-card title="Account Info">
@@ -22,23 +44,26 @@
     import Form from '../Form'
     import user from "../../../../api/admin/user";
 
+    import ActionModel from '../../../components/ActionModel'
+
     export default {
         name: "Account",
         components: {
-            'user-form': Form
+            'user-form': Form,
+            'action-model': ActionModel
         },
         data () {
             return {
-                api: (payload) => user.update(this.user.id, payload)
+                api: (payload) => user.update(this.user.id, payload),
+                user: null,
+                activeActionId: null
             }
         },
-        computed: {
-            ...mapState({
-                user: state => state.user.user
-            })
+        mounted () {
+            this.user = Object.assign({}, this.$store.state.user.user)
         },
         methods: {
-            submit () {
+        submit () {
                 this.$refs['user-form'].$submit().then(() => {
                     this.$message.success('User updated!')
                     // TODO: update state

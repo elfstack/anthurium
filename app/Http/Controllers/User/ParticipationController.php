@@ -49,30 +49,17 @@ class ParticipationController extends Controller
      * @param Participation $participation
      * @return JsonResponse
      */
-    public function show(Request $request, Participation $participation)
+    public function show(Participation $participation)
     {
-        if ($participation->participant instanceof User) {
-            $user = $request->user('api');
-            if (empty($user) || !$participation->participant->equals($user)) {
-                abort(403);
-            }
-        }
-
         $participation->load(['activity', 'participant']);
+
         return response()->json([
             'participation' => $participation
         ]);
     }
 
-    public function otp(Participation $participation)
-    {
-        return response()->json([
-            'otp' => $participation->otp()
-        ]);
-    }
-
     /**
-     * Drop the enrollment
+     * Drop enrollment
      * TODO: a better drop method may be implemented
      *
      * @param Participation $participation

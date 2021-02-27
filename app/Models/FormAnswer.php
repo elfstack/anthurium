@@ -27,8 +27,14 @@ class FormAnswer extends Model
         return $this->belongsTo(Form::class);
     }
 
-    public function answers(): HasMany
+    public function question(): BelongsTo
     {
-        return $this->hasMany(DataCollectionResponse::class, 'form_answers_id');
+        return $this->belongsTo(FormQuestion::class);
+    }
+
+    // TODO: this needs to be verified
+    public function response(): BelongsTo
+    {
+        return $this->belongsTo(DataCollectionResponse::class);
     }
 }

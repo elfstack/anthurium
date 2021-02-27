@@ -24,7 +24,13 @@
           </a-card>
 
           <a-card v-if="step === 1">
-            Pending approval
+            <div style="text-align: center">
+              <a-icon type="clock-circle" theme="filled" style="font-size: 72px; color: #1890ff"></a-icon>
+              <h1>Pending Approval</h1>
+              <p>
+                You have submitted the member application form. Our staff will review your application and notify you soon.
+              </p>
+            </div>
           </a-card>
         </a-col>
       </a-row>
@@ -57,7 +63,7 @@
       mounted () {
         if (this.isMemberApplicationFormFilled) this.step = 1
 
-        form.questions(1).then(({data}) => {
+        form.questions(this.$config('user.member_application.data_collection').form_id).then(({data}) => {
           this.questions = data.questions
         })
       },
@@ -69,7 +75,7 @@
 
           console.log(this.response)
 
-          form.saveResponse(7, {
+          form.saveResponse(this.$config('user.member_application.data_collection').id, {
             response: this.response
           }).then(({data}) => {
             this.step = 1

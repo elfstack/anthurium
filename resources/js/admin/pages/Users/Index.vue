@@ -2,7 +2,12 @@
     <a-layout>
         <a-page-header title="Users">
             <template #extra>
-                <router-link :to="{ name: 'admin.users.create' }">
+              <router-link :to="{ name: 'admin.members.application' }">
+                <a-button>
+                  Pending Applications
+                </a-button>
+              </router-link>
+              <router-link :to="{ name: 'admin.members.create' }">
                     <a-button type="primary" icon="plus">
                         Create
                     </a-button>
@@ -27,7 +32,9 @@
                             </span>
 
                             <span slot="action" slot-scope="text,record">
+                              <a-badge :count="record.pending_actions_count" dot>
                                 <router-link :to="{ name: 'admin.members.show.account', params: { id: record.id }}">Details</router-link>
+                              </a-badge>
                             </span>
 
                         </a-table>
@@ -67,19 +74,18 @@
                     },
                   {
                     dataIndex: 'group',
-                    key: 'group',
                     title: 'Group',
                     scopedSlots: { customRender: 'group' }
                   },
                   {
                     dataIndex: 'email',
-                        key: 'email',
                         title: 'Email'
                     },
                     {
-                        dataIndex: 'action',
-                        key: 'action',
+                        dataIndex: 'pending_actions_count',
                         title: 'Action',
+                        sorter: true,
+                        sortDirections: ['descend'],
                         scopedSlots: { customRender: 'action' }
                     }
                 ]

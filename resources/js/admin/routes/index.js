@@ -102,6 +102,11 @@ const router = new VueRouter({
                             name: 'admin.members.index',
                             component: () => import('../pages/Users/Index')
                         },
+                      {
+                       path: 'application',
+                       name: 'admin.members.application',
+                       component: () => import('../pages/Users/Application')
+                      },
                         {
                             path: 'create',
                             name: 'admin.members.create',

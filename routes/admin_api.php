@@ -36,5 +36,8 @@ Route::middleware(['auth:admin_api'])->group(function () {
     // Config
     Route::patch('/config', 'ConfigController@update');
     Route::get('/config/{group}', 'ConfigController@getConfigGroup');
+
+    // Action
+    Route::apiResource('actions', 'ActionController');
 });
 

@@ -32,14 +32,21 @@
                             <router-link class="login-form-forgot" :to="{ name: 'app.reset-password' }">
                                 Forgot password
                             </router-link>
+                          <div class="right">
                             <a-button
-                                type="primary"
-                                html-type="submit"
-                                @click="submit"
-                                class="right"
+                              type="primary"
+                              html-type="submit"
+                              @click="submit"
                             >
-                                Log in
+                              Log in
                             </a-button>
+
+                            <router-link :to="{ name: 'app.register' }" v-if="$config('user.can_register')">
+                              <a-button>
+                                Register
+                              </a-button>
+                            </router-link>
+                          </div>
                         </a-form-model-item>
                     </a-form-model>
                 </a-card>

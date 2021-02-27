@@ -22,7 +22,7 @@ export default function index ({ pagination, filters, sorter, keyword }, api, mo
     if (!isEmptyObject(filters)) {
         let filterQuery = []
         for (const column in filters) {
-            filterQuery.push(`${column}:${filters[column].join(',')}`)
+             filterQuery.push(`${column}:${filters[column].join(',')}`)
         }
         query.filter = filterQuery.join(';')
     }

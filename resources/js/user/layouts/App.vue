@@ -54,11 +54,11 @@
                               <a-menu-item key="1">
                                 <router-link :to="{ name: 'app.user.inbox' }">Inbox</router-link>
                               </a-menu-item>
-                              <a-menu-item key="1">
-                                <router-link :to="{ name: 'app.member-registration' }">Member Registration</router-link>
+                              <a-menu-item key="2">
+                                <router-link :to="{ name: 'app.member-registration' }" v-if="$config('user.can_apply_membership')">Member Registration</router-link>
                               </a-menu-item>
                               <a-menu-divider/>
-                                <a-menu-item key="2" @click="logout">
+                                <a-menu-item key="3" @click="logout">
                                     Logout
                                 </a-menu-item>
                             </a-menu>

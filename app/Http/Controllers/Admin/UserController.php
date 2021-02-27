@@ -25,9 +25,12 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $result = Listing::create(User::class)
-                         ->attachSorting(['id'])
+                         ->attachSorting(['id', 'pending_actions_count'])
                          ->modifyQuery(function ($query) {
                              $query->with('userGroup:id,name');
+
+                             // TODO: make this optional
+                             $query->withCount(['pendingActions']);
                          })
                          ->get($request);
 
@@ -70,7 +73,8 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        $user->load('userGroup');
+        $user->load('userGroup', 'pendingActions');
+
         return response()->json([
             'user' => $user
         ]);

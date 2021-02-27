@@ -54,6 +54,11 @@
     metaInfo: {
         title: 'Register'
     },
+    created () {
+      if (!this.$config('user.can_register')) {
+        this.$router.push({ name: 'app.not-found' })
+      }
+    },
     methods: {
       register () {
         user.register(this.form).then(({ data }) => {

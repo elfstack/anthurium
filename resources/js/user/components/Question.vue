@@ -4,7 +4,7 @@
       <component
         :is="`a-${question.type}-group`"
         v-model:value="answerForm">
-        <component :is="`a-${question.type}`" v-for="option in question.options" :value="option.id">
+        <component :is="`a-${question.type}`" v-for="option in question.options" :value="option.id" :key="option.id">
           {{ option.value }}
         </component>
       </component>
@@ -51,7 +51,7 @@
     },
     methods: {
       setAnswer () {
-        if (question.type === 'checkbox' || question.type === 'radio') {
+        if (this.question.type === 'checkbox' || this.question.type === 'radio') {
           // TODO
         } else {
 

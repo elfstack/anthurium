@@ -12,7 +12,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Permission\Traits\HasRoles;
 
-class AdminUser extends Authenticatable implements Auditable, HasMedia
+class AdminUser extends Authenticatable implements Auditable, HasMedia, UserInterface
 {
     use Notifiable;
     use HasRoles;
@@ -75,5 +75,10 @@ class AdminUser extends Authenticatable implements Auditable, HasMedia
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new AdminUserResetPasswordNotification($token));
+    }
+
+    public function isAdmin()
+    {
+        return true;
     }
 }

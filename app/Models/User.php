@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use App\Utils\ConfigUtils;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -12,7 +15,7 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class User extends Authenticatable implements Participant, HasMedia
+class User extends Authenticatable implements Participant, HasMedia, UserInterface
 {
     use Notifiable;
     use HasApiTokens;
@@ -68,6 +71,16 @@ class User extends Authenticatable implements Participant, HasMedia
 
     }
 
+    public function actions(): HasMany
+    {
+         return $this->hasMany(Action::class);
+    }
+
+    public function pendingActions()
+    {
+        return $this->actions()->whereNull('completed_at');
+    }
+
     public function userGroup(): BelongsTo
     {
         return $this->belongsTo(UserGroup::class);
@@ -82,7 +95,7 @@ class User extends Authenticatable implements Participant, HasMedia
     public function setUserGroup($userGroup=null)
     {
         if ($userGroup == null) {
-            $userGroup = app()->make('anthurium-config')->get('member.registration.default_user_group');
+            $userGroup = ConfigUtils::get('user.guest_group');
         }
 
         if (!$userGroup instanceof UserGroup) {
@@ -90,5 +103,10 @@ class User extends Authenticatable implements Participant, HasMedia
         }
 
         return $this->userGroup()->associate($userGroup);
+    }
+
+    public function isAdmin()
+    {
+        return false;
     }
 }

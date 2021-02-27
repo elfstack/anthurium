@@ -56,8 +56,7 @@
                 required: true
             },
             data: {
-                type: Object,
-                required: true
+                type: Object
             }
         },
         created () {
@@ -85,7 +84,7 @@
                       { required: true }
                     ],
                     password: [
-                        {min: 6},
+                        { min: 6 },
                     ],
                     password_confirm: [
                         {validator: validateConfirmPassword, trigger: 'change'}

@@ -43,7 +43,6 @@ class UserController extends Controller
         $sanitized = $validator->validate();
         $sanitized['password'] = Hash::make($sanitized['password']);
 
-
         $user = new User;
         $user->fill($sanitized)->setUserGroup();
         $user->save();
@@ -124,6 +123,7 @@ class UserController extends Controller
         $user = $request->user();
 
         $user->avatar_url = $user->getFirstMediaUrl('avatars', 'avatar');
+        $user->load('userGroup');
 
         // TODO: only add this property for guest userGroup
         $user->is_member_application_form_filled = $this->isMemberApplicationFormFilled($user);
@@ -192,7 +192,7 @@ class UserController extends Controller
     public function isMemberApplicationFormFilled (User $user) {
         $dataCollection = DataCollection::memberApplicationForm();
 
-        if ($dataCollection->response()->where('user_id', $user->id)) {
+        if ($dataCollection->response()->where('user_id', $user->id)->exists()) {
             return true;
         }
 

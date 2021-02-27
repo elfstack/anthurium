@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Events\User\MembershipApplied;
 use App\Models\DataCollection;
 use App\Models\Form;
 use App\Models\FormOptions;
@@ -61,6 +62,10 @@ class FormQuestionController extends Controller
         });
 
         $responseRecord = $response->answers()->createMany($sanitized);
+
+        if ($dataCollection->purpose === 'member-application') {
+            MembershipApplied::dispatch($response);
+        }
 
         return response()->json([
         ], 201);

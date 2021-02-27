@@ -2,7 +2,7 @@
   <div>
     <a-form-model :model="configs" ref="form" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
       <a-form-model-item label="Member Application" prop="can_apply_membership">
-        <a-switch v-model="configs.can_apply_membership"/>
+        <a-switch v-model="configs['membership.can_apply']"/>
       </a-form-model-item>
 
       <a-form-model-item label="Membership Apply Form" prop="registration.form_id" v-if="configs['can_apply_membership']">
