@@ -1,7 +1,7 @@
 <template>
   <a-modal
     :title="action.type"
-    @cancel="handleCancel"
+    @cancel="handleClose"
     centered
     :visible="visible"
   >
@@ -19,11 +19,22 @@
     <a-divider  orientation="left">Form Response</a-divider>
     <data-collection-response :data="action.data_collection_response" />
     <template #footer>
-      <a-button type="danger" icon="close" @click="updateActionResult('rejected')">
+      <a-button
+        type="danger"
+        icon="close"
+        @click="updateActionResult('rejected')"
+        :loading="loading === 'rejected'"
+        :disabled="loading"
+      >
         Reject
       </a-button>
 
-      <a-button type="primary" icon="check" @click="updateActionResult('approved')">
+      <a-button
+        type="primary"
+        icon="check"
+        @click="updateActionResult('approved')"
+        :loading="loading === 'approved'"
+        :disabled="loading">
         Approve
       </a-button>
     </template>
@@ -49,6 +60,7 @@
     data() {
       return {
         visible: true,
+        loading: null,
         action: {
           type: 'loading',
           user: {}
@@ -62,12 +74,15 @@
     },
     methods: {
       handleClose() {
-        this.id = null
+        this.visible = false
       },
       updateActionResult(result) {
-        action.update(this.action.id, result).then(({data}) => {
+          this.loading = result
+          action.update(this.action.id, result).then(({data}) => {
           this.$message.success('Action resolved');
           this.handleClose()
+        }).catch((e) => {
+          this.loading = null
         })
       }
     }

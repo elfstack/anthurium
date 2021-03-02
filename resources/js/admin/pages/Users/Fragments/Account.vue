@@ -17,7 +17,7 @@
                   <a @click="activeActionId = action.id">View Application Form</a>
                 </template>
               </a-alert>
-              <action-model :id.sync="activeActionId" v-if="activeActionId"/>
+              <action-modal :id.sync="activeActionId" v-if="activeActionId"/>
             </template>
           </div>
         </a-col>
@@ -44,13 +44,13 @@
     import Form from '../Form'
     import user from "../../../../api/admin/user";
 
-    import ActionModel from '../../../components/ActionModel'
+    import ActionModal from '../../../components/ActionModal'
 
     export default {
         name: "Account",
         components: {
             'user-form': Form,
-            'action-model': ActionModel
+            'action-modal': ActionModal
         },
         data () {
             return {
