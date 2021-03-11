@@ -31,7 +31,8 @@ Route::middleware(['auth:admin_api'])->group(function () {
     Route::apiResource('forms.questions', 'FormQuestionController');
     // TODO: the following form routes also have to be changed
     Route::apiResource('forms.answers', 'FormAnswerController');
-    Route::get('/forms/{form}/users/{user}/answers', 'FormAnswerController@getAnswersByUserId');
+    Route::get('/data-collections/{dataCollection}/users/{user}/answers', 'DataCollectionResponseController@getResponseByUserId');
+    Route::get('/users/{user}/member-form-answers', 'DataCollectionResponseController@getMemberFormResponseByUserId');
 
     // Config
     Route::patch('/config', 'ConfigController@update');

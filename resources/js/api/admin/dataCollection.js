@@ -16,4 +16,10 @@ export default {
     indexAnswers (id, paramBag) {
       return index(paramBag, `/data-collection/${id}/answers`)
     },
+    showAnswersByUserId (dataCollectionId, userId) {
+      return window.axios.get(`/data-collection/${dataCollectionId}/users/${userId}/answers`)
+    },
+    showMemberFormAnswersByUserId (userId) {
+      return window.axios.get(`/users/${userId}/member-form-answers`)
+    }
 }

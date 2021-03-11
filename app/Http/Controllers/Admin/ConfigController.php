@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Configuration;
+use App\Models\DataCollection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Spatie\Permission\PermissionRegistrar;
@@ -11,17 +12,19 @@ use Spatie\Permission\PermissionRegistrar;
 class ConfigController extends Controller
 {
     public function config() {
-        $permission = app()->make(PermissionRegistrar::class)
+        $permissions = app()->make(PermissionRegistrar::class)
             ->getPermissions()
             ->pluck('roles.*.name', 'name');
 
         $configs = Configuration::all();
 
+        $configs['user.membership_application.data_collection'] = DataCollection::memberApplicationForm();
+
         return [
             'name' => getenv('APP_NAME'),
             'timezone' => getenv('APP_TIMEZONE'),
             'configs' => $configs,
-            'permissions' => $permission
+            'permissions' => $permissions
         ];
     }
 

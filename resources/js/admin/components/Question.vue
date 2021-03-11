@@ -8,7 +8,7 @@
     </template>
 
     <template v-if="!isAnswerEditing && question.type.substring(0, 4) === 'text'">
-      Answer: {{ answer.answer }}
+      Answer: {{ answer }}
     </template>
 
     <template v-else>
@@ -41,8 +41,12 @@
     },
     methods: {
       setAnswer () {
-        if (question.type === 'checkbox' || question.type === 'radio') {
+        if (this.question.type === 'checkbox' || this.question.type === 'radio') {
           // TODO
+        }
+
+        if (this.question.response) {
+          this.answer = this.question.response.answer
         }
       }
     }

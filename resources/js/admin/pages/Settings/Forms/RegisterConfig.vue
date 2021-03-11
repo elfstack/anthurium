@@ -1,12 +1,16 @@
 <template>
   <div>
     <a-form-model :model="configs" ref="form" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
-      <a-form-model-item label="Member Application" prop="can_apply_membership">
-        <a-switch v-model="configs['membership.can_apply']"/>
+      <a-form-model-item label="Member Application" prop="'user.can_apply_membership'">
+        <a-switch v-model="configs['user.can_apply_membership']"/>
       </a-form-model-item>
 
-      <a-form-model-item label="Membership Apply Form" prop="registration.form_id" v-if="configs['can_apply_membership']">
-        <a-input @click="showModal" :value="formRepr"></a-input>
+      <a-form-model-item label="Guest Group" prop="'user.guest_group'">
+
+      </a-form-model-item>
+
+      <a-form-model-item label="Member Group" prop="'user.member_group'">
+
       </a-form-model-item>
 
       <a-form-model-item :wrapper-col="btnWrapperCol">
@@ -47,7 +51,6 @@
     name: "RegisterConfigs",
     mixins: [ listing, configMixin ],
     data() {
-      const registrationFormEnabled = () => this.configs ? this.configs['registration.form'] : false
       return {
         configGroup: 'registration',
         forms: [],
@@ -78,7 +81,7 @@
         if (this.form) {
           return this.form.title
         } else {
-          return this.configs.registration.form_id_repr
+          return this.configs['user.membership_application.data_collection']
         }
       }
     },

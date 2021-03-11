@@ -108,17 +108,16 @@ class DataCollectionResponseController extends Controller
      * @param User $user
      * @return JsonResponse
      */
-    public function getAnswersByUserId(DataCollection $dataCollection, User $user)
+    public function getResponseByUserId(DataCollection $dataCollection, User $user)
     {
-        $answer = $form->answersAnsweredBy($user);
+        $response = $dataCollection->getResponseByUser($user);
 
-        if ($answer == null) {
-            abort(404, 'No information available');
+        if ($response == null) {
+            abort(404, 'The form has not been filled by user');
         }
-        $answer->load(['answers.question']);
 
         return response()->json([
-            'answer' => $answer
+            'response' => $response
         ]);
     }
 
@@ -131,19 +130,20 @@ class DataCollectionResponseController extends Controller
      * @return JsonResponse
      */
 
-    public function getRegistrationFormAnswerByUserId(User $user)
+    public function getMemberFormResponseByUserId(User $user)
     {
-        $registrationFormId = Configuration::getConfig('registration.form_id');
+        $dataCollection = null;
 
-        if (!$registrationFormId) {
-            abort(405, "Registration form is disabled");
+        try {
+            $dataCollection = DataCollection::memberApplicationForm();
+        } catch (\Exception $e) {
+            abort(405, 'member application form disabled');
         }
 
-        $answer = Form::find($registrationFormId)->answerAnsweredBy($user);
-        $answer->load(['answers.question']);
+        $response = $dataCollection->getResponseByUser($user);
 
         return response()->json([
-            'answer' => $answer
+            'response' => $response
         ]);
     }
 

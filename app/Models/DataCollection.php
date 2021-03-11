@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Utils\ConfigUtils;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -25,7 +26,7 @@ class DataCollection extends Model
      */
     public static function memberApplicationForm()
     {
-        return self::where('purpose', 'member-application')->first();
+        return self::where('purpose', 'member-application')->firstOrFail();
     }
 
     /**
@@ -48,18 +49,19 @@ class DataCollection extends Model
         return $this->response()->where('user_id', $user->id)->exists();
     }
 
-    // TDO: the answer model class needs to be changed
-    public function answersAnsweredBy(User $user) {
-        $answers = $this->answers()->whereHasMorph(
-            'answerer',
-            User::class,
-            function (Builder $query) use ($user) {
-                $query->where('id', $user->id);
-            }
-        )->first();
+    /**
+     * Get user's response of this data collection, together with question and answer
+     *
+     * TODO: argument of whether or not attach question to answer
+     *
+     * @param User $user
+     * @param bool $withQuestion
+     * @return HasMany
+     */
+    public function getResponseByUser(User $user, $withQuestion=true) {
+        $response = $this->response()->where('user_id', $user->id)->firstOrFail();
+        $response->load('response');
 
-        $answers->load('answers');
-
-        return $answers;
+        return $response;
     }
 }

@@ -4,7 +4,7 @@
             <template #footer>
                 <a-tabs :active-key="activeTab" @change="changeTab">
                     <a-tab-pane key="account" tab="Account" />
-                    <a-tab-pane key="information" tab="Information" v-if="$getConfig('registration.form')"/>
+                    <a-tab-pane key="membership" tab="Membership" v-if="userIsNotGuest"/>
                     <a-tab-pane key="participation" tab="Participation" />
                 </a-tabs>
             </template>
@@ -50,6 +50,14 @@
             changeTab (key) {
                 this.activeTab = key
                 this.$router.push({ name: 'admin.members.show.' + key })
+            },
+            userIsNotGuest () {
+              // TODO: move this to backend API
+              if (!this.user) {
+                return false
+              }
+
+              return this.user.user_group.id !== 1
             }
         }
     }

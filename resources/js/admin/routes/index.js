@@ -122,9 +122,9 @@ const router = new VueRouter({
                                 component: () => import('../pages/Users/Fragments/Account')
                               },
                               {
-                                path: 'information',
-                                name: 'admin.members.show.information',
-                                component: () => import('../pages/Users/Fragments/Information')
+                                path: 'membership',
+                                name: 'admin.members.show.membership',
+                                component: () => import('../pages/Users/Fragments/Membership')
                               },
                               {
                                 path: 'participation',

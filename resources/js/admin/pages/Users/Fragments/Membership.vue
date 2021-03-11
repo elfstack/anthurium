@@ -1,15 +1,14 @@
 <template>
   <div class="p-3">
-    <template v-if="answer">
+    <template v-if="response">
       <a-row
-        v-for="(question, idx) in form.questions"
-        :key="question.id"
+        v-for="(answer, idx) in response.response"
+        :key="answer.id"
         :gutter="[16,16]"
       >
         <a-col>
           <question
-            :question="question"
-            :answer="answer.answers.find(isQuestionEquals(question.id))"/>
+            :question="answer" />
         </a-col>
       </a-row>
     </template>
@@ -20,7 +19,7 @@
 </template>
 
 <script>
-  import form from "../../../../api/admin/form"
+  import dataCollection from "../../../../api/admin/dataCollection";
   import Question from '../../../components/Question'
 
   // TODO: get answers
@@ -32,7 +31,7 @@
     data () {
       return {
         form: null,
-        answer: null
+        response: null
       }
     },
     beforeRouteEnter (to, from, next) {
@@ -52,14 +51,10 @@
         }
       },
       getForm () {
-        const registrationFormId = this.$getConfig('registration.form_id')
         const userId = this.$route.params.id
-        form.questions(registrationFormId).then(({ data }) => {
-          this.form = data
-        })
         // TODO: get answers by form and user
-        form.getAnswersByUserId(registrationFormId, userId).then(({ data }) => {
-          this.answer = data.answer
+        dataCollection.showMemberFormAnswersByUserId(userId).then(({ data }) => {
+          this.response = data.response
         })
       }
     }
