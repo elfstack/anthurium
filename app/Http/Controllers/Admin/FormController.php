@@ -21,6 +21,7 @@ class FormController extends Controller
     {
         $result = Listing::create(Form::class)
                     ->attachSorting(['id'])
+                    ->attachSearching(['title'])
                     ->get($request);
 
         return response()->json($result);

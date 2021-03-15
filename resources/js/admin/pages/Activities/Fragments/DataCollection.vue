@@ -10,9 +10,7 @@
           </a-form-model-item>
 
           <a-form-model-item label="Form">
-            <a-select>
-
-            </a-select>
+            <form-selector />
           </a-form-model-item>
 
           <a-form-model-item :wrapper-col="btnWrapperCol">
@@ -42,13 +40,19 @@
 </template>
 
 <script>
-  import listing from "../../../../common/mixins/listing";
-  import activity from "../../../../api/admin/activity";
-  import form from "../../../../common/mixins/form";
+  import listing from "../../../../common/mixins/listing"
+  import form from "../../../../common/mixins/form"
+
+  import activity from "../../../../api/admin/activity"
+
+  import FormSelector from '../../../components/FormSelector'
 
   export default {
     name: "DataCollection",
     mixins: [listing, form],
+    components: {
+      'form-selector': FormSelector
+    },
     data() {
       return {
         api: activity.dataCollection,

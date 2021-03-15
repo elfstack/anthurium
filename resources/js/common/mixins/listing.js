@@ -14,10 +14,13 @@ const listing = {
                 keyword: ''
             },
             loading: true,
+            autoload: true
         }
     },
     mounted () {
+      if (this.autoload) {
         this.fetchData()
+      }
     },
     methods: {
         fetchData () {
