@@ -16,5 +16,22 @@ body > .ant-layout {
 .card-dense {
     .ant-card-body {
         padding: 0;
+        & > .ant-list-item {
+            padding: 16px
+        }
+    }
+
+    .ant-collapse {
+        border-radius: 0;
+    }
+
+    .ant-collapse-borderless > .ant-collapse-item {
+        border-bottom: none;
+    }
+}
+
+.list-card {
+    .ant-card-body {
+        padding: 0 12px;
     }
 }

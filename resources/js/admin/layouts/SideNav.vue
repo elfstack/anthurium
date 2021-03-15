@@ -14,7 +14,8 @@
     <a-menu
       :open-keys.sync="openKeys"
       v-model="selectedKeys"
-      mode="vertical"
+      mode="inline"
+      inline-collapsed="true"
     >
       <a-menu-item class="menu-group-header" disabled>
         <div class="ant-menu-item-group-title">Manage</div>
@@ -31,12 +32,23 @@
           <span>Data Collection</span>
         </router-link>
       </a-menu-item>
-      <a-menu-item key="Members">
-        <router-link to="/members">
+      <a-sub-menu key="members">
+        <span slot="title">
           <a-icon type="user"></a-icon>
-          <span>Member</span>
-        </router-link>
-      </a-menu-item>
+          <span>Members</span>
+        </span>
+        <a-menu-item key="Members">
+          <router-link to="/members">
+            Members
+          </router-link>
+        </a-menu-item>
+
+        <a-menu-item key="Membership">
+          <router-link to="/members/membership">
+            Membership
+          </router-link>
+        </a-menu-item>
+      </a-sub-menu>
       <a-menu-item key="user-groups">
         <router-link to="/user-groups">
           <a-icon type="team"></a-icon>

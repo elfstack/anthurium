@@ -1,25 +1,20 @@
 <template>
   <div class="p2">
-    <a-card v-for="answer in answer.answers">
-      <template #title>
-        {{ answer.question.sequence }}. {{ answer.question.question }}
-      </template>
-      Answer: {{ answer.answer }}
-    </a-card>
-      <question v-for="answer in answer.answers">
-
-      </question>
+    <data-collection-response :data="response"/>
   </div>
 </template>
 
 <script>
-  import form from "../../../api/admin/form";
+  import dataCollection from "../../../api/admin/dataCollection";
   import Question from '../../components/Question'
+
+  import DataCollectionResponse from '../../components/DataCollectionResponse'
 
   export default {
     name: "Answers",
     components: {
-      'question': Question
+      'question': Question,
+      'data-collection-response': DataCollectionResponse
     },
     beforeRouteEnter (to, from, next) {
       next(vm => {
@@ -32,16 +27,18 @@
     },
     data () {
       return {
-        answer: {
-          answers: []
+        response: {
+          response: []
         }
       }
     },
     methods: {
-      loadData (formId, answersId) {
-        this.answers = []
-        form.showAnswers(formId, answersId).then(({ data }) => {
-          this.answer = data.answer
+      loadData (formId, responseId) {
+        this.response = {
+          response: []
+        }
+        dataCollection.showResponse(formId, responseId).then(({ data }) => {
+          this.response = data.response
         })
       }
     }

@@ -45,7 +45,9 @@
           :data-source="data">
 
           <span slot="purpose" slot-scope="text,record">
-            <a-tag>{{ text }}</a-tag>
+            <a-tag :color="purposeColourMap[text] ? purposeColourMap[text] : 'blue'">
+              {{ text }}
+            </a-tag>
           </span>
 
           <span slot="action" slot-scope="text,record">
@@ -103,6 +105,9 @@
         createModalVisible: false,
         formListVisible: false,
         creating: false,
+        purposeColourMap: {
+          'member-application': 'purple',
+        },
         form: {
           title: '',
           description: ''

@@ -3,9 +3,12 @@
     <a-page-header title='Data Collection' @back="$router.go(-1)" style="background: #fff">
       <template slot="extra">
         <router-link :to="{ name: 'admin.forms.show.questions', params: { id: $route.params.id } }">
-          <a-button icon="upload" type="primary" v-if="dataCollection.is_closed">Open</a-button>
-          <a-button icon="issues-close" type="danger" v-else>Close</a-button>
-          <a-button icon="download">Archive</a-button>
+          <a-button disabled v-if="dataCollection.is_archived">Archived</a-button>
+          <template v-else>
+            <a-button icon="upload" type="primary" v-if="dataCollection.is_closed">Reopen</a-button>
+            <a-button icon="issues-close" type="danger" v-else>Close</a-button>
+            <a-button icon="download">Archive</a-button>
+          </template>
         </router-link>
       </template>
 
@@ -15,19 +18,12 @@
         </a-tag>
       </template>
 
-      <a-descriptions size="small" :column="2">
-        <a-descriptions-item label="Used For">
-          <a-tag color="blue">Activity</a-tag>
-          %%dataCollection.activity.title%%
-        </a-descriptions-item>
+     <a-descriptions size="small" :column="2">
         <a-descriptions-item label="Flags">
-          %%Allow Re-submit%%
+          <a-tag v-if="dataCollection.is_re_submittable">Allow Resubmit</a-tag>
         </a-descriptions-item>
-        <a-descriptions-item label="Creation Time">
-          2017-01-10
-        </a-descriptions-item>
-        <a-descriptions-item label="Effective Time">
-          2017-10-10
+        <a-descriptions-item label="Effective at">
+          2017-10-10 - 2027-01-01
         </a-descriptions-item>
       </a-descriptions>
 
@@ -47,14 +43,17 @@
         <h3>Responses</h3>
         <a-card class="card-dense">
           <a-table
-          :columns="columns">
-<!--            @change="handleChange"-->
-<!--            :pagination="listing.pagination"-->
-<!--            :loading="loading"-->
-<!--            row-key="id"-->
-<!--            :data-source="data">-->
-              <span slot="answerer" slot-scope="text, record">
-                {{ record.answerer.name }}
+            :columns="columns"
+            @change="handleChange"
+            :pagination="listing.pagination"
+            :loading="loading"
+            row-key="id"
+            :data-source="data">
+              <span slot="user" slot-scope="text, record">
+                {{ record.user.name }}
+              </span>
+              <span slot="submitted-at" slot-scope="text, record">
+                {{ record.created_at | moment('LLL') }}
               </span>
               <span slot="action" slot-scope="text,record">
                 <router-link
@@ -69,13 +68,12 @@
 </template>
 
 <script>
-  import form from "../../../api/admin/form"
   import dataCollection from "../../../api/admin/dataCollection";
-  // import listing from "../../../common/mixins/listing"
+  import listing from "../../../common/mixins/listing"
 
   export default {
     name: "Show",
-    // mixins: [ listing ],
+    mixins: [ listing ],
     beforeRouteEnter(to, from, next) {
       next(vm => {
         vm.loadForm(to.params.id)
@@ -87,7 +85,7 @@
     },
     data () {
       return {
-        api: (paramBag) => form.indexAnswers(this.$route.params.id, paramBag),
+        api: (paramBag) => dataCollection.indexResponses(this.$route.params.id, paramBag),
         isLoading: true,
         columns: [
           {
@@ -97,15 +95,15 @@
             sorter: true
           },
           {
-            dataIndex: 'answerer',
-            key: 'answerer',
-            title: 'Answerer',
-            scopedSlots: { customRender: 'answerer'}
+            key: 'user.name',
+            title: 'User',
+            scopedSlots: { customRender: 'user'}
           },
           {
             dataIndex: 'created_at',
             key: 'created_at',
-            title: 'Submitted At'
+            title: 'Submitted At',
+            scopedSlots: { customRender: 'submitted-at'}
           },
           {
             dataIndex: 'action',

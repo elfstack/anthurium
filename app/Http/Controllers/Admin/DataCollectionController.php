@@ -21,7 +21,12 @@ class DataCollectionController extends Controller
     public function index(Request $request)
     {
         $result = Listing::create(DataCollection::class)
-                    ->attachSorting(['id'])
+                    ->attachFiltering([
+                        'purpose'
+                    ])
+                    ->attachSorting([
+                        'updated_at'
+                    ])
                     ->modifyQuery(function ($query) {
                         $query->with('form');
                     })

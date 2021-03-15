@@ -13,13 +13,19 @@ export default {
     create (data) {
         return window.axios.post('/data-collection', data)
     },
-    indexAnswers (id, paramBag) {
-      return index(paramBag, `/data-collection/${id}/answers`)
+    indexResponses (id, paramBag) {
+      return index(paramBag, `/data-collection/${id}/responses`)
+    },
+    showResponse (dataCollectionId, responseId) {
+      return window.axios.get(`/data-collection/${dataCollectionId}/responses/${responseId}`)
     },
     showAnswersByUserId (dataCollectionId, userId) {
       return window.axios.get(`/data-collection/${dataCollectionId}/users/${userId}/answers`)
     },
     showMemberFormAnswersByUserId (userId) {
       return window.axios.get(`/users/${userId}/member-form-answers`)
+    },
+    listMemberFormDataCollection () {
+      return window.axios.get('/data-collection?filter=purpose:member-application&orderBy=updated_at&direction=desc')
     }
 }

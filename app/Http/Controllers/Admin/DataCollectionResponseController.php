@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Configuration;
 use App\Models\DataCollection;
+use App\Models\DataCollectionResponse;
 use App\Models\Form;
 use App\Models\FormAnswer;
 use App\Models\User;
@@ -24,7 +25,7 @@ class DataCollectionResponseController extends Controller
      */
     public function index(Request $request, DataCollection $dataCollection)
     {
-        $query = $dataCollection->responses()->with('answerer')->getQuery();
+        $query = $dataCollection->response()->with('user')->getQuery();
         $result = Listing::fromQuery($query)->get($request);
 
         return response()->json($result);
@@ -89,15 +90,15 @@ class DataCollectionResponseController extends Controller
      * Display the specified resource.
      *
      * @param DataCollection $dataCollection
-     * @param FormAnswer $answer
+     * @param DataCollectionResponse $response
      * @return JsonResponse
      */
-    public function show(DataCollection $dataCollection, FormAnswer $answer)
+    public function show(DataCollection $dataCollection, DataCollectionResponse $response)
     {
-        $answer->load(['answers.question']);
+        $response->load('response', 'user');
 
         return response()->json([
-            'answer' => $answer
+            'response' => $response
         ]);
     }
 
