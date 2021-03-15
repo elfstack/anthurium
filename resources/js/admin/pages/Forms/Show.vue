@@ -49,34 +49,8 @@
     },
     data () {
       return {
-        api: (paramBag) => form.indexAnswers(this.$route.params.id, paramBag),
         isLoading: true,
         isEditing: false,
-        columns: [
-          {
-            dataIndex: 'id',
-            key: 'id',
-            title: 'ID',
-            sorter: true
-          },
-          {
-            dataIndex: 'answerer',
-            key: 'answerer',
-            title: 'Answerer',
-            scopedSlots: { customRender: 'answerer'}
-          },
-          {
-            dataIndex: 'created_at',
-            key: 'created_at',
-            title: 'Submitted At'
-          },
-          {
-            dataIndex: 'action',
-            key: 'action',
-            title: 'Action',
-            scopedSlots: {customRender: 'action'}
-          }
-        ],
         form: { }
       }
     },
