@@ -71,19 +71,26 @@ const listing = {
         },
         handleSearch (keyword) {
             this.listing.keyword = keyword
+            this.resetPage()
             this.fetchData()
         },
         filter (column, value) {
             this.listing.filters[column] = value
+            this.resetPage()
             this.fetchData()
         },
         clearFilter (column) {
             delete this.listing.filters[column]
+            this.resetPage()
             this.fetchData()
         },
         clearAllFilter () {
             this.listing.filters = []
+            this.resetPage()
             this.fetchData()
+        },
+        resetPage () {
+            this.listing.pagination.current = 1
         }
     }
 }
