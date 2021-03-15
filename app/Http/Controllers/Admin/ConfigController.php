@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Configuration;
 use App\Models\DataCollection;
+use App\Models\UserGroup;
+use App\Utils\ConfigUtils;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Spatie\Permission\PermissionRegistrar;
@@ -18,7 +20,7 @@ class ConfigController extends Controller
 
         $configs = Configuration::all();
 
-        $configs['user.membership_application.data_collection'] = DataCollection::memberApplicationForm();
+        // $configs['user.membership_application.data_collection'] = DataCollection::memberApplicationForm();
 
         return [
             'name' => getenv('APP_NAME'),
@@ -42,8 +44,7 @@ class ConfigController extends Controller
         $configKeys = [];
         foreach ($sanitized as $key=>$value) {
             array_push($configKeys, $key);
-            // Configuration::set($key, $value);
-            app('AnthuriumConfig')->set($key, $value);
+            ConfigUtils::set($key, $value);
         }
 
         return response()->json([
