@@ -2,21 +2,7 @@
   <div class="p2">
     <a-row :gutter="[16,16]">
       <a-col>
-        <a-form-model :wrapper-col="wrapperCol" :label-col="labelCol">
-          <a-form-model-item label="Stage">
-            <a-select :options="dataCollectionStageOptions">
-
-            </a-select>
-          </a-form-model-item>
-
-          <a-form-model-item label="Form">
-            <form-selector />
-          </a-form-model-item>
-
-          <a-form-model-item :wrapper-col="btnWrapperCol">
-            <a-button type="primary">Create</a-button>
-          </a-form-model-item>
-        </a-form-model>
+        <activity-data-collection-form />
       </a-col>
     </a-row>
     <a-row :gutter="[16,16]">
@@ -41,31 +27,29 @@
 
 <script>
   import listing from "../../../../common/mixins/listing"
-  import form from "../../../../common/mixins/form"
 
   import activity from "../../../../api/admin/activity"
 
-  import FormSelector from '../../../components/FormSelector'
+  import ActivityDataCollectionForm from './ActivityDataCollectionForm'
 
   export default {
     name: "DataCollection",
-    mixins: [listing, form],
+    mixins: [listing],
     components: {
-      'form-selector': FormSelector
+      'activity-data-collection-form': ActivityDataCollectionForm
     },
     data() {
       return {
+        data: {
+          form: null,
+          stage: null
+        },
         api: activity.dataCollection,
         columns: [
           {dataIndex: 'stage', title: 'Stage', scopedSlots: {customRender: 'stage'}},
           {dataIndex: 'form.title', title: 'Form'},
           {dataIndex: 'response.collected_response_count', title: 'Collected Response'},
           {dataIndex: 'action', title: 'Action'}
-        ],
-        dataCollectionStageOptions: [
-          { value: 'enroll', label: 'Enroll' },
-          { value: 'admitted', label: 'Admitted' },
-          { value: 'left', label: 'Left' }
         ]
       }
     }
