@@ -54,10 +54,18 @@ class MemberApplicationResult extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toArray($notifiable)
+    public function toDatabase($notifiable)
     {
         return [
             'result' => $this->result
         ];
     }
+
+//    public function toArray()
+//    {
+//        return [
+//            'title' => 'member application '.$this->result,
+//            'description' => 'member application '.$this->result
+//        ];
+//    }
 }

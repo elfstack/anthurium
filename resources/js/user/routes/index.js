@@ -34,6 +34,16 @@ const router = new VueRouter({
           component: () => import('../pages/Dashboard/Dashboard')
         },
         {
+          path: 'inbox',
+          name: 'app.inbox',
+          component: () => import('../pages/Inbox')
+        },
+        {
+          path: 'inbox/message/:id',
+          name: 'app.inbox.message',
+          component: () => import('../pages/Message')
+        },
+        {
           path: 'user/:id(\\d+)',
           component: () => import('../pages/User/Show'),
           children: [

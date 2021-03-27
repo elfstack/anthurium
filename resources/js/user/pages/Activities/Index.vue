@@ -14,11 +14,6 @@
                       />
                     </a-col>
                   </a-row>
-                  <a-row>
-                    <a-col>
-                      <tag-filter />
-                    </a-col>
-                  </a-row>
                 </a-card>
             </a-col>
         </a-row>

@@ -52,7 +52,7 @@
                                     <router-link :to="{ name: 'app.user.profile', params: { id: user.id } }">My Profile</router-link>
                                 </a-menu-item>
                               <a-menu-item key="1">
-                                <router-link :to="{ name: 'app.user.inbox' }">Inbox</router-link>
+                                <router-link :to="{ name: 'app.inbox' }">Inbox</router-link>
                               </a-menu-item>
                               <a-menu-item key="2">
                                 <router-link :to="{ name: 'app.member-registration' }" v-if="$config('user.can_apply_membership')">Member Registration</router-link>

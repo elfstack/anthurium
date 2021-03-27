@@ -27,10 +27,7 @@ const listing = {
             this.loading = true
             this.api(this.listing).then(({data}) => {
                 // update current page and loading status
-                const pagination = { ...this.listing.pagination }
-                pagination.total = data.total
-                this.data = data.data
-                this.listing.pagination = pagination
+                this.updateData(data)
                 this.loading = false
             }).catch(e => {
                 if (e.response.status === 404) {
@@ -38,7 +35,13 @@ const listing = {
                 }
             })
         },
-        /**
+        updateData (data) {
+          const pagination = { ...this.listing.pagination }
+          pagination.total = data.total
+          this.data = data.data
+          this.listing.pagination = pagination
+        },
+      /**
          * Handle table change
          *
          * @param pagination
