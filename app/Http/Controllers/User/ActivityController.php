@@ -23,7 +23,7 @@ class ActivityController extends Controller
      * @return JsonResponse
      * @throws \Exception
      */
-    public function index (Request $request) : JsonResponse
+    public function index(Request $request): JsonResponse
     {
         $activities = Listing::create(Activity::class)
             ->attachFiltering(['type'])
@@ -44,7 +44,7 @@ class ActivityController extends Controller
      * @param Activity $activity
      * @return JsonResponse
      */
-    public function show(Request $request, Activity $activity) : JsonResponse
+    public function show(Request $request, Activity $activity): JsonResponse
     {
         $activity->status = $activity->getStatus();
 
@@ -69,7 +69,8 @@ class ActivityController extends Controller
      * @param Activity $activity
      * @return JsonResponse
      */
-    public function participants(Request $request, Activity $activity) {
+    public function participants(Request $request, Activity $activity)
+    {
         $query = $activity->participations()
             ->with('participant')->getQuery();
 
@@ -80,8 +81,9 @@ class ActivityController extends Controller
         return response()->json($listing);
     }
 
-    public function statistics(Activity $activity) {
-        $attended =  $activity->participations()->whereNotNull('arrived_at')->count();
+    public function statistics(Activity $activity)
+    {
+        $attended = $activity->participations()->whereNotNull('arrived_at')->count();
         $admitted = $activity->participations()->whereNotNull('approved_at')->count();
 
         return response()->json([
@@ -100,32 +102,23 @@ class ActivityController extends Controller
 
     private function modifyIndexQuery(Builder $query)
     {
-        $upcoming = DB::table('activities')
-            ->where('is_published', true)
-            ->where('starts_at','>' ,Carbon::now())
+//        $past = DB::table('activities')
+//            ->where('is_published', true)
+//            ->where('ends_at','<', Carbon::now())
+//            ->select(['*'])
+//            ->addSelect(DB::raw('\'past\' as status'))
+//            ->addSelect(DB::raw('3 as statusN'))
+//            ->orderby('starts_at', 'desc');
+
+
+        $query->where(function ($query) {
+            $query->where('is_published', true)
+                  ->where('starts_at', '>', Carbon::now());
+        })
             ->select(['*'])
             ->addSelect(DB::raw('\'upcoming\' as status'))
-            ->addSelect(DB::raw('2 as statusN'))
             ->orderby('starts_at', 'desc');
-
-        $past = DB::table('activities')
-            ->where('is_published', true)
-            ->where('ends_at','<', Carbon::now())
-            ->select(['*'])
-            ->addSelect(DB::raw('\'past\' as status'))
-            ->addSelect(DB::raw('3 as statusN'))
-            ->orderby('starts_at', 'desc');
-
-        $query->where('is_published', true)
-            ->where('starts_at','<', Carbon::now())
-            ->where('ends_at', '>', Carbon::now())
-            ->select(['*'])
-            ->addSelect(DB::raw('\'ongoing\' as status'))
-            ->addSelect(DB::raw('0 as statusN'))
-            ->orderby('starts_at', 'desc')
-            ->union($upcoming)
-            ->union($past)
-            ->orderby('statusN', 'asc');
+        // ->union($past)
     }
 
     /**
@@ -155,7 +148,7 @@ class ActivityController extends Controller
         ]);
 
         $guest = Guest::where('email', $request->input('email'))
-                      ->updateOrCreate($sanitized);
+            ->updateOrCreate($sanitized);
 
         // TODO: check if email already registered
         // TODO: if registered, redirect to login page
@@ -171,14 +164,14 @@ class ActivityController extends Controller
     /**
      * Enroll the guest
      *
-     * @deprecated since all the activity must have a valid account for registration
-     *
      * @param Request $request
      * @param Activity $activity
      * @param Guest $guest
      *
      * @return JsonResponse
      * @throws AlreadyEnrolledException
+     * @deprecated since all the activity must have a valid account for registration
+     *
      */
     public function guestEnroll(Request $request, Activity $activity, Guest $guest)
     {

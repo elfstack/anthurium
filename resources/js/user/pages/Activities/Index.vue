@@ -1,26 +1,21 @@
 <template>
     <div>
-        <h1>Activities</h1>
+        <h1 class="h2">Activities</h1>
         <a-row :gutter="[16,16]">
             <a-col :span="24">
                 <a-card>
-                  <a-row type="flex" justify="end">
-                    <a-col :sm="24" :md="12" :lg="6">
-                      <a-input-search
-                        v-model="listing.keyword"
-                        @search="handleSearch"
-                        :loading="loading"
-                        allow-clear
-                      />
-                    </a-col>
-                  </a-row>
-                </a-card>
-            </a-col>
-        </a-row>
-
-        <a-row :gutter="[16,16]">
-            <a-col :span="24">
-                <a-card>
+                  <template slot="title">
+                    <a-row type="flex" justify="end">
+                      <a-col :sm="24" :md="12" :lg="6">
+                        <a-input-search
+                          v-model="listing.keyword"
+                          @search="handleSearch"
+                          :loading="loading"
+                          allow-clear
+                        />
+                      </a-col>
+                    </a-row>
+                  </template>
                     <a-list
                         item-layout="vertical"
                         size="large"
