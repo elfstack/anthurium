@@ -94,13 +94,14 @@ class User extends Authenticatable implements Participant, HasMedia, UserInterfa
      */
     public function setUserGroup($userGroup=null)
     {
-        if ($userGroup == null) {
-            $userGroup = ConfigUtils::get('user.guest_group');
-        }
-
-        if (!$userGroup instanceof UserGroup) {
-            $userGroup = UserGroup::where('name', $userGroup)->first();
-        }
+//        if ($userGroup == null) {
+//            $userGroup = ConfigUtils::get('user.guest_group');
+//        }
+//
+//        if (!$userGroup instanceof UserGroup) {
+//            $userGroup = UserGroup::where('name', $userGroup)->first();
+//        }
+        $userGroup = UserGroup::where('name', 'guest')->first();
 
         return $this->userGroup()->associate($userGroup);
     }

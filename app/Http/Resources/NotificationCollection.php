@@ -27,6 +27,11 @@ class NotificationCollection extends ResourceCollection
                         $title = 'Member Application '.ucfirst($notification->data['result']);
                         $description = $title;
                         break;
+
+                    case 'App\Notifications\ActivityEnrollmentStatusUpdated' :
+                        $title = 'Activity Enrollment Status Updated';
+                        $description = 'You have been '.$notification->data['status'].' to activity with id '.$notification->data['activity_id'];
+                        break;
                 }
 
                 return [

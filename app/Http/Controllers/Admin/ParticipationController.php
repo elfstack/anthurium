@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Participant;
 use App\Models\Participation;
+use App\Notifications\ActivityEnrollmentStatusUpdated;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -22,20 +23,23 @@ class ParticipationController extends Controller
         switch ($sanitized['status']) {
             case 'rejected':
                 $participation->reject();
-                return;
+                break;
             case 'admitted':
                 $participation->admit();
-                return;
+                break;
             case 'attended':
                 $participation->checkIn();
-                return;
+                break;
             case 'left':
                 $participation->checkOut();
-                return;
+                break;
             case 'cancelled':
                 $participation->cancel();
-                return;
+                break;
         }
+
+        $user = $participation->participant;
+        $user->notify(new ActivityEnrollmentStatusUpdated($participation));
 
         return response()->json([
             'message' => 'success'
