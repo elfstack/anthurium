@@ -195,9 +195,11 @@ class Listing
      */
     private function querySearch(string $value): void
     {
-        foreach ($this->searchableColumns as $column) {
-            $this->searchLike($this->query, $column, $value);
-        }
+        $this->query->where(function ($query) use ($value) {
+            foreach ($this->searchableColumns as $column) {
+                $this->searchLike($query, $column, $value);
+            }
+        });
     }
 
     /**
@@ -304,7 +306,6 @@ class Listing
      */
     private function searchLike($query, $column, $token): void
     {
-
         // MySQL and SQLite uses 'like' pattern matching operator that is case insensitive
         $likeOperator = 'like';
 
