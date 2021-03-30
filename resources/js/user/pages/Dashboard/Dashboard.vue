@@ -3,7 +3,7 @@
     <a-row :gutter="[16,16]">
       <a-row>
         <a-col>
-          <h1>All Participations</h1>
+          <h1 class="h2">All Participations</h1>
           <a-card>
             <a-list
               item-layout="vertical"
