@@ -6,7 +6,13 @@ export default async function auth (to, from, next) {
     }
 
     if (!store.getters['user/isLoggedIn']) {
-      next({ name: 'app.login', replace: true })
+      next({
+        name: 'app.login',
+        replace: true,
+        query: {
+          redirect: to.path
+        }
+      })
     }
 
     // if (!store.getters['config/loaded']) {

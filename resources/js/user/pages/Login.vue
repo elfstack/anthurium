@@ -37,6 +37,7 @@
                               type="primary"
                               html-type="submit"
                               @click="submit"
+                              :loading="isLogging"
                             >
                               Log in
                             </a-button>
@@ -65,6 +66,7 @@
         },
         data () {
             return {
+                isLogging: false,
                 showError: false,
                 form: {
                     email: '',
@@ -84,11 +86,14 @@
         },
         methods: {
             submit () {
+                this.isLogging = true
                 this.$refs['login-form'].validate(valid => {
                     if (valid) {
                         this.showError = false
-                        this.login(this.form).catch((e) => {
+                        console.log(`redirect query: ${this.$route.query.redirect}`)
+                        this.login(this.form, this.$route.query.redirect).catch((e) => {
                             this.showError = true
+                            this.isLogging = false
                         })
                     }
                 })

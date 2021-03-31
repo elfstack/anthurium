@@ -57,7 +57,7 @@
 <!--                <router-link :to="{ name: 'app.member-registration' }" v-if="$config('user.can_apply_membership')">Member Registration</router-link>-->
 <!--              </a-menu-item>-->
               <a-menu-divider/>
-              <a-menu-item key="3" @click="logout">
+              <a-menu-item key="3" @click="logoutUser">
                 Logout
               </a-menu-item>
             </a-menu>
@@ -94,7 +94,12 @@
     methods: {
       ...mapActions('user', [
         'logout'
-      ])
+      ]),
+      logoutUser () {
+        this.logout().then(() => {
+          this.$message.success('Logged out');
+        })
+      }
     }
   }
 </script>

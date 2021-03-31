@@ -58,9 +58,10 @@ const mutations = {
 
 const actions = {
     login ({ commit, state, dispatch }, credential) {
-        return user.login(credential).then(({data}) => {
-            dispatch('getUser')
-            router.push('/')
+      return user.login(credential).then(({data}) => {
+            dispatch('getUser').then(() => {
+              router.push(router.currentRoute.query.redirect || '/')
+            })
         })
     },
     getUser({ commit }) {
