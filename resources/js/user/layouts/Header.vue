@@ -5,14 +5,12 @@
       <a-col>
         <a-row type="flex">
           <a-col>
-            <router-link
-              to="/"
-              tag="div"
+            <div
               class="pr2 h4"
               style="color: #fff"
             >
               Anthurium
-            </router-link>
+            </div>
           </a-col>
           <a-col>
             <a-menu
@@ -21,7 +19,7 @@
               :default-selected-keys="['dashboard']"
               :style="{ lineHeight: '64px' }"
             >
-              <a-menu-item key="dashboard">
+              <a-menu-item key="dashboard" v-if="$isLoggedIn()">
                 <router-link to="/">
                   Dashboard
                 </router-link>

@@ -8,26 +8,26 @@ Vue.use(VueRouter)
 const router = new VueRouter({
   routes: [
     {
-      path: '/login',
-      name: 'app.login',
-      component: () => import('../pages/Login')
-    },
-    {
-      path: '/register',
-      name: 'app.register',
-      component: () => import('../pages/Register')
-    },
-    {
-      path: '/reset-password',
-      name: 'app.reset-password',
-    },
-    {
       path: '/',
       component: () => import('../layouts/App'),
       async beforeEnter(to, from, next) {
         await auth(to, from, next)
       },
       children: [
+        {
+          path: '/login',
+          name: 'app.login',
+          component: () => import('../pages/Login')
+        },
+        {
+          path: '/register',
+          name: 'app.register',
+          component: () => import('../pages/Register')
+        },
+        {
+          path: '/reset-password',
+          name: 'app.reset-password',
+        },
         {
           path: '',
           name: 'app.dashboard',

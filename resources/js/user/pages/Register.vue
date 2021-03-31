@@ -1,6 +1,6 @@
 <template>
-  <div class="p3">
-    <h1>Register</h1>
+  <div>
+    <h1 class="h2">Register</h1>
     <a-row :gutter="[16,16]">
       <a-col>
         <a-card>

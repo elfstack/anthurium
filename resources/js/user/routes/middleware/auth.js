@@ -1,6 +1,11 @@
 import store from "../../store";
 
 export default async function auth (to, from, next) {
+    if (['app.login', 'app.register', 'app.reset-password'].includes(to.name)) {
+      next()
+      return
+    }
+
     if (!store.getters['user/loaded']) {
       await store.dispatch('user/getUser')
     }

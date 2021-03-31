@@ -1,6 +1,6 @@
 <template>
     <a-layout class="h-100">
-        <a-row type="flex" justify="center" align="middle" class="h-100">
+        <a-row type="flex" justify="center" align="center" class="h-100">
             <a-col :xs="24" :md="12" :lg="8">
                 <a-card>
                     <h1 class="h1">Login</h1>
