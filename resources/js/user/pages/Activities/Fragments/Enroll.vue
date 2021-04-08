@@ -55,12 +55,12 @@
                 this.visible = !this.visible
             },
             handleOk () {
-                const enroll = this.$isLoggedIn() ? this.userEnroll : this.guestEnroll;
-
-                enroll().then(({ data }) => {
+                this.userEnroll().then(({ data }) => {
                     this.$toggleVisibility()
                     this.$message.success(data.message)
-                  // TODO: update view when successfully enrolled
+                    this.$emit('user-enrolled')
+                }).catch(() => {
+                  this.$toggleVisibility()
                 })
             },
             handleCancel () {
@@ -68,9 +68,6 @@
             },
             userEnroll () {
                 return activity.enroll(this.id, null)
-            },
-            guestEnroll () {
-                return activity.enroll(this.id, this.form)
             }
         }
     }

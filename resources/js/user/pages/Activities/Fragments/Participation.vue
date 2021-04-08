@@ -58,7 +58,7 @@
         this.handleCancel()
       },
       handleCancel() {
-        this.$router.push({
+        this.$router.replace({
           name: 'app.activities.show',
           params: {
             id: this.id

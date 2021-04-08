@@ -8,8 +8,5 @@ use Throwable;
 
 class NotPermittedException extends \Exception
 {
-    public function __construct($message = "", $code = 0, Throwable $previous = null)
-    {
-        parent::__construct($message, $code, $previous);
-    }
+    protected $message = 'You are not permitted to join this activity';
 }

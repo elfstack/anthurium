@@ -113,7 +113,7 @@ class ActivityController extends Controller
 
         $query->where(function ($query) {
             $query->where('is_published', true)
-                  ->where('starts_at', '>', Carbon::now());
+                ->where('starts_at', '>', Carbon::now());
         })
             ->select(['*'])
             ->addSelect(DB::raw('\'upcoming\' as status'))
@@ -126,39 +126,26 @@ class ActivityController extends Controller
      *
      * @param Request $request
      * @param Activity $activity
-     * @return JsonResponse
+     * @return JsonResponse | void
      */
     public function enroll(Request $request, Activity $activity)
     {
-        if ($request->user('api')) {
+        if (!$activity->is_published) {
+            abort(404, 'Activity not found');
+        }
+
+        if (!$request->user('api')) {
+            abort(401);
+        }
+
+        try {
             $request->user('api')->participate($activity);
             return response()->json([
                 'message' => 'enrolled'
             ], 201);
+        } catch (\Exception $e) {
+            abort(500, $e->getMessage());
         }
-
-        if (!$activity->is_public) {
-            abort(404, 'Activity not found');
-        }
-
-        // create or find guest
-        $sanitized = $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|email'
-        ]);
-
-        $guest = Guest::where('email', $request->input('email'))
-            ->updateOrCreate($sanitized);
-
-        // TODO: check if email already registered
-        // TODO: if registered, redirect to login page
-
-        // TODO: send verification email
-        $guest->sendEmailEnrollVerificationNotification($activity);
-
-        return response()->json([
-            'message' => 'email-sent'
-        ], 201);
     }
 
     /**

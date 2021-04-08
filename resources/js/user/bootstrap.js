@@ -20,8 +20,8 @@ const instance = axios.create({
     },
 })
 
-const action = debounce(function action (status) {
-    switch (status) {
+const action = debounce(function action (response) {
+    switch (response.status) {
         case 401:
             if (router.currentRoute.name !== 'app.login') {
                 message.warning('Logged out')
@@ -35,13 +35,13 @@ const action = debounce(function action (status) {
             router.push({ name: 'app.not-found' })
             break;
         case 500:
-            message.error('Server error')
+            message.error(response.data.message ? response.data.message : 'Server error')
             break;
     }
 }, 200)
 
 instance.interceptors.response.use(undefined, error => {
-    action(error.response.status)
+    action(error.response)
     return Promise.reject(error)
 })
 

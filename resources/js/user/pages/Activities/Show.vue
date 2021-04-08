@@ -80,7 +80,7 @@
       <enroll
         ref="enroll-modal"
             :id="activity.id"
-            @enrolled="activity.is_enrolled = true"
+            @user-enrolled="activity.is_enrolled = true"
         />
 
       <participation
@@ -111,7 +111,7 @@
         },
         metaInfo() {
             return {
-                title: this.activity ? this.activity.name : null
+                title: this.$route.params.participationId ? 'My Participation' : (this.activity ? this.activity.name : null)
             }
         },
         beforeRouteEnter(to, from, next) {
