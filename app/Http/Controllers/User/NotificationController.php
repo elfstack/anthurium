@@ -20,7 +20,7 @@ class NotificationController extends Controller
      */
     public function index(Request $request)
     {
-        $user = $request->user();
+        $user = $request->user('api');
 
         $notifications = Listing::fromQuery($user->notifications())->get($request);
 
