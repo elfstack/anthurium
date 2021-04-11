@@ -1,46 +1,45 @@
 <template>
-  <a-layout-header>
-    <a-row type="flex"
-           justify="space-between">
-      <a-col>
-        <a-row type="flex">
-          <a-col>
+  <a-layout-header class="app-header">
+
+    <a-row type="flex">
+      <a-col class="logo">
             <div
               class="pr2 h4"
               style="color: #fff"
             >
               Anthurium
             </div>
-          </a-col>
-          <a-col>
+      </a-col>
+
+      <a-col class="menu" flex="auto">
             <a-menu
+              class="nav-menu"
               theme="dark"
               mode="horizontal"
               :default-selected-keys="['dashboard']"
-              :style="{ lineHeight: '64px' }"
             >
               <a-menu-item key="dashboard" v-if="$isLoggedIn()">
                 <router-link to="/">
-                  Dashboard
+                  <a-icon type="dashboard" />
+                  <span>Dashboard</span>
                 </router-link>
               </a-menu-item>
               <a-menu-item key="activities">
                 <router-link to="/activities">
-                  Activities
+                  <a-icon type="compass" />
+                  <span>Activities</span>
                 </router-link>
               </a-menu-item>
             </a-menu>
-          </a-col>
-        </a-row>
-
       </a-col>
-      <a-col>
-        <template v-if="$isLoggedIn()">
+
+      <a-col class="user ant-menu-dark">
+      <template v-if="$isLoggedIn()">
           <a-dropdown :trigger="['click']">
             <div @click="e => e.preventDefault()">
               <a-avatar size="large" :src="user.avatar_url" v-if="user.avatar_url"/>
               <a-avatar size="large" icon="user" v-else/>
-              <span class="ml1 color-white">
+              <span class="ml1 color-white username">
                             {{ user.name }} <a-icon type="down"/>
                         </span>
             </div>
@@ -102,8 +101,52 @@
   }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
   .color-white {
     color: #fff;
+  }
+
+
+  .app-header {
+    height: 48px;
+    line-height: 48px;
+
+    .nav-menu {
+      line-height: 48px !important;
+    }
+
+    @media screen {
+      @media (max-width: 768px) {
+        padding: 0;
+
+        .logo {
+          width: 100%;
+          justify-content: center;
+          display: flex;
+        }
+
+        .username {
+          display: none;
+        }
+
+        .nav-menu li {
+          i {
+            margin-right: 0;
+            font-size: 18px;
+          }
+          span {
+            display: none;
+          }
+        }
+
+        .menu, .user {
+          height: 48px;
+        }
+
+        .user {
+          padding-right: 10px
+        }
+      }
+    }
   }
 </style>

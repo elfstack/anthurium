@@ -1,20 +1,18 @@
 <template>
   <a-layout>
     <a-row :gutter="[16,16]">
-      <a-row>
-        <a-col>
-          <h1 class="h2">All Participations</h1>
-          <a-card>
-            <a-list
-              item-layout="vertical"
-              :data-source="data"
-              :loading="loading">
-              <participation-list-item slot="renderItem" slot-scope="item, index" :data="item"/>
+      <a-col>
+        <h1 class="h2">All Participations</h1>
+        <a-card>
+          <a-list
+            item-layout="vertical"
+            :data-source="data"
+            :loading="loading">
+            <participation-list-item slot="renderItem" slot-scope="item, index" :data="item"/>
 
-            </a-list>
-          </a-card>
-        </a-col>
-      </a-row>
+          </a-list>
+        </a-card>
+      </a-col>
     </a-row>
   </a-layout>
 </template>

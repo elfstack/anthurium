@@ -1,7 +1,7 @@
 <template>
   <a-layout>
 
-    <app-header/>
+    <app-header class="sticky-top"/>
 
     <a-layout style="display: flex; align-items: center;">
       <a-layout-content class="layout-content" style="max-width: 1440px; width: 100%">
@@ -32,9 +32,22 @@
   }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
   .layout-content {
     padding: 50px 50px 0;
-    min-height: calc(100vh - 64px);
+    min-height: calc(100vh - 48px);
+  }
+
+  @media screen and (max-width: 768px) {
+    .layout-content {
+      padding: 64px 16px 0;
+      min-height: calc(100vh - 96px);
+    }
+  }
+
+  .sticky-top {
+    position: sticky;
+    top: 0;
+    z-index: 4;
   }
 </style>
