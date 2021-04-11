@@ -16,20 +16,21 @@ Route::post('/media/upload', 'FileController@upload');
 
 Route::middleware(['auth:api'])->group(function () {
     Route::get('/users/current', 'UserController@current');
+    Route::patch('/users/current', 'UserController@updateCurrent');
     // anthurium routes
     Route::post('/activities/{activity}/enroll', 'ActivityController@enroll');
     Route::apiResource('notifications', 'NotificationController');
+    Route::apiResource('participations', 'ParticipationController');
+    Route::get('/users/{user}/participations', 'ParticipationController@index');
 });
 
 Route::get('/config', 'ConfigController@config');
 
 Route::apiResource('activities', 'ActivityController');
-Route::apiResource('participations', 'ParticipationController');
 // Route::get('/participations/{participation}/otp', 'ParticipationController@otp');
 // Route::post('/activities/{activity}/participation/{participation}/check-out', 'ActivityController@checkOut');
 
-Route::get('/users/{user}/participations', 'ParticipationController@index');
-Route::apiResource('users', 'UserController')->only(['show', 'store', 'update']);
+Route::apiResource('users', 'UserController')->only(['show', 'store']);
 // Route::apiResource('forms.questions', 'FormQuestionController');
 // Route::post('/data-collection/{dataCollection}/response', 'FormQuestionController@store');
 

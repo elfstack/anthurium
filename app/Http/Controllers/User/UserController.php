@@ -70,51 +70,7 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param User $user
-     * @return JsonResponse
-     */
-    public function update(Request $request, User $user)
-    {
-        $sanitized = $request->validate([
-            'name' => 'required',
-            'email' => [
-                'required',
-                'email',
-                Rule::unique('admin_users')->ignore($user->id)
-            ],
-            'password' => 'sometimes|min:6',
-            'roles' => 'array|required'
-        ]);
-
-        if ($request->has('password')) {
-            $sanitized['password'] = Hash::make($sanitized['password']);
-        }
-
-        $user->update($sanitized);
-
-        return response()->json([
-            'user' => $user
-        ]);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param AdminUser $adminUser
-     * @return \Illuminate\Http\Response
-     * @throws \Exception
-     */
-    public function destroy(AdminUser $adminUser)
-    {
-        $adminUser->delete();
-        return response()->noContent();
-    }
-
-    /**
-     * Retrieve current logged in admin_user
+     * Retrieve current logged in user
      *
      * @param Request $request
      * @return array
@@ -127,7 +83,7 @@ class UserController extends Controller
         $user->load('userGroup');
 
         // TODO: only add this property for guest userGroup
-        $user->is_member_application_form_filled = $this->hasPendingMemberApplication($user);
+        // $user->is_member_application_form_filled = $this->hasPendingMemberApplication($user);
 
         // $user->roles = $adminUser->roles()->pluck('name');
 
@@ -137,22 +93,19 @@ class UserController extends Controller
     }
 
     /**
-     * Update current logged in admin_user
+     * Update current logged in user
      * @param Request $request
-     * @param AdminUser $adminUser
      * @return array
-     * @throws \Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist
-     * @throws \Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig
      */
     public function updateCurrent(Request $request) {
-        $adminUser = $request->user();
+        $user = $request->user();
 
         $sanitized = $request->validate([
             'name' => 'required',
             'email' => [
                 'required',
                 'email',
-                Rule::unique('admin_users')->ignore($adminUser->id)
+                Rule::unique('users')->ignore($user->id)
             ],
             'avatar_path' => 'sometimes',
             'password' => 'sometimes|min:6'
@@ -163,14 +116,14 @@ class UserController extends Controller
         }
 
         if ($request->has('avatar_path')) {
-            $adminUser->addMediaFromDisk($request->input('avatar_path'))
+            $user->addMediaFromDisk($request->input('avatar_path'))
                 ->toMediaCollection('avatars');
         }
 
-        $adminUser->update($sanitized);
+        $user->update($sanitized);
 
         return [
-            'admin_user' => $adminUser
+            'user' => $user
         ];
     }
 
