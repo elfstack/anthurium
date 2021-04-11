@@ -50,6 +50,7 @@ const router = new VueRouter({
             {
               path: '',
               name: 'app.user.profile',
+              component: () => import('../pages/User/Profile')
             },
             {
               path: 'participation',
