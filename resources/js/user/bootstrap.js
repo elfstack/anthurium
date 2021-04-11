@@ -3,6 +3,7 @@ import axios from 'axios'
 import { debounce } from "lodash";
 import { message } from "ant-design-vue";
 import Vue from 'vue'
+import store from "./store"
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -24,8 +25,8 @@ const action = debounce(function action (response) {
     switch (response.status) {
         case 401:
             if (router.currentRoute.name !== 'app.login') {
+                store.dispatch('user/logout')
                 message.warning('Logged out')
-                router.push({ name: 'app.login' })
             }
             break;
         case 403:
