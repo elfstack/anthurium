@@ -18,14 +18,17 @@ export default {
           return response
         }).catch(error => {
           if (error.response.status === 422) {
-            const errors = error.response.data.errors
-            form.fields.filter(field => errors[field.prop] !== undefined).forEach(field => {
-              field.validateState = 'error'
-              // set to first error message
-              field.validateMessage = errors[field.prop][0]
-            })
+            this.displayErrors(form, error)
           }
         })
+      })
+    },
+    displayErrors (form, error) {
+      const errors = error.response.data.errors
+      form.fields.filter(field => errors[field.prop] !== undefined).forEach(field => {
+        field.validateState = 'error'
+        // set to first error message
+        field.validateMessage = errors[field.prop][0]
       })
     }
   }

@@ -4,12 +4,14 @@
       <a-col>
         <a-card title="Schedule">
           <template slot="extra">
-            <a-button @click="saveSchedule">Save</a-button>
+            <a-button @click="saveSchedule" type="primary">Save</a-button>
           </template>
-          <a-form-model :label-col="labelCol" :wrapper-col="wrapperCol">
-            <a-form-item label="Time">
+          <a-form-model :label-col="labelCol" :wrapper-col="wrapperCol" ref="schedule">
+            <a-form-model-item label="Time"
+                               v-if="activityTimeRange"
+            >
               <a-range-picker
-                :default-value="getActivityTimeRange()"
+                :default-value="activityTimeRange"
                 :show-time="{ format: 'HH:mm' }"
                 @ok="updateDuration"
                 format="YYYY-MM-DD HH:mm"
@@ -19,7 +21,7 @@
                 <a-icon type="clock-circle"></a-icon>
                 {{ duration.ends_at | moment('from', duration.starts_at, true) }}
               </template>
-            </a-form-item>
+            </a-form-model-item>
 
             <a-form-item label="Application Close (not implemented)">
               <a-date-picker
@@ -57,19 +59,20 @@
       <a-col>
         <a-card title="Admission">
           <template slot="extra">
-            <a-button :type="primary" @click="saveAdmission">Save</a-button>
+            <a-button type="primary" @click="saveAdmission">Save</a-button>
           </template>
-          <a-form-model :label-col="labelCol" :wrapper-col="wrapperCol">
-            <a-form-item label="Quota">
+          <a-form-model :label-col="labelCol" :wrapper-col="wrapperCol" ref="admission" :model="activity">
+            <a-form-model-item label="Quota">
               <a-input-number placeholder="Quota" v-model="activity.quota"/>
 
               <template slot="help">
                 0 = Unlimited
               </template>
-            </a-form-item>
+            </a-form-model-item>
 
-            <a-form-item help="Who is able to view and enroll this activity"
-                         label="User group">
+            <a-form-model-item help="Who is able to view and enroll this activity"
+                         label="User group"
+                         prop="user_groups">
               <a-transfer
                 :data-source="userGroups"
                 :render="item => `${item.title} (L${item.level})`"
@@ -77,7 +80,7 @@
                 :selected-keys="transfer.selectedKeys"
                 @change="handleTransferChange"
               />
-            </a-form-item>
+            </a-form-model-item>
 
             <!-- a-form-item label="Policy">
               <a-select>
@@ -112,16 +115,25 @@
 
   // TODO: archive activity (next-phase)
   import {mapState, mapActions} from 'vuex'
-  import formLayouts from "../../../../common/mixins/formLayouts";
+  import form from "../../../../common/mixins/form";
   import userGroup from '../../../../api/admin/userGroup';
 
   export default {
     name: "Settings",
-    mixins: [formLayouts],
+    mixins: [form],
     computed: {
       ...mapState({
         activity: state => state.activity.activity
-      })
+      }),
+      activityTimeRange() {
+        if (this.duration.starts_at && this.duration.ends_at) {
+          return [
+            this.$moment(this.duration.starts_at),
+            this.$moment(this.duration.ends_at)
+          ]
+        }
+        return null
+      }
     },
     mounted() {
       this.duration.starts_at = this.activity.starts_at
@@ -155,18 +167,15 @@
       ...mapActions({
         updateActivity: 'activity/updateActivity'
       }),
-      getActivityTimeRange() {
-        return [
-          this.duration.starts_at === null ? null : this.$moment(this.duration.starts_at),
-          this.duration.ends_at === null ? null : this.$moment(this.duration.ends_at)
-        ]
-      },
+
       saveSchedule() {
         this.updateActivity({
           starts_at: this.duration.starts_at,
           ends_at: this.duration.ends_at
         }).then(() => {
           this.$message.success('Activity Updated!')
+        }).catch(e => {
+          this.displayErrors(this.$refs['schedule'], e)
         })
       },
       handleTransferChange(nextTargetKeys, direction, moveKeys) {
@@ -178,6 +187,8 @@
           user_groups: this.transfer.targetKeys
         }).then(() => {
           this.$message.success('Activity Updated!')
+        }).catch(e => {
+          this.displayErrors(this.$refs['admission'], e)
         })
       }
     }

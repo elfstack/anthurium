@@ -63,19 +63,28 @@ class ActivityController extends Controller
         $sanitized = $request->validate([
             'name' => 'sometimes|string',
             'content' => 'sometimes|string',
-            'starts_at' => 'sometimes|date',
-            'ends_at' => 'sometimes|date',
+            'starts_at' => 'sometimes|date|required',
+            'ends_at' => 'sometimes|date|required',
             'is_published' => 'sometimes|boolean',
             'quota' => 'sometimes|integer',
-            'user_groups' => 'sometimes|array',
+            'user_groups' => 'sometimes|array|min:1',
             'user_groups.*' => 'integer'
         ]);
-
-        $activity->update($sanitized);
 
         if (isset($sanitized['user_groups'])) {
             $activity->userGroups()->sync($sanitized['user_groups']);
         }
+
+        // check for publish
+        if (isset($sanitized['is_published']) && $sanitized['is_published']) {
+            if ($activity->userGroups()->count() == 0) {
+                abort(500, 'Activity must have at least 1 user group');
+            }
+
+            // check timing
+        }
+
+        $activity->update($sanitized);
 
         $activityDiff = $activity->getChanges();
         $activityDiff['status'] = $activity->getStatus();
