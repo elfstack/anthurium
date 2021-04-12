@@ -25,7 +25,7 @@ export default {
       if (e.target.checked) {
         this.selection.selectedKeys = this[this.selectionConfig.dataSource].map(item => item[this.selectionConfig.key])
       } else {
-        this.selection.selectedKeys = []
+        this.$clearSelection()
       }
     },
     _findIndex (key) {
@@ -41,7 +41,9 @@ export default {
       } else {
         this.selection.selectedKeys.push(key)
       }
+    },
+    $clearSelection () {
+      this.selection.selectedKeys = []
     }
-
   }
 }

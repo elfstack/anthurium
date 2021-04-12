@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Activity;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Notifications\DatabaseNotification;
@@ -21,22 +22,25 @@ class NotificationCollection extends ResourceCollection
             'data' => $this->collection->transform(function (DatabaseNotification $notification) {
                 $title = '';
                 $description = '';
+                $type = '';
 
                 switch ($notification->type) {
                     case 'App\Notifications\MemberApplicationResult':
-                        $title = 'Member Application '.ucfirst($notification->data['result']);
-                        $description = $title;
+                        $title = 'Member Application';
+                        $description = 'Member Application '.ucfirst($notification->data['result']);
                         break;
 
                     case 'App\Notifications\ActivityEnrollmentStatusUpdated' :
-                        $title = 'Activity Enrollment Status Updated';
-                        $description = 'You have been '.$notification->data['status'].' to activity with id '.$notification->data['activity_id'];
+                        $type = 'activity-enrollment-status-update';
+                        $title = Activity::find($notification->data['activity_id'])->name;
+                        $description = 'You have '.$notification->data['status'].' to this activity';
                         break;
                 }
 
                 return [
                     'id' => $notification->id,
                     'title' => $title,
+                    'type' => $type,
                     'description' => $description,
                     'read_at' => $notification->read_at,
                     'created_at' => $notification->created_at

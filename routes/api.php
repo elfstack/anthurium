@@ -19,9 +19,12 @@ Route::middleware(['auth:api'])->group(function () {
     Route::patch('/users/current', 'UserController@updateCurrent');
     // anthurium routes
     Route::post('/activities/{activity}/enroll', 'ActivityController@enroll');
-    Route::apiResource('notifications', 'NotificationController');
     Route::apiResource('participations', 'ParticipationController');
     Route::get('/users/{user}/participations', 'ParticipationController@index');
+
+    Route::apiResource('notifications', 'NotificationController');
+    Route::put('notifications', 'NotificationController@markSelectedAsRead');
+    Route::delete('notifications', 'NotificationController@destroySelected');
 });
 
 Route::get('/config', 'ConfigController@config');

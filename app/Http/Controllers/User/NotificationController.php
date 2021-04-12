@@ -96,4 +96,42 @@ class NotificationController extends Controller
     {
         //
     }
+
+    /**
+     * Remove a list of resources
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function destroySelected(Request $request)
+    {
+        $sanitized = $request->validate([
+            'notification_ids' => 'array|required'
+        ]);
+
+        $user = $request->user('api');
+
+        $user->notifications()->whereIn('id', $sanitized['notification_ids'])->delete();
+
+        return response()->json([
+            'message' => 'success'
+        ]);
+    }
+
+    public function markSelectedAsRead(Request $request)
+    {
+        $sanitized = $request->validate([
+            'notification_ids' => 'array|required'
+        ]);
+
+        $user = $request->user('api');
+
+        $notifications = $user->notifications()->whereIn('id', $sanitized['notification_ids'])->get();
+
+        $notifications->markAsRead();
+
+        return response()->json([
+            'message' => 'success'
+        ]);
+    }
 }
