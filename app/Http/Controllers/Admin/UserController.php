@@ -41,7 +41,7 @@ class UserController extends Controller
      * Store a newly created resource in storage.
      *
      * @param Request $request
-     * @return Response
+     * @return JsonResponse
      */
     public function store(Request $request)
     {
@@ -53,14 +53,16 @@ class UserController extends Controller
                 'unique:users'
             ],
             'password' => 'min:6|required',
-            'user_group.id' => 'required|in:user_groups'
+            'user_group.id' => 'required|exists:user_groups,id'
         ]);
 
         $sanitized['password'] = Hash::make($sanitized['password']);
 
         $user = User::create($sanitized);
+        $user->userGroup()->associate(UserGroup::find($sanitized['user_group']['id']));
+        $user->save();
 
-        return request()->json([
+        return response()->json([
             'user' => $user
         ]);
     }

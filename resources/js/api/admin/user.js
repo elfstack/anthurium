@@ -12,5 +12,8 @@ export default {
     },
     update (id, data) {
         return window.axios.patch(`/users/${id}`, data)
+    },
+    create (data) {
+      return window.axios.post('/users', data)
     }
 }
