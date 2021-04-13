@@ -15,7 +15,7 @@
       :open-keys.sync="openKeys"
       v-model="selectedKeys"
       mode="inline"
-      inline-collapsed="true"
+      inline-collapsed
     >
       <a-menu-item class="menu-group-header" disabled>
         <div class="ant-menu-item-group-title">Manage</div>
@@ -26,13 +26,20 @@
           <span>Activities</span>
         </router-link>
       </a-menu-item>
-      <a-menu-item key="forms">
+      <!--a-menu-item key="forms">
         <router-link to="/forms">
           <a-icon type="file-text"></a-icon>
           <span>Data Collection</span>
         </router-link>
+      </a-menu-item -->
+
+      <a-menu-item key="Members">
+        <router-link to="/members">
+          <a-icon type="user"></a-icon>
+          <span>Members</span>
+        </router-link>
       </a-menu-item>
-      <a-sub-menu key="members">
+      <!--a-sub-menu key="members">
         <span slot="title">
           <a-icon type="user"></a-icon>
           <span>Members</span>
@@ -48,7 +55,8 @@
             Membership
           </router-link>
         </a-menu-item>
-      </a-sub-menu>
+      </a-sub-menu-->
+
       <a-menu-item key="user-groups">
         <router-link to="/user-groups">
           <a-icon type="team"></a-icon>
@@ -57,16 +65,16 @@
       </a-menu-item>
 
 
-      <a-menu-item class="menu-group-header" disabled>
+      <!--a-menu-item class="menu-group-header" disabled>
         <div class="ant-menu-item-group-title">Settings</div>
-      </a-menu-item>
+      </a-menu-item -->
 
-      <a-menu-item key="general">
+      <!--a-menu-item key="general">
         <router-link to="/site-settings/site-info">
           <a-icon type="setting"></a-icon>
           <span>Site Info</span>
         </router-link>
-      </a-menu-item>
+      </a-menu-item -->
 
       <!-- a-sub-menu key="manage-access">
         <span slot="title"><a-icon type="lock"/><span>Manage Access</span></span>

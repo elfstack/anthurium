@@ -23,11 +23,11 @@
               </template>
             </a-form-model-item>
 
-            <a-form-item label="Application Close (not implemented)">
+            <!--a-form-item label="Application Close (not implemented)">
               <a-date-picker
               show-time>
               </a-date-picker>
-            </a-form-item>
+            </a-form-item -->
             <!-- a-form-item label="Start At">
               <a-date-picker>
               </a-date-picker>

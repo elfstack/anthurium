@@ -165,8 +165,7 @@
                 if (this.activity.status === 'upcoming') {
                   statistics.push({
                     title: 'Applicant',
-                    value: this.statistics.applicant,
-                    suffix: `/ (applicant quota)`
+                    value: this.statistics.applicant
                   })
 
                   statistics.push({

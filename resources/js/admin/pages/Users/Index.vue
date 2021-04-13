@@ -2,11 +2,11 @@
     <a-layout>
         <a-page-header title="Users">
             <template #extra>
-              <router-link :to="{ name: 'admin.members.application' }">
+              <!--router-link :to="{ name: 'admin.members.application' }">
                 <a-button>
                   Pending Applications
                 </a-button>
-              </router-link>
+              </router-link -->
               <router-link :to="{ name: 'admin.members.create' }">
                     <a-button type="primary" icon="plus">
                         Create
