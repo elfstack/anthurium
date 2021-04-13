@@ -26,6 +26,7 @@ class UserController extends Controller
     {
         $result = Listing::create(User::class)
                          ->attachSorting(['id', 'pending_actions_count'])
+                         ->attachFiltering(['user_group_id'])
                          ->modifyQuery(function ($query) {
                              $query->with('userGroup:id,name');
 

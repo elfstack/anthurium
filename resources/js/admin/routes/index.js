@@ -198,7 +198,7 @@ const router = new VueRouter({
           ]
         },
         {
-          path: 'user-groups',
+          path: 'user-groups/',
           component: {render: h => h('router-view')},
           children: [
             {
@@ -206,6 +206,16 @@ const router = new VueRouter({
               name: 'admin.user-groups.index',
               component: () => import('../pages/UserGroups/Index')
             },
+            {
+              path: 'create',
+              name: 'admin.user-groups.create',
+              component: () => import('../pages/UserGroups/Create')
+            },
+            {
+              path: ':id(\\d+)',
+              name: 'admin.user-groups.show',
+              component: () => import('../pages/UserGroups/Show')
+            }
           ]
         },
         {
