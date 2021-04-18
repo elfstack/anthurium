@@ -1,76 +1,64 @@
 <template>
-    <a-modal
-        title="Enroll"
-        :visible="visible"
-        @ok="handleOk"
-        ok-text="Enroll"
-        @cancel="handleCancel"
-    >
-        <template v-if="$isLoggedIn()">
-            Are you sure to enroll this activity?
-        </template>
-        <template v-else>
-            <a-alert
-                message="Already have an account? Login now."
-                close-text="Login"
-                @close="$router.push({ name: 'app.login' })"
-            />
-            <a-form-model>
-                <a-form-model-item>
-                    <a-form-model-item label="Name">
-                        <a-input v-model="form.name" />
-                    </a-form-model-item>
-
-                    <a-form-model-item label="Email">
-                        <a-input v-model="form.email" />
-                    </a-form-model-item>
-                </a-form-model-item>
-            </a-form-model>
-        </template>
-    </a-modal>
+  <a-modal
+    title="Enroll"
+    :visible="visible"
+    @ok="handleOk"
+    ok-text="Enroll"
+    @cancel="handleCancel"
+  >
+    Are you sure to enroll this activity?
+  </a-modal>
 </template>
 
 <script>
-    import activity from "../../../../api/user/activity";
+  import activity from "../../../../api/user/activity";
 
-    export default {
-        name: "Enroll",
-        props: {
-            id: {
-                type: Number,
-                required: true
-            }
-        },
-        data () {
-            return {
-                visible: false,
-                form: {
-                    name: '',
-                    email: ''
-                }
-            }
-        },
-        methods: {
-            $toggleVisibility () {
-                this.visible = !this.visible
-            },
-            handleOk () {
-                this.userEnroll().then(({ data }) => {
-                    this.$toggleVisibility()
-                    this.$message.success(data.message)
-                    this.$emit('user-enrolled')
-                }).catch(() => {
-                  this.$toggleVisibility()
-                })
-            },
-            handleCancel () {
-                this.$toggleVisibility()
-            },
-            userEnroll () {
-                return activity.enroll(this.id, null)
-            }
+  export default {
+    name: "Enroll",
+    props: {
+      id: {
+        type: Number,
+        required: true
+      }
+    },
+    data() {
+      return {
+        visible: false,
+        form: {
+          name: '',
+          email: ''
         }
+      }
+    },
+    methods: {
+      $toggleVisibility() {
+        this.visible = !this.visible
+        if (this.visible && !this.$isLoggedIn()) {
+          this.$router.push({
+            name: 'app.login',
+            query: {
+              redirect: this.$route.path
+            }
+          })
+        }
+      },
+      handleOk() {
+        this.userEnroll().then(({data}) => {
+          this.$toggleVisibility()
+          this.$message.success(data.message)
+          this.$emit('user-enrolled')
+        }).catch(() => {
+          this.$toggleVisibility()
+        })
+      },
+      handleCancel() {
+        this.$toggleVisibility()
+      },
+      userEnroll() {
+        return activity.enroll(this.id, null)
+      }
     }
+  }
 </script>
 
 <style scoped>
