@@ -1,14 +1,7 @@
 <template>
     <div>
-        <a-page-header :title="role.name" style="background: #fff">
-            <template slot="extra">
-                <a-button key="1" icon="save" type="primary" @click="updateRole" :disabled="role.permissions.length === 0">
-                    Save
-                </a-button>
-            </template>
-        </a-page-header>
-        <a-row :gutter="[16, 16]">
-            <a-col :span="12">
+      <a-row :gutter="[16, 16]">
+        <a-col :span="12">
                 <a-card>
                     <a-statistic
                         title="Permissions"
@@ -29,7 +22,7 @@
                 </a-card>
             </a-col>
         </a-row>
-        <div class="p2">
+        <div>
             <a-table
                 :pagination="false"
                 :data-source="permissions"
@@ -37,8 +30,12 @@
                 :columns="columns"
                 :row-selection="{ selectedRowKeys: role.permissions, onChange: onSelectChange }"
             ></a-table>
-            <a-button type="danger" icon="delete" class="mt2">
-                Delete
+          <a-button icon="save" type="primary" @click="updateRole" :disabled="role.permissions.length === 0">
+            Save
+          </a-button>
+
+            <a-button type="danger" icon="delete" class="mt2" @click="">
+              Remove
             </a-button>
         </div>
     </div>
