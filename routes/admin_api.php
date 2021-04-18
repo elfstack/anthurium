@@ -41,5 +41,8 @@ Route::middleware(['auth:admin_api'])->group(function () {
 
     // Action
     Route::apiResource('actions', 'ActionController');
+
+    // Metrics
+    Route::get('/metrics', 'MetricsController@index');
 });
 

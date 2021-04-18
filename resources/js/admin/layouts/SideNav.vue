@@ -33,10 +33,10 @@
         </router-link>
       </a-menu-item -->
 
-      <a-menu-item key="Members">
-        <router-link to="/members">
+      <a-menu-item key="Users">
+        <router-link to="/users">
           <a-icon type="user"></a-icon>
-          <span>Members</span>
+          <span>Users</span>
         </router-link>
       </a-menu-item>
       <!--a-sub-menu key="members">
@@ -76,7 +76,7 @@
         </router-link>
       </a-menu-item -->
 
-      <!-- a-sub-menu key="manage-access">
+      <a-sub-menu key="manage-access">
         <span slot="title"><a-icon type="lock"/><span>Manage Access</span></span>
         <a-menu-item key="admin-users" v-if="$can('admin.admin-users')">
           <router-link to="/manage-access/admin-users">Admin Users</router-link>
@@ -84,10 +84,10 @@
         <a-menu-item key="roles" v-if="$can('admin.roles')">
           <router-link to="/manage-access/roles">Roles & Permissions</router-link>
         </a-menu-item>
-        <a-menu-item key="audits" v-if="$can('admin.audits')">
+        <!--a-menu-item key="audits" v-if="$can('admin.audits')">
           <router-link to="/manage-access/audits">Action Log</router-link>
-        </a-menu-item>
-      </a-sub-menu -->
+        </a-menu-item -->
+      </a-sub-menu>
     </a-menu>
   </a-layout-sider>
 </template>

@@ -94,7 +94,7 @@ const router = new VueRouter({
           ]
         },
         {
-          path: 'members/',
+          path: 'users/',
           component: {render: h => h('router-view')},
           children: [
             {
