@@ -70,16 +70,25 @@
     },
     beforeRouteEnter (to, from, next) {
       next(vm => {
-       vm.getFormData(to.query.form_id).then(vm.assignFormId)
+       vm.setParameters(to.query)
       })
     },
     beforeRouteUpdate (to, from, next) {
-      this.getFormData(to.query.form_id).then(this.assignFormId)
+      this.setParameters(to.query)
       next()
     },
-    mounted () {
-    },
     methods: {
+      setParameters(query) {
+        this.getFormData(query.form_id).then(this.assignFormId).then(() => {
+          if (query.activity_id && query.stage) {
+            this.dataCollection.purpose = `Activity:${query.activity_id}/${query.stage}`
+            this.dataCollection.meta = {
+              stage: query.stage
+            }
+            this.dataCollection.activity_id = Number.parseInt(query.activity_id)
+          }
+        })
+      },
       getFormData (formId) {
         this.form = {}
         this.isFormLoading = true
@@ -90,7 +99,7 @@
       },
       createDataCollection () {
         this.$submit('form', dataCollection.create, this.dataCollection).then(({data}) => {
-          this.$router.push({name: 'admin.data-collection.show', params: { id: data.data_collection.id }})
+          this.$router.replace({name: 'admin.data-collection.show', params: { id: data.data_collection.id }})
         })
       },
       assignFormId () {

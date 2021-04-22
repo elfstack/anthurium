@@ -1,25 +1,29 @@
 <template>
   <div>
-    <a-page-header title='Form' :sub-title="form.title" @back="$router.go(-1)" style="background: #fff">
+    <a-page-header :title="form.title" @back="$router.go(-1)" style="background: #fff">
       <template slot="extra">
-        <a-button type="primary" @click="isEditing = true" v-if="!isEditing">Edit Questions</a-button>
+        <a-button type="primary" @click="isEditing = true" v-if="!isEditing">Edit</a-button>
         <a-button @click="isEditing = false" v-else>Quit Editing</a-button>
+      </template>
+      <template slot="footer">
+        <a-tabs default-active-key="1">
+          <a-tab-pane key="1" tab="Questions" />
+          <a-tab-pane key="2" tab="Data Collection" />
+        </a-tabs>
       </template>
     </a-page-header>
 
     <div class="p2">
     <a-row :gutter="[16, 16]">
       <a-col>
-        <h3>Description</h3>
         <a-card
           :loading="isLoading">
-          {{ form.description }}
+          <div style="white-space: pre-line">{{ form.description }}</div>
         </a-card>
       </a-col>
     </a-row>
     <a-row :gutter="[16, 16]">
       <a-col>
-        <h3>Questions</h3>
         <questions :form-id="form.id" :is-editing="isEditing"/>
       </a-col>
     </a-row>

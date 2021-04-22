@@ -16,7 +16,15 @@ class DataCollection extends Model
     protected $fillable = [
         'form_id',
         'purpose', // FIXME: purpose
+        'activity_id',
+        'meta',
+        'available_to',
         'is_re_submittable'
+    ];
+
+    protected $casts = [
+        'meta' => 'json',
+        'available_to' => 'datetime'
     ];
 
     const REGISTRATION = 'registration';

@@ -22,13 +22,15 @@ class DataCollectionController extends Controller
     {
         $result = Listing::create(DataCollection::class)
                     ->attachFiltering([
-                        'purpose'
+                        'purpose',
+                        'activity_id'
                     ])
                     ->attachSorting([
                         'updated_at'
                     ])
                     ->modifyQuery(function ($query) {
                         $query->with('form');
+                        $query->withCount('response');
                     })
                     ->get($request);
 
@@ -46,6 +48,10 @@ class DataCollectionController extends Controller
        $sanitized = $request->validate([
            'form_id' => 'required|integer|exists:'.Form::class.',id',
            'purpose' => 'string',
+           'meta' => 'sometimes',
+           'activity_id' => 'sometimes|integer|exists:activities,id',
+           'meta.stage' => 'sometimes',
+           'available_to' => 'date',
            'is_re_submittable' => 'boolean'
        ]);
 

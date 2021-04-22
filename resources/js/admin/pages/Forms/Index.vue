@@ -24,13 +24,11 @@
       </a-form-model>
     </a-modal>
 
-    <a-page-header title="Data Collection">
+    <a-page-header title="Forms">
       <template #extra>
-        <a-button-group>
-          <a-button type="primary" icon="profile" @click="formListVisible = true">
-            Forms
-          </a-button>
-        </a-button-group>
+        <a-button type="primary" icon="plus" @click="createModalVisible = true">
+          Create
+        </a-button>
       </template>
     </a-page-header>
 
@@ -44,51 +42,22 @@
           row-key="id"
           :data-source="data">
 
-          <span slot="purpose" slot-scope="text,record">
-            <a-tag :color="purposeColourMap[text] ? purposeColourMap[text] : 'blue'">
-              {{ text }}
-            </a-tag>
-          </span>
-
           <span slot="action" slot-scope="text,record">
               <router-link
-                :to="{ name: 'admin.data-collection.show', params: { id: record.id }}">View</router-link>
+                :to="{ name: 'admin.forms.show', params: { id: record.id }}">View</router-link>
           </span>
 
         </a-table>
       </a-card>
     </div>
-
-    <a-drawer
-      width="40%"
-      placement="right"
-      :closable="false"
-      :visible="formListVisible"
-      @close="formListVisible = false"
-    >
-      <template #title>
-        <div style="display: flex; justify-content: space-between">
-          <h3 style="margin: 0">Forms</h3>
-          <a-button type="primary" icon="plus" @click="createModalVisible = true">
-            Create
-          </a-button>
-        </div>
-      </template>
-      <form-index />
-    </a-drawer>
-
   </a-layout>
-
 </template>
 
 <script>
-  import FormIndex from './FormIndex';
-
   import listing from "../../../common/mixins/listing";
   import formMixin from "../../../common/mixins/form";
 
   import form from "../../../api/admin/form";
-  import dataCollection from "../../../api/admin/dataCollection";
 
   export default {
     name: "Index",
@@ -96,12 +65,9 @@
     metaInfo: {
       title: 'Data Collection'
     },
-    components: {
-      'form-index': FormIndex
-    },
     data() {
       return {
-        api: dataCollection.index,
+        api: form.index,
         createModalVisible: false,
         formListVisible: false,
         creating: false,
@@ -119,18 +85,8 @@
         },
         columns: [
           {
-            dataIndex: 'purpose',
-            title: 'Purpose',
-            scopedSlots: {customRender: 'purpose'}
-          },
-          {
-            dataIndex: 'form.title',
-            title: 'Form'
-          },
-          {
-            dataIndex: 'created_at',
-            title: 'Created At',
-            customRender: (text) => this.$moment(text).format('LLL')
+            dataIndex: 'title',
+            title: 'Title'
           },
           {
             dataIndex: 'updated_at',
@@ -141,7 +97,7 @@
             dataIndex: 'action',
             title: 'Action',
             scopedSlots: {customRender: 'action'}
-          }
+          },
         ]
       }
     },

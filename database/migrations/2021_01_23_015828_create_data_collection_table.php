@@ -23,6 +23,7 @@ class CreateDataCollectionTable extends Migration
             $table->foreignId('activity_id')->nullable();
             $table->string('activity_stage')->nullable();
             $table->dateTime('available_to')->nullable();
+            $table->json('meta')->nullable();
             $table->timestamps();
         });
     }

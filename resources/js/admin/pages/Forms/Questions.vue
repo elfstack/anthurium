@@ -99,6 +99,12 @@
               <template v-if="question.type === 'checkbox' || question.type === 'radio'">
                 <component :is="`a-${question.type}`" v-for="option in question.options">{{ option.value }}</component>
               </template>
+              <template v-else>
+                <a-input :type="question.type"
+                         readonly
+                           :placeholder="question.type === 'text' ? 'Short question input' : 'Long question input'"
+                ></a-input>
+              </template>
             </template>
           </a-card>
         </a-col>
