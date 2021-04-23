@@ -20,7 +20,7 @@ class CreateFormQuestionAnswersTable extends Migration
             // which question
             $table->foreignId('form_question_id');
             // answer to question
-            $table->string('answer');
+            $table->string('answer')->nullable();
         });
     }
 

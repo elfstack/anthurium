@@ -47,7 +47,7 @@ class FormQuestionController extends Controller
 
         $sanitized = $request->validate([
             'response' => 'required|array',
-            'response.*.answer' => 'required|string',
+            'response.*.answer' => 'nullable',
             'response.*.form_question_id' => 'required|integer'
         ]);
 
@@ -71,9 +71,9 @@ class FormQuestionController extends Controller
 
         $responseRecord = $response->answers()->createMany($sanitized);
 
-        if ($dataCollection->purpose === 'member-application') {
-            MembershipApplied::dispatch($response);
-        }
+//        if ($dataCollection->purpose === 'member-application') {
+//            MembershipApplied::dispatch($response);
+//        }
 
         return response()->json([
         ], 201);

@@ -1,25 +1,23 @@
 <template>
-  <a-form-model-item :label="question.question" :colon="false">
-    <template v-if="question.type === 'checkbox' || question.type === 'radio'">
-      <component
-        :is="`a-${question.type}-group`"
-        v-model:value="answerForm">
-        <component :is="`a-${question.type}`" v-for="option in question.options" :value="option.id" :key="option.id">
-          {{ option.value }}
+  <a-card>
+    <p :class="{ 'ant-form-item-required': question.is_required }">{{ question.question }}</p>
+    <a-form-model-item ref="form-item">
+      <template v-if="question.type === 'checkbox' || question.type === 'radio'">
+        <component :is="`a-${question.type}-group`" v-model="response">
+          <component :is="`a-${question.type}`" v-for="option in question.options" :value="option.id">
+            {{ option.value }}
+          </component>
         </component>
-      </component>
-    </template>
-
-    <template v-if="question.type.substring(0, 4) === 'text'">
-      <template v-if="!isEditing">
-        Answer: {{ answer.answer }}
       </template>
-
       <template v-else>
-        <component :is="`a-${question.type === 'text' ? 'input' : 'textarea'}`" v-model="answerForm"></component>
+        <a-input :type="question.type"
+                 :placeholder="question.type === 'text' ? 'Short question input' : 'Long question input'"
+                 v-model="response"
+                 @input="clearError"
+        ></a-input>
       </template>
-    </template>
-  </a-form-model-item>
+    </a-form-model-item>
+  </a-card>
 </template>
 
 <script>
@@ -31,37 +29,44 @@
         required: true,
         type: Object
       },
-      answer: {
-        // can be synced
-        type: [ String, Number ]
-      },
       isEditing: {
         default: false,
         type: Boolean
       }
     },
-    data () {
+    data() {
       return {
-        options: [],
-        answerForm: ''
+        response: null
       }
     },
     mounted() {
       if (this.question.response) {
-        this.answerForm = this.question.response.answer
+        this.$setAnswer(this.question.response.answer)
       }
     },
     methods: {
-      $setAnswer (answer) {
-        this.answerForm = answer
+      clearError () {
+        const field = this.$refs['form-item']
+        field.validateState = ''
+        field.validateMessage = null
       },
-      $getQuestionId () {
+      $setAnswer(answer) {
+        this.response = answer
+      },
+      $getQuestionId() {
         return this.question.id
       },
-      $collectAnswer () {
+      $collectAnswer() {
+        if (this.question.is_required && this.response === null){
+          const field = this.$refs['form-item']
+          field.validateState = 'error'
+          field.validateMessage = 'This field is required'
+          throw new Error('Field is required')
+        }
+
         return {
           form_question_id: this.question.id,
-          answer: this.answerForm
+          answer: this.response
         }
       }
     }

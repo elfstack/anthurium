@@ -26,7 +26,7 @@ Route::middleware(['auth:api'])->group(function () {
     Route::put('notifications', 'NotificationController@markSelectedAsRead');
     Route::delete('notifications', 'NotificationController@destroySelected');
 });
-
+Route::apiResource('data-collection', 'DataCollectionController');
 Route::get('/config', 'ConfigController@config');
 
 Route::apiResource('activities', 'ActivityController');
@@ -35,7 +35,7 @@ Route::apiResource('activities', 'ActivityController');
 
 Route::apiResource('users', 'UserController')->only(['show', 'store']);
 // Route::apiResource('forms.questions', 'FormQuestionController');
-// Route::post('/data-collection/{dataCollection}/response', 'FormQuestionController@store');
+Route::post('/data-collection/{dataCollection}/response', 'FormQuestionController@store');
 
 // Route::get('/action', 'ActionController@findAction');
 // Route::apiResource('action', 'ActionController')->only(['update']);

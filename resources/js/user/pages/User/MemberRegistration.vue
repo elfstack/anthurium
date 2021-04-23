@@ -64,6 +64,7 @@
   import Question from '../../components/Question'
   import form from "../../../api/user/form"
   import action from '../../../api/user/action'
+  import dataCollection from "../../../api/user/dataCollection";
 
   export default {
     name: "MemberRegistration",
@@ -88,7 +89,7 @@
         }
       }).catch((e) => {
         // TODO: only 404
-        form.questions(this.$config('user.member_application.data_collection').form_id).then(({data}) => {
+        form.questions(this.form.id).then(({data}) => {
           this.questions = data.questions
         })
       })
@@ -99,7 +100,7 @@
           return question.$collectAnswer()
         })
 
-        form.saveResponse(this.$config('user.member_application.data_collection').id, {
+        dataCollection.saveResponse(this.$route.id, {
           response: this.response
         }).then(({data}) => {
           this.step = 1
