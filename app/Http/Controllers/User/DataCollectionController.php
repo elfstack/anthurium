@@ -22,6 +22,8 @@ class DataCollectionController extends Controller
      */
     public function index(Request $request)
     {
+        $user = $request->user('api');
+
         $result = Listing::create(DataCollection::class)
                     ->attachFiltering([
                         'purpose',
@@ -30,9 +32,15 @@ class DataCollectionController extends Controller
                     ->attachSorting([
                         'updated_at'
                     ])
-                    ->modifyQuery(function ($query) {
+                    ->modifyQuery(function ($query) use ($user) {
                         $query->with('form');
                         // TODO: determine whether the user filled this form
+                        $query->addSelect([
+                            'response_id' =>
+                                DataCollectionResponse::select('id')
+                                      ->whereColumn('data_collection_id', 'data_collection.id')
+                                      ->where('user_id', $user->id)
+                        ]);
                     })
                     ->get($request);
 

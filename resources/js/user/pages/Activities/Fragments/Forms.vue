@@ -1,7 +1,7 @@
 <template>
   <a-list :data-source="data" :split="false">
     <a-list-item slot="renderItem" slot-scope="item, index" :style="item.type === 'title' ? 'padding: 0' : ''">
-      <a-card v-if="item.type === 'form'" class="form-card" :class="{ 'form-is-filled' : item.content.is_filled }">
+      <a-card v-if="item.type === 'form'" class="form-card" :class="{ 'form-is-filled' : item.content.response_id }">
         <a-list-item-meta :description="item.content.form.description.substring(0, 100)">
           <router-link slot="title" :to="{ name: 'app.forms.show', params: { id: item.content.id }}">{{ item.content.form.title }}</router-link>
         </a-list-item-meta>
