@@ -14,13 +14,13 @@
     </a-row>
     <a-row :gutter="[16,16]" v-for="question in dataCollection.form.questions" :key="question.id">
       <a-col>
-        <question :question="question" ref="question"/>
+        <question :question="question" ref="question" :disabled="!dataCollection.is_re_submittable"/>
       </a-col>
     </a-row>
 
     <a-row :gutter="[16,16]">
       <a-col>
-        <a-button type="primary" @click="collectAnswer" :loading="isSubmitting">Submit</a-button>
+        <a-button type="primary" @click="collectAnswer" :loading="isSubmitting" :disabled="isSubmitted && !dataCollection.is_re_submittable">Submit</a-button>
       </a-col>
     </a-row>
 
@@ -39,30 +39,37 @@
     beforeRouteEnter(to, from, next) {
       if (to.params.responseId) {
         dataCollection.showResponse(to.params.responseId).then(({data}) => {
-          next(vm => vm.setData(data.data_collection_response.data_collection))
+          next(vm => {
+            vm.isSubmitted = true
+            vm.setData(data.data_collection_response.data_collection)
+          })
         })
-
-        return
+      } else {
+        dataCollection.show(to.params.id).then(({data}) => {
+          next(vm => {
+            let hasResponse = data.hasOwnProperty('data_collection_response')
+            vm.isSubmitted = hasResponse
+            vm.setData(hasResponse ? data.data_collection_response.data_collection : data.data_collection)
+          })
+        })
       }
-
-      dataCollection.show(to.params.id).then(({data}) => {
-        next(vm => vm.setData(data.data_collection))
-      })
     },
     beforeRouteUpdate(to, from, next) {
       if (to.params.responseId) {
         dataCollection.showResponse(to.params.responseId).then(({data}) => {
-          next(vm => vm.setData(data.data_collection_response.data_collection))
+          this.isSubmitted = true
+          this.setData(data.data_collection_response.data_collection)
+          next()
         })
-
-        return
+      } else {
+        this.dataCollection = null
+        dataCollection.show(to.params.id).then(({data}) => {
+          let hasResponse = data.hasOwnProperty('data_collection_response')
+          this.isSubmitted = hasResponse
+          this.setData(hasResponse ? data.data_collection_response.data_collection : data.data_collection)
+          next()
+        })
       }
-
-      this.dataCollection = null
-      dataCollection.show(to.params.id).then(({data}) => {
-        this.setData(data.dataCollection)
-        next()
-      })
     },
     data() {
       return {

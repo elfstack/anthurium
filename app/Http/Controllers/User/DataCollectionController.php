@@ -40,13 +40,31 @@ class DataCollectionController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Show form and form questions, options
      *
+     * this method checks if the user has already filled the response
+     * if filled, the data collection response will be returned
+     *
+     * @param Request $request
      * @param DataCollection $dataCollection
      * @return JsonResponse
      */
-    public function show(DataCollection $dataCollection)
+    public function show(Request $request, DataCollection $dataCollection)
     {
+        $user = $request->user('api');
+
+
+        // FIXME: this implementation is bad
+        try {
+            $dcr = $dataCollection->getResponseByUser($user);
+
+            return response()->json([
+                'data_collection_response' => $dcr
+            ]);
+        } catch (\Exception $e) {
+
+        }
+
         $dataCollection->load(['form.questions.options', 'activity']);
 
         return response()->json([

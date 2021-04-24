@@ -4,7 +4,11 @@
     <a-form-model-item ref="form-item">
       <template v-if="question.type === 'checkbox' || question.type === 'radio'">
         <component :is="`a-${question.type}-group`" v-model="response">
-          <component :is="`a-${question.type}`" v-for="option in question.options" :value="option.id">
+          <component :is="`a-${question.type}`"
+                     v-for="option in question.options"
+                     :value="option.id"
+                     :disabled="disabled"
+          >
             {{ option.value }}
           </component>
         </component>
@@ -14,6 +18,7 @@
                  :placeholder="question.type === 'text' ? 'Short question input' : 'Long question input'"
                  v-model="response"
                  @input="clearError"
+                 :disabled="disabled"
         ></a-input>
       </template>
     </a-form-model-item>
@@ -30,6 +35,10 @@
         type: Object
       },
       isEditing: {
+        default: false,
+        type: Boolean
+      },
+      disabled: {
         default: false,
         type: Boolean
       }

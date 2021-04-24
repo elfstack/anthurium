@@ -63,12 +63,13 @@ class DataCollection extends Model
      * TODO: argument of whether or not attach question to answer
      *
      * @param User $user
-     * @param bool $withQuestion
      * @return HasMany
      */
-    public function getResponseByUser(User $user, $withQuestion=true) {
+    public function getResponseByUser(User $user) {
         $response = $this->response()->where('user_id', $user->id)->firstOrFail();
-        $response->load('response');
+        $response->load('response', 'dataCollection.form');
+        $response->dataCollection->form->questions = $response->response;
+        unset($response->response);
 
         return $response;
     }

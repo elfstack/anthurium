@@ -40,10 +40,9 @@ class FormQuestionController extends Controller
     {
         $user = $request->user();
 
-        // TODO: bypass this condition for dataCollection that allows resubmit
-//        if ($dataCollection->isFilledByUser($user)) {
-//            abort(409, 'This form does not allow re-submit');
-//        }
+        if (!$dataCollection->is_re_submittable && $dataCollection->isFilledByUser($user)) {
+            abort(409, 'This form does not allow re-submit');
+        }
 
         $sanitized = $request->validate([
             'response' => 'required|array',
