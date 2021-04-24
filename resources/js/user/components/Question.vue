@@ -51,7 +51,11 @@
         field.validateMessage = null
       },
       $setAnswer(answer) {
-        this.response = answer
+        if (this.question.type === 'radio' || this.question.type === 'checkbox') {
+          this.response = Number.parseInt(answer)
+        } else {
+          this.response = answer
+        }
       },
       $getQuestionId() {
         return this.question.id
