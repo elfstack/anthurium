@@ -37,11 +37,27 @@
       'question': Question
     },
     beforeRouteEnter(to, from, next) {
+      if (to.params.responseId) {
+        dataCollection.showResponse(to.params.responseId).then(({data}) => {
+          next(vm => vm.setData(data.data_collection_response.data_collection))
+        })
+
+        return
+      }
+
       dataCollection.show(to.params.id).then(({data}) => {
         next(vm => vm.setData(data.data_collection))
       })
     },
     beforeRouteUpdate(to, from, next) {
+      if (to.params.responseId) {
+        dataCollection.showResponse(to.params.responseId).then(({data}) => {
+          next(vm => vm.setData(data.data_collection_response.data_collection))
+        })
+
+        return
+      }
+
       this.dataCollection = null
       dataCollection.show(to.params.id).then(({data}) => {
         this.setData(data.dataCollection)

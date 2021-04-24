@@ -4,8 +4,10 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\DataCollection;
+use App\Models\DataCollectionResponse;
 use App\Models\Form;
 use App\Utils\Listing;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -49,6 +51,29 @@ class DataCollectionController extends Controller
 
         return response()->json([
             'data_collection' => $dataCollection
+        ]);
+    }
+
+    /**
+     * Show response
+     *
+     * @param Request $request
+     * @param DataCollectionResponse $dataCollectionResponse
+     * @return JsonResponse
+     * @throws AuthorizationException
+     */
+    public function showResponse(Request $request, DataCollectionResponse $dataCollectionResponse)
+    {
+        $this->authorizeForUser($request->user('api'), 'view', $dataCollectionResponse);
+
+        $dataCollectionResponse->load(['response', 'dataCollection.form']);
+
+        // put response into form details to unify data format
+        $dataCollectionResponse->dataCollection->form->questions = $dataCollectionResponse->response;
+        unset($dataCollectionResponse->response);
+
+        return response()->json([
+            'data_collection_response' => $dataCollectionResponse
         ]);
     }
 }

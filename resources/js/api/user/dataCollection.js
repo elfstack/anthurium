@@ -9,5 +9,8 @@ export default {
     },
     saveResponse (id, response) {
       return window.axios.post(`/data-collection/${id}/response`, response)
+    },
+    showResponse (id) {
+      return window.axios.get(`/data-collection-response/${id}`)
     }
 }

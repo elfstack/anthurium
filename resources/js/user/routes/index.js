@@ -80,7 +80,7 @@ const router = new VueRouter({
           component: () => import('../pages/Participations/Participation')
         },
         {
-          path: 'forms/:id',
+          path: 'forms/:id/:responseId?',
           name: 'app.forms.show',
           component: () => import('../pages/DataCollection/Form')
         },

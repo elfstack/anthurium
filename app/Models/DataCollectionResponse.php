@@ -17,6 +17,11 @@ class DataCollectionResponse extends Model
         'user_id'
     ];
 
+    public function dataCollection(): BelongsTo
+    {
+        return $this->belongsTo(DataCollection::class);
+    }
+
     public function answers(): HasMany
     {
         return $this->hasMany(FormAnswer::class);
@@ -27,9 +32,18 @@ class DataCollectionResponse extends Model
         return $this->belongsToMany(FormQuestion::class, 'form_question_answers');
     }
 
+    /**
+     * Show response
+     *
+     * this function first loads the questions with options,
+     * then attach answer to it, which is displayed as response
+     *
+     * @return BelongsToMany
+     */
     public function response()
     {
-        return $this->questions()->withPivot(['answer'])->as('response');
+        return $this->questions()->with('options')
+                    ->withPivot(['answer'])->as('response');
     }
 
     public function user(): BelongsTo
