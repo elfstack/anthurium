@@ -1,8 +1,9 @@
 <template>
     <div>
+      <h2 class="h1">{{ activity.name }}</h2>
         <a-row :gutter="[16,16]">
             <a-col :span="24">
-                <a-page-header :title="activity.name" style="background: #fff">
+                <a-page-header :title="''" style="background: #fff">
                     <template #tags>
                         <a-tag :color="statusColour[activity.status]">{{ activity.status }}</a-tag>
                     </template>
@@ -22,7 +23,7 @@
             </a-col>
         </a-row>
         <a-row :gutter="[16,16]">
-            <a-col :span="18">
+            <a-col :md="18" :sm="24">
                 <a-card
                     :tab-list="tabList"
                     :active-tab-key="tabKey"
@@ -30,7 +31,7 @@
                     <viewer :initial-value="activity.content" height="500px"/>
                 </a-card>
             </a-col>
-            <a-col :span="6">
+            <a-col :md="6" :sm="24">
                 <a-row :gutter="[16,16]">
                     <a-col>
                         <a-card>
@@ -53,7 +54,7 @@
 
               <a-row :gutter="[16,16]">
                 <a-col>
-                  <a-card>
+                  <a-card title="Who Can Join">
                     <a-list :data-source="activity.user_groups">
                       <a-list-item slot="renderItem" slot-scope="item, index">
                         <a-icon type="check"/>&nbsp;
@@ -63,17 +64,6 @@
                   </a-card>
                 </a-col>
               </a-row>
-
-              <a-row :gutter="[16,16]">
-                    <a-col>
-                        <a-card title="Calendar" body-style="padding: 0">
-                            <a-calendar
-                                :fullscreen="false"
-                            ></a-calendar>
-                        </a-card>
-                    </a-col>
-                </a-row>
-
             </a-col>
         </a-row>
 
@@ -142,10 +132,10 @@
                         key: 'content',
                         tab: 'Content',
                     },
-                    {
-                        key: 'itinerary',
-                        tab: 'Itinerary',
-                    },
+                    // {
+                    //     key: 'itinerary',
+                    //     tab: 'Itinerary',
+                    // },
                 ],
                 tabKey: 'content'
             }
