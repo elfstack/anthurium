@@ -31,7 +31,7 @@ const router = new VueRouter({
       children: [
         {
           path: '',
-          name: 'admin.Dashboard',
+          name: 'admin.dashboard',
           component: () => import('../pages/Dashboard/Index')
         },
         {
@@ -183,9 +183,9 @@ const router = new VueRouter({
                   component: () => import('../pages/Forms/Show.vue')
                 },
                 {
-                  path: 'questions',
-                  name: 'admin.forms.show.questions',
-                  component: () => import('../pages/Forms/Questions.vue')
+                  path: 'data-collection',
+                  name: 'admin.forms.show.data-collection',
+                  component: () => import('../pages/Forms/DataCollection')
                 },
                 {
                   path: 'answers/:answersId(\\d+)',

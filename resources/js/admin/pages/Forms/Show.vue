@@ -6,9 +6,9 @@
         <a-button @click="isEditing = false" v-else>Quit Editing</a-button>
       </template>
       <template slot="footer">
-        <a-tabs default-active-key="1">
-          <a-tab-pane key="1" tab="Questions" />
-          <a-tab-pane key="2" tab="Data Collection" />
+        <a-tabs default-active-key="show" @change="changeTab">
+          <a-tab-pane key="show" tab="Questions"/>
+          <a-tab-pane key="show.data-collection" tab="Data Collection" />
         </a-tabs>
       </template>
     </a-page-header>
@@ -24,7 +24,7 @@
     </a-row>
     <a-row :gutter="[16, 16]">
       <a-col>
-        <questions :form-id="form.id" :is-editing="isEditing"/>
+        <questions :form-id="form.id" :is-editing="isEditing" v-if="form.id"/>
       </a-col>
     </a-row>
     </div>
@@ -69,6 +69,9 @@
           }
         })
       },
+      changeTab (key) {
+        this.$router.push({ name: 'admin.forms.' + key, params: { id: this.$route.params.id } })
+      }
     }
   }
 </script>

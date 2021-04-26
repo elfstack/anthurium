@@ -23,7 +23,8 @@ class DataCollectionController extends Controller
         $result = Listing::create(DataCollection::class)
                     ->attachFiltering([
                         'purpose',
-                        'activity_id'
+                        'activity_id',
+                        'form_id'
                     ])
                     ->attachSorting([
                         'updated_at'
@@ -31,6 +32,7 @@ class DataCollectionController extends Controller
                     ->modifyQuery(function ($query) {
                         $query->with('form');
                         $query->withCount('response');
+                        $query->with('activity:id,name');
                     })
                     ->get($request);
 
