@@ -68,16 +68,17 @@
         </a-row>
 
       <enroll
-        ref="enroll-modal"
+            ref="enroll-modal"
+            v-if="activity != null"
             :id="activity.id"
             @user-enrolled="activity.is_enrolled = true"
         />
 
       <participation
         ref="participation-modal"
-        :id="$route.params.id"
+        :id="Number.parseInt($route.params.id)"
         :participationId="$route.params.participationId"
-        v-if="$route.params.participationId"
+        v-if="activity != null && $route.params.participationId"
       />
 
     </div>

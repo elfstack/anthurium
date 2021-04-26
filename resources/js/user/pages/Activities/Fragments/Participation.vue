@@ -51,7 +51,7 @@
         required: true
       },
       participationId: {
-        type: Number,
+        type: String,
         required: true
       }
     },

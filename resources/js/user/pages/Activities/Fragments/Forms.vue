@@ -3,12 +3,15 @@
     <a-list-item slot="renderItem" slot-scope="item, index" :style="item.type === 'title' ? 'padding: 0' : ''">
       <a-card v-if="item.type === 'form'" class="form-card" :class="{ 'form-is-filled' : item.content.response_id }">
         <a-list-item-meta :description="item.content.form.description.substring(0, 100)">
-          <router-link slot="title" :to="{ name: 'app.forms.show', params: { id: item.content.id }}">{{ item.content.form.title }}</router-link>
+          <router-link slot="title" :to="{ name: 'app.forms.show', params: { id: item.content.id }}">
+            <a-tag>{{ item.content.meta.stage }}</a-tag>
+            {{ item.content.form.title }}
+          </router-link>
         </a-list-item-meta>
       </a-card>
       <h3 v-else style="margin: 0">{{ item.content }}</h3>
     </a-list-item>
-    <div v-if="loading && !busy" class="demo-loading-container">
+    <div v-if="loading">
       <a-spin/>
     </div>
   </a-list>
@@ -17,6 +20,8 @@
 <script>
   import dataCollection from "../../../../api/user/dataCollection";
   import listing from "../../../../common/mixins/listing";
+
+  import { groupBy } from 'lodash'
 
   export default {
     name: "Forms",
@@ -69,9 +74,19 @@
     },
     methods: {
       updateData (data) {
+        const order = {
+          'pending': 0,
+          'admitted': 1,
+          'arrived': 2,
+          'left': 3
+        }
+
         const pagination = { ...this.listing.pagination }
         pagination.total = data.total
-        this.data = data.data.map(item => {
+
+        this.data = data.data.sort(function (a, b) {
+          return order[a.meta.stage] - order[b.meta.stage]
+        }).map(item => {
           return {
             type: 'form',
             content: item

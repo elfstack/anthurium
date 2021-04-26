@@ -37,11 +37,10 @@
           stage: null
         },
         dataCollectionStageOptions: [
-          { value: 'enroll', label: 'Enroll' },
-          { value: 'admitted', label: 'Admitted' },
-          { value: 'arrived', label: 'Arrived' },
-          { value: 'before-leave', label: 'Before Leave' },
-          { value: 'left', label: 'Left' }
+          { value: 'pending', label: 'Before Enrollment' },
+          { value: 'admitted', label: 'After Admitted' },
+          { value: 'arrived', label: 'After Arrived' },
+          { value: 'left', label: 'After Left' }
         ]
       }
     },
