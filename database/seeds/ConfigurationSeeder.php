@@ -14,11 +14,11 @@ class ConfigurationSeeder extends Seeder
     {
         $configurations = collect([
             // Site Config
-            'site.orgname' => 'Your Organisation',
+            // 'site.orgname' => 'Your Organisation',
             // User Registration
-            'member.registration.default_user_group' => 'guest', // default is guest
+            // 'member.registration.default_user_group' => 'guest', // default is guest
             // Member Application
-            'member.application.open' => true,
+            // 'member.application.open' => true,
             // INFO: this shall be determined by DataCollection with registration tags
 //            'member.application.data_collection_id' => 1, // cached
 //            'member.application.data_collection_form_name' => ''  // cached
