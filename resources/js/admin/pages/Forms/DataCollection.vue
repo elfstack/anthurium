@@ -97,7 +97,7 @@
         })
       },
       changeTab (key) {
-        this.$router.push({ name: 'admin.forms.' + key })
+        this.$router.replace({ name: 'admin.forms.' + key })
       }
     }
   }

@@ -70,7 +70,7 @@
         })
       },
       changeTab (key) {
-        this.$router.push({ name: 'admin.forms.' + key, params: { id: this.$route.params.id } })
+        this.$router.replace({ name: 'admin.forms.' + key, params: { id: this.$route.params.id } })
       }
     }
   }

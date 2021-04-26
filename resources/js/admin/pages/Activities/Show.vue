@@ -129,7 +129,7 @@
             },
             changeTab (key) {
                 this.activeTab = key
-                this.$router.push({ name: 'admin.activities.show.' + key })
+                this.$router.replace({ name: 'admin.activities.show.' + key })
             }
         }
     }
