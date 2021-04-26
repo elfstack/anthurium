@@ -13,31 +13,29 @@
       </template>
 
       <template slot="tags">
-        <a-tag color="blue">
-          Running
+        <a-tag color="green">
+          Available
         </a-tag>
+        <!-- TODO: available / archived / closed -->
+        <a-tag v-if="dataCollection.is_re_submittable" color="blue">Allow Resubmit</a-tag>
       </template>
-
-     <a-descriptions size="small" :column="2">
-        <a-descriptions-item label="Flags">
-          <a-tag v-if="dataCollection.is_re_submittable">Allow Resubmit</a-tag>
-        </a-descriptions-item>
-        <a-descriptions-item label="Effective at">
-          2017-10-10 - 2027-01-01
-        </a-descriptions-item>
-      </a-descriptions>
-
-      <a-card
-        :loading="isLoading">
-        <a-card-meta :title="dataCollection.form.title">
-          <template slot="description">
-            {{ dataCollection.form.description }}
-          </template>
-        </a-card-meta>
-      </a-card>
     </a-page-header>
 
     <div class="p2">
+      <a-row :gutter="[16,16]">
+        <a-col>
+          <router-link :to="{ name: 'admin.forms.show', params: {id: dataCollection.form.id }}">
+          <a-card
+            :loading="isLoading">
+            <a-card-meta :title="dataCollection.form.title">
+              <template slot="description">
+                {{ dataCollection.form.description ? dataCollection.form.description.substr(0, 200) + '...' : 'No description' }}
+              </template>
+            </a-card-meta>
+          </a-card>
+          </router-link>
+        </a-col>
+      </a-row>
     <a-row :gutter="[16, 16]">
       <a-col>
         <h3>Responses</h3>
@@ -80,8 +78,9 @@
       })
     },
     beforeRouteUpdate(to, from, next) {
-      this.loadForm(to.params.id)
-      next()
+      this.loadForm(to.params.id).then(() => {
+        next()
+      })
     },
     data () {
       return {
