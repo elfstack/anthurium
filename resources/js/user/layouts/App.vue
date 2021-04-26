@@ -14,6 +14,10 @@
       </a-layout-content>
     </a-layout>
 
+    <a-layout-footer style="text-align: center">
+      Powered by <a href="https://anthurium.laceleaf.com">Anthurium</a>
+    </a-layout-footer>
+
   </a-layout>
 </template>
 

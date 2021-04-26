@@ -7,7 +7,7 @@
               class="pr2 h4"
               style="color: #fff"
             >
-              Anthurium
+              {{ $config('org_name') || 'Anthurium' }}
             </div>
       </a-col>
 

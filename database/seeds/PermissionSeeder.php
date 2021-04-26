@@ -17,10 +17,21 @@ class PermissionSeeder extends Seeder
     {
         $this->resetPermissions();
 
-        Permission::create(['guard_name' => 'admin_api', 'name' => 'admin.admin-users']);
-        Permission::create(['guard_name' => 'admin_api', 'name' => 'admin.roles']);
-        Permission::create(['guard_name' => 'admin_api', 'name' => 'admin.audits']);
-        Permission::create(['guard_name' => 'admin_api', 'name' => 'admin.settings']);
+        $permissions = collect([
+            'admin.users',
+            'admin.user-groups',
+
+            // operation
+            'admin.activities',
+            'admin.data-collection',
+            'admin.roles',
+            'admin.audits',
+            'admin.admin-users',
+        ]);
+
+        $permissions->each(function ($permission) {
+            Permission::create(['guard_name' => 'admin_api', 'name' => $permission]);
+        });
 
         Role::findByName('Super Admin', 'admin_api')->givePermissionTo(Permission::all());
     }

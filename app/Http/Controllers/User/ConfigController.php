@@ -19,7 +19,7 @@ class ConfigController extends Controller
      */
     public function config() {
         return response()->json([
-            'name' => getenv('APP_NAME'),
+            'org_name' => ConfigUtils::get('site.org_name'),
             'timezone' => getenv('APP_TIMEZONE'),
             'user.can_register' => ConfigUtils::get('user.can_register'),
             'user.can_apply_membership' => ConfigUtils::get('user.can_apply_membership'),
